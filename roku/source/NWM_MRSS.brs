@@ -73,9 +73,9 @@ function NWM_MRSS_GetEpisodes(limit = 0)
 			if tmp.Count() > 0
 				newItem.sdPosterURL = ValidStr(tmp[0]@url)
 				newItem.hdPosterURL = ValidStr(tmp[0]@url)
-			else if xml.channel.image.url.Count() > 0
-				newItem.sdPosterURL = ValidStr(xml.channel.image.url.GetText())
-				newItem.hdPosterURL = ValidStr(xml.channel.image.url.GetText())
+			'else if xml.channel.image.url.Count() > 0
+			'	newItem.sdPosterURL = ValidStr(xml.channel.image.url.GetText())
+			'	newItem.hdPosterURL = ValidStr(xml.channel.image.url.GetText())
       else
         r = CreateObject("roRegex", "src=(" + Chr(39) + "|" + Chr(34) + ")(.+?)(" + Chr(39) + "|" + Chr(34) + ")", "i")
         a = r.Match(item.description.GetText())
@@ -144,6 +144,9 @@ function NWM_MRSS_GetEpisodes(limit = 0)
 						end if
 
 						newItem.streams.push(newStream)
+            if ValidStr(content@type) = "video/mp4"
+              newItem.streamFormat = "mp4"
+            end if
 					end if
 				next
 				
@@ -159,8 +162,10 @@ function NWM_MRSS_GetEpisodes(limit = 0)
 				newStream = {
 					url:	ValidStr(item.enclosure@url)
 				}
-				
 				newItem.streams.Push(newStream)
+        if ValidStr(item.enclosure@type) = "video/mp4"
+          newItem.streamFormat = "mp4"
+        end if
 
 				'PrintAA(newItem)
 				result.Push(newItem)
