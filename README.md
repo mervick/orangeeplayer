@@ -7,5 +7,5 @@ For developers, please follow those instructions to build locally:
 * Run this command in terminal:
 orangeejs build roku
 
-This software is dual-licensed. It is GPL (v2) licensed by default, but commercial
+This software is dual-licensed. It is GNU AGPLv3 (http://www.gnu.org/licenses/agpl-3.0.html) licensed by default, but commercial
 license is also available upon request.
