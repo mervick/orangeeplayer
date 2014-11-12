@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="lib/bootstrap.min.css" />
+  <link rel="stylesheet" type="text/css" href="lib/orangee-ui.css" />
+  <link rel="stylesheet" type="text/css" href="app.css" />
+  <link rel="stylesheet" type="text/css" href="gallery.css" />
+  <link rel="stylesheet" type="text/css" href="shadows.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="header">
+      <h1>
+          Orangee Cloud Player
+      </h1>
+      <h3>http://orangee.tv</h3>
+    </div>
+
+    <div id="main"></div>
+    <div id="loading"></div>
+  </div>
+
+  <script type="text/html" id="indexTmpl">
+    <div class="item drop-shadow round">
+      <div class="item-image">
+        <a href="#subalbum/<%= cid %>"><img src="<%= image %>" alt="<%= title %>" /></a>
+      </div>
+      <div class="item-artist"><%= artist %></div>
+      <div class="item-title"><%= title %></div>
+      <div class="item-years"><%= years %></div>
+    </div>
+  </script>
+
+  <script type="text/html" id="subindexTmpl">
+    <div class="item  drop-shadow round">
+      <div class="item-image subalbum">
+        <a href="#subalbum/<%= subalbum %>/<%= pid %>"><img src="<%= image %>" alt="<%= title %>" alt="No images in this folder"/></a> 
+      </div>
+      <div class="item-artist"><%= artist %></div>
+      <div class="item-title"><%= title %></div>
+      <div class="item-price"><%= price %></div>
+    </div>
+  </script>
+
+  <script type="text/html" id="itemTmpl">
+    <div class="item-detail">
+      <div class="item-image drop-shadow round"><img src="<%= large_image %>" alt="<%= title %>" /></div>
+      <div class="item-info">
+        <div class="item-artist"><%= artist %></div>
+        <div class="item-title"><%= title %></div>
+        <div class="item-price"><%= price %></div>
+        <br />
+        <div class="item-link"><a href="<%= url %>" class="button">Buy this item</a></div>
+        <div class="back-link"><a href="#" class="button">&laquo; Back to Albums</a></div>
+      </div>
+    </div>
+  </script>
+
+  <script type="text/html" id="bindingTmpl">
+    <section id='binding'>
+      <h1 class='text-center'>Link your account</h1>
+      <h2>Before you can use this channel, you must link the channel to your account.
+      Go to <a target="_blank" href="http://orangee.tv/link">http://orangee.tv/link</a>, log into your account, and enter the following code:</h2>
+      <h1 class='text-center'><strong><%= code %></strong></h1>
+    </section>
+  </script>
+
+  <script type="text/javascript" src="lib/jquery.min.js"></script>
+  <script type="text/javascript" src="lib/underscore-min.js"></script>
+  <script type="text/javascript" src="lib/backbone-min.js"></script>
+  <script type="text/javascript" src="lib/backbone.marionette.min.js"></script>
+  <script type="text/javascript" src="lib/backbone.paginator.min.js"></script>
+  <script type="text/javascript" src="lib/backbone.select.min.js"></script>
+  <script type="text/javascript" src="https://www.youtube.com/iframe_api"></script><!-- Only if you want to use youtube -->
+  <script type="text/javascript" src="lib/orangee.js"></script>
+  <script type="text/javascript" src="lib/orangee-ui.js"></script>
+  <script type="text/javascript" src="app.js"></script>
+  <script>
+    //wrap initialization code into this special function only if you want to use youtube
+    function onYouTubeIframeAPIReady() { 
+      $(function () {
+        orangee.init(app.init);
+      });
+    }
+  </script>
+</body>
+</html>
