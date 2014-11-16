@@ -34,8 +34,17 @@ var DeviceToken = Orangee.XMLModel.extend({
   }
 });
 
-//OPML
-var Subscriptions = Orangee.XMLModel.extend({
+var Subscription = Orangee.Model.extend({
+  toJSON: function() {
+    //http://stackoverflow.com/questions/15298449/cannot-get-the-cid-of-the-model-while-rendering-a-backbone-collection-over-a-tem
+    var json = Backbone.Model.prototype.toJSON.apply(this, arguments);
+    json.cid = this.cid;
+    return json;
+  },
+});
+
+var Subscriptions = Orangee.OPMLCollection.extend({
+  model: Subscription,
   initialize: function(device_token) {
     this.device_token = device_token;
   },
@@ -44,7 +53,6 @@ var Subscriptions = Orangee.XMLModel.extend({
   },
 });
 
-//RSS
 var Videos = Orangee.RSSCollection.extend({
   initialize: function(url) {
     this.url = url;
@@ -79,8 +87,13 @@ var BindingView = Orangee.ItemView.extend({
   },
 });
 
-var AlbumView = Orangee.ItemView.extend({
+var AlbumItemView = Orangee.ItemView.extend({
+  template: '#indexTmpl',
+});
+
+var AlbumView = Orangee.CollectionView.extend({
   el: "#main",
+  childView: AlbumItemView,
 });
 
 app.init = function(options){
@@ -94,15 +107,19 @@ app.init = function(options){
   */
 
   var device_token = orangee.storage.get("device_token");
+  orangee.debug(device_token);
   if (!device_token) {
-    var code = new LinkCode();
-    code.fetch({
-      success: function() {
+    (new LinkCode()).fetch({
+      success: function(model) {
         new BindingView({model: code}).render();
       },
     });
   } else {
-    (new Subscriptions(device_token)).fetch();
+    (new Subscriptions(device_token)).fetch({
+      success: function(collection) {
+        new AlbumView({collection: collection}).render();
+      },
+    });
   }
 };
 
