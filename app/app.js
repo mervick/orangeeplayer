@@ -1,6 +1,5 @@
-//your script here
 'use strict';
-var app = new Marionette.Application();
+var App = new Marionette.Application();
 
 var LinkCode = Orangee.XMLModel.extend({
   url: "http://www.orangee.tv/getLinkingCode",
@@ -63,7 +62,6 @@ var Videos = Orangee.RSSCollection.extend({
 });
 
 var BindingView = Orangee.ItemView.extend({
-  el: "#main",
   template: "#bindingTmpl",
   onRender: function() {
     var token = new DeviceToken(code.get('code'));
@@ -74,7 +72,7 @@ var BindingView = Orangee.ItemView.extend({
           var t = token.get('token'); 
           if (t) {
             orangee.storage.set("device_token", t);
-            (new Subscriptions(t)).fetch();
+            Backbone.history.navigate("", {trigger: true});
           } else {
             setTimeout(worker, 3*5000);
           }
@@ -92,12 +90,58 @@ var AlbumItemView = Orangee.ItemView.extend({
 });
 
 var AlbumView = Orangee.CollectionView.extend({
-  el: "#main",
   childView: AlbumItemView,
 });
 
-app.init = function(options){
+var SubalbumItemView = Orangee.ItemView.extend({
+  template: '#subindexTmpl',
+});
+
+var SubalbumView = Orangee.CollectionView.extend({
+  childView: SubalbumItemView,
+});
+
+var PhotoView = Orangee.ItemView.extend({
+  template: '#itemTmpl',
+});
+
+var MyRouter = Backbone.Marionette.AppRouter.extend({
+  routes: {
+    "": "index",
+    "binding": "binding",
+    "subalbum/:id": "subalbum",
+  },
+  index: function(){
+     var device_token = orangee.storage.get("device_token");
+     (new Subscriptions(device_token)).fetch({
+      success: function(collection) {
+        App.content.show(new AlbumView({collection: collection}));
+      },
+    });
+  },
+  binding: function() {
+    (new LinkCode()).fetch({
+      success: function(model) {
+        App.content.show(new BindingView({model: code}));
+      },
+    });
+  },
+  subalbum: function(id) {
+    (new Videos(url)).fetch({
+      success: function(collection) {
+        App.content.show(new AlbumView({collection: collection}));
+      },
+    });
+  },
+});
+
+App.addRegions({
+  content: "#main",
+});
+
+App.init = function(options){
   orangee.debug_enabled = true;
+  new MyRouter();
   Backbone.history.start();
 
   /*
@@ -109,17 +153,9 @@ app.init = function(options){
   var device_token = orangee.storage.get("device_token");
   orangee.debug(device_token);
   if (!device_token) {
-    (new LinkCode()).fetch({
-      success: function(model) {
-        new BindingView({model: code}).render();
-      },
-    });
+    Backbone.history.navigate("binding", {trigger: true});
   } else {
-    (new Subscriptions(device_token)).fetch({
-      success: function(collection) {
-        new AlbumView({collection: collection}).render();
-      },
-    });
+    Backbone.history.navigate("", {trigger: true});
   }
 };
 
