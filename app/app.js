@@ -64,7 +64,7 @@ var Videos = Orangee.RSSCollection.extend({
 var BindingView = Orangee.ItemView.extend({
   template: "#bindingTmpl",
   onRender: function() {
-    var token = new DeviceToken(code.get('code'));
+    var token = new DeviceToken(this.model.get('code'));
     (function worker() {
       orangee.log("try to get device token ...");
       token.fetch({
@@ -122,7 +122,7 @@ var MyRouter = Backbone.Marionette.AppRouter.extend({
   binding: function() {
     (new LinkCode()).fetch({
       success: function(model) {
-        App.content.show(new BindingView({model: code}));
+        App.content.show(new BindingView({model: model}));
       },
     });
   },
