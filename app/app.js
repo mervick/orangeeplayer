@@ -46,6 +46,7 @@ var Subscriptions = Orangee.OPMLCollection.extend({
   model: Subscription,
   initialize: function(device_token) {
     this.device_token = device_token;
+    Orangee.OPMLCollection.prototype.initialize.apply(this);
   },
   url: function() {
     return "http://api.orangee.tv/getSubscription?token=" + this.device_token;
@@ -55,6 +56,7 @@ var Subscriptions = Orangee.OPMLCollection.extend({
 var Videos = Orangee.RSSCollection.extend({
   initialize: function(url) {
     this.url = url;
+    Orangee.OPMLCollection.prototype.initialize.apply(this);
   },
   url: function() {
     return "http://proxy.orangee.tv/proxy?url=" + escape(this.url);
@@ -85,11 +87,11 @@ var BindingView = Orangee.ItemView.extend({
   },
 });
 
-var AlbumItemView = Orangee.ItemView.extend({
+var AlbumItemView = Orangee.ScrollItemView.extend({
   template: '#indexTmpl',
 });
 
-var AlbumView = Orangee.CollectionView.extend({
+var AlbumView = Orangee.ScrollView.extend({
   childView: AlbumItemView,
 });
 

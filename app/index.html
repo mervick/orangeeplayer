@@ -19,27 +19,27 @@
       <h3>http://orangee.tv</h3>
     </div>
 
-    <div id="main"></div>
+    <ul id="main"></ul>
     <div id="loading"></div>
   </div>
 
   <script type="text/html" id="indexTmpl">
-    <div class="item drop-shadow round">
+    <li class="item drop-shadow round">
       <div class="item-image">
         <a href="#subalbum/<%= cid %>"><img src="<%= _img %>" alt="<%= _title %>" /></a>
       </div>
-    </div>
+    </li>
   </script>
 
   <script type="text/html" id="subindexTmpl">
-    <div class="item  drop-shadow round">
+    <li class="item  drop-shadow round">
       <div class="item-image subalbum">
         <a href="#subalbum/<%= subalbum %>/<%= pid %>"><img src="<%= image %>" alt="<%= title %>" alt="No images in this folder"/></a> 
       </div>
       <div class="item-artist"><%= artist %></div>
       <div class="item-title"><%= title %></div>
       <div class="item-price"><%= price %></div>
-    </div>
+    </li>
   </script>
 
   <script type="text/html" id="itemTmpl">
