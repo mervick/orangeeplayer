@@ -5,3 +5,8 @@ section#binding {
 ul {
   list-style-type: none;
 }
+
+li.active {
+  box-shadow: 1px 2px 15px orange;
+  border: 3px solid orange;
+}

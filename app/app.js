@@ -53,7 +53,11 @@ var Subscriptions = Orangee.OPMLCollection.extend({
   },
 });
 
+var Video = Orangee.Model.extend({
+});
+
 var Videos = Orangee.RSSCollection.extend({
+  model: Video,
   initialize: function(url) {
     this.link = url;
     Orangee.OPMLCollection.prototype.initialize.apply(this);
@@ -95,11 +99,11 @@ var AlbumView = Orangee.ScrollView.extend({
   childView: AlbumItemView,
 });
 
-var SubalbumItemView = Orangee.ItemView.extend({
+var SubalbumItemView = Orangee.ScrollItemView.extend({
   template: '#subindexTmpl',
 });
 
-var SubalbumView = Orangee.CollectionView.extend({
+var SubalbumView = Orangee.ScrollView.extend({
   childView: SubalbumItemView,
 });
 
