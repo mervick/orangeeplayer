@@ -2291,7 +2291,6 @@ Orangee.XMLCollection = Orangee.Collection.extend({
   },
   parse: function(xml) {
     var json = orangee.xml2json(xml);
-    console.log(json);
     return json.rss.channel.item;
   },
 });

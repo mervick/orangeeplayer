@@ -111,6 +111,16 @@ var PhotoView = Orangee.ItemView.extend({
   template: '#itemTmpl',
 });
 
+var HeaderView = Orangee.ItemView.extend({
+  template: '#headerTmpl',
+  keyEvents: {
+    'back': 'onKeyBack',
+  },
+  onKeyBack: function() {
+    Backbone.history.history.back();
+  }
+});
+
 var MyRouter = Backbone.Marionette.AppRouter.extend({
   routes: {
     "": "index",
@@ -144,6 +154,7 @@ var MyRouter = Backbone.Marionette.AppRouter.extend({
 });
 
 App.addRegions({
+  header: "#header",
   content: "#main",
 });
 
@@ -157,6 +168,7 @@ App.init = function(options){
   $('#loading').ajaxStart(function(){ $(this).fadeIn(); });
   $('#loading').ajaxComplete(function(){ $(this).fadeOut(); });
   */
+  App.header.show(new HeaderView());
 
   var device_token = orangee.storage.get("device_token");
   orangee.debug(device_token);
