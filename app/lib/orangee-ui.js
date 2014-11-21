@@ -2257,7 +2257,7 @@ Orangee.XMLModel = Orangee.Model.extend({
     return Backbone.Model.prototype.fetch.call(this, options);
   },
   parse: function(xml) {
-    return Orangee.xml2json(xml);
+    return orangee.xml2json(xml);
   },
 });
 
@@ -2290,14 +2290,16 @@ Orangee.XMLCollection = Orangee.Collection.extend({
     return Backbone.Collection.prototype.fetch.call(this, options);
   },
   parse: function(xml) {
-    //var response = {data: json.opml.body.outline.map(function(x) {return {name: x._title, standardPic: x._img, url: x._url}})}
-    return Orangee.xml2json(xml);
+    var json = orangee.xml2json(xml);
+    console.log(json);
+    return json.rss.channel.item;
   },
 });
 
 Orangee.OPMLCollection = Orangee.XMLCollection.extend({
   parse:function(xml) {
     //orangee.debug(xml);
+    //var response = {data: json.opml.body.outline.map(function(x) {return {name: x._title, standardPic: x._img, url: x._url}})}
     var json = orangee.xml2json(xml);
     return json.opml.body.outline;
   },
@@ -2368,7 +2370,6 @@ Orangee.ScrollItemView = Orangee.ItemView.extend({
   },
   onMouseOver: function() {
     orangee.debug('Orangee.ScrollItemView#onMouseOver');
-    orangee.debug(this.model);
     this.model.select();
   },
   onSelect: function(model) {

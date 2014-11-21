@@ -34,12 +34,12 @@ var DeviceToken = Orangee.XMLModel.extend({
 });
 
 var Subscription = Orangee.Model.extend({
-  toJSON: function() {
+  /*toJSON: function() {
     //http://stackoverflow.com/questions/15298449/cannot-get-the-cid-of-the-model-while-rendering-a-backbone-collection-over-a-tem
     var json = Backbone.Model.prototype.toJSON.apply(this, arguments);
     json.cid = this.cid;
     return json;
-  },
+  },*/
 });
 
 var Subscriptions = Orangee.OPMLCollection.extend({
@@ -55,11 +55,11 @@ var Subscriptions = Orangee.OPMLCollection.extend({
 
 var Videos = Orangee.RSSCollection.extend({
   initialize: function(url) {
-    this.url = url;
+    this.link = url;
     Orangee.OPMLCollection.prototype.initialize.apply(this);
   },
   url: function() {
-    return "http://proxy.orangee.tv/proxy?url=" + escape(this.url);
+    return "http://proxy.orangee.tv/proxy?url=" + this.link;
   },
 });
 
@@ -111,7 +111,7 @@ var MyRouter = Backbone.Marionette.AppRouter.extend({
   routes: {
     "": "index",
     "binding": "binding",
-    "subalbum/:id": "subalbum",
+    "subalbum/:url": "subalbum",
   },
   index: function(){
      var device_token = orangee.storage.get("device_token");
@@ -128,10 +128,12 @@ var MyRouter = Backbone.Marionette.AppRouter.extend({
       },
     });
   },
-  subalbum: function(id) {
+  subalbum: function(url) {
+    orangee.debug(url);
     (new Videos(url)).fetch({
       success: function(collection) {
-        App.content.show(new AlbumView({collection: collection}));
+        orangee.log(collection);
+        App.content.show(new SubalbumView({collection: collection}));
       },
     });
   },
