@@ -1,3 +1,7 @@
+body {
+  overflow: hidden;
+}
+
 section#binding {
   margin: 5%;
 }

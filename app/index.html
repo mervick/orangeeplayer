@@ -75,11 +75,12 @@
   <script type="text/javascript" src="lib/orangee.js"></script>
   <script type="text/javascript" src="lib/orangee-ui.js"></script>
   <script type="text/javascript" src="app.js"></script>
+  <script type="text/javascript" src="plugin.js"></script>
   <script>
     //wrap initialization code into this special function only if you want to use youtube
     function onYouTubeIframeAPIReady() { 
       $(function () {
-        orangee.init(App.init);
+        orangee.init(app.init);
       });
     }
   </script>

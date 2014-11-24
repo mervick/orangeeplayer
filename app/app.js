@@ -1,5 +1,5 @@
 'use strict';
-var App = new Marionette.Application();
+var app = new Marionette.Application();
 
 var LinkCode = Orangee.XMLModel.extend({
   url: "http://www.orangee.tv/getLinkingCode",
@@ -95,7 +95,8 @@ var AlbumItemView = Orangee.ScrollItemView.extend({
   template: '#indexTmpl',
 });
 
-var AlbumView = Orangee.ScrollView.extend({
+var AlbumView = Orangee.GridView.extend({
+  numberOfColumns: 5,
   childView: AlbumItemView,
 });
 
@@ -103,7 +104,8 @@ var SubalbumItemView = Orangee.ScrollItemView.extend({
   template: '#subindexTmpl',
 });
 
-var SubalbumView = Orangee.ScrollView.extend({
+var SubalbumView = Orangee.GridView.extend({
+  numberOfColumns: 5,
   childView: SubalbumItemView,
 });
 
@@ -131,14 +133,14 @@ var MyRouter = Backbone.Marionette.AppRouter.extend({
      var device_token = orangee.storage.get("device_token");
      (new Subscriptions(device_token)).fetch({
       success: function(collection) {
-        App.content.show(new AlbumView({collection: collection}));
+        app.content.show(new AlbumView({collection: collection}));
       },
     });
   },
   binding: function() {
     (new LinkCode()).fetch({
       success: function(model) {
-        App.content.show(new BindingView({model: model}));
+        app.content.show(new BindingView({model: model}));
       },
     });
   },
@@ -153,12 +155,12 @@ var MyRouter = Backbone.Marionette.AppRouter.extend({
   },
 });
 
-App.addRegions({
+app.addRegions({
   header: "#header",
   content: "#main",
 });
 
-App.init = function(options){
+app.init = function(options){
   orangee.debug_enabled = true;
   new MyRouter();
   Backbone.history.start();
