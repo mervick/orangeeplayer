@@ -149,7 +149,7 @@ var MyRouter = Backbone.Marionette.AppRouter.extend({
     (new Videos(url)).fetch({
       success: function(collection) {
         orangee.log(collection);
-        App.content.show(new SubalbumView({collection: collection}));
+        app.content.show(new SubalbumView({collection: collection}));
       },
     });
   },
@@ -170,7 +170,7 @@ app.init = function(options){
   $('#loading').ajaxStart(function(){ $(this).fadeIn(); });
   $('#loading').ajaxComplete(function(){ $(this).fadeOut(); });
   */
-  App.header.show(new HeaderView());
+  app.header.show(new HeaderView());
 
   var device_token = orangee.storage.get("device_token");
   orangee.debug(device_token);
