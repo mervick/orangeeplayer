@@ -11,11 +11,11 @@
   <link rel="stylesheet" type="text/css" href="shadows.css" />
 </head>
 <body>
-  <div id="container">
-    <div id="header"></div>
+  <div id="header"></div>
 
-    <ul id="main"></ul>
-    <div id="loading"></div>
+  <div class="oge-wrapper">
+    <div class="oge-scroller" id="main">
+    </div>
   </div>
 
   <script type="text/html" id="headerTmpl">
@@ -26,20 +26,16 @@
   </script>
 
   <script type="text/html" id="indexTmpl">
-    <li class="item drop-shadow round">
       <div class="item-image">
         <a href="#subalbum/<%= encodeURIComponent(_url) %>"><img class="img-responsive" src="<%= _img %>" alt="<%= _title %>" /></a>
       </div>
-    </li>
   </script>
 
   <script type="text/html" id="subindexTmpl">
-    <li class="item  drop-shadow round">
       <div class="item-image subalbum">
         <a href="#subalbum/???"><img class="img-responsive" src="<%= thumbnail._url %>" alt="<%= title %>" /></a> 
       </div>
       <div class="item-title"><%= title %></div>
-    </li>
   </script>
 
   <script type="text/html" id="itemTmpl">

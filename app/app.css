@@ -1,14 +1,11 @@
-body {
-  overflow: hidden;
+.oge-wrapper {
+  top: 97px;
 }
 
 section#binding {
   margin: 5%;
 }
 
-ul {
-  list-style-type: none;
-}
 
 li.active {
   box-shadow: 1px 2px 15px orange;

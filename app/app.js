@@ -93,20 +93,32 @@ var BindingView = Orangee.ItemView.extend({
 
 var AlbumItemView = Orangee.ScrollItemView.extend({
   template: '#indexTmpl',
+  className: "item drop-shadow round"
 });
 
 var AlbumView = Orangee.GridView.extend({
   numberOfColumns: 5,
   childView: AlbumItemView,
+  scroll: {
+    click: true,
+    mouseWheel: true,
+    //keyBindings: true,
+  },
 });
 
 var SubalbumItemView = Orangee.ScrollItemView.extend({
   template: '#subindexTmpl',
+  className: "item drop-shadow round"
 });
 
 var SubalbumView = Orangee.GridView.extend({
   numberOfColumns: 5,
   childView: SubalbumItemView,
+  scroll: {
+    click: true,
+    mouseWheel: true,
+    //keyBindings: true,
+  },
 });
 
 var PhotoView = Orangee.ItemView.extend({
