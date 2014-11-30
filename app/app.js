@@ -141,6 +141,15 @@ var VideoView =  Orangee.VideoView.extend({
   playerVars: {
     autoplay: 1,
   },
+  onRender: function() {
+    $("#header").hide();
+    this.oldheight = $(".oge-wrapper").css('top');
+    $(".oge-wrapper").css('top', 0);
+  },
+  onDestroy: function() {
+    $(".oge-wrapper").css('top', this.oldheight);
+    $("#header").show();
+  }
 });
 
 var MyRouter = Backbone.Marionette.AppRouter.extend({
