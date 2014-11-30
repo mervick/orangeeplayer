@@ -2263,10 +2263,10 @@ Orangee.XMLModel = Orangee.Model.extend({
 
 //http://jaketrent.com/post/backbone-inheritance/
 Orangee.Collection = Backbone.PageableCollection.extend({
-  currentPosition: 0,
   initialize: function(models, options) {
     // Applies the mixin:
     Backbone.Select.One.applyTo(this, models, options);
+    this.currentPosition = 0;
   },
   selectPrev: function(offset) {
     this.currentPosition -= (offset || 1);
@@ -2386,7 +2386,10 @@ Orangee.ScrollItemView = Orangee.ItemView.extend({
   },
   onKeyEnter: function() {
     orangee.debug('Orangee.ScrollItemView#onKeyEnter');
-    this.$('a')[0].click();
+    var firstlink = this.$('a')[0];
+    orangee.debug(firstlink);
+    this.onClick();
+    Backbone.history.navigate(firstlink.href.split('#')[1], {trigger: true});
   },
   onMouseOver: function() {
     orangee.debug('Orangee.ScrollItemView#onMouseOver');
