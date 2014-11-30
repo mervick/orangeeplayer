@@ -135,10 +135,19 @@ var HeaderView = Orangee.ItemView.extend({
   }
 });
 
+var VideoView =  Orangee.VideoView.extend({
+  template: '#videoTmpl',
+  divid: 'myvideo',
+  playerVars: {
+    autoplay: 1,
+  },
+});
+
 var MyRouter = Backbone.Marionette.AppRouter.extend({
   routes: {
     "": "index",
     "binding": "binding",
+    "album/:url": "album",
     "subalbum/:url": "subalbum",
   },
   index: function(){
@@ -156,7 +165,7 @@ var MyRouter = Backbone.Marionette.AppRouter.extend({
       },
     });
   },
-  subalbum: function(url) {
+  album: function(url) {
     orangee.debug(url);
     (new Videos(url)).fetch({
       success: function(collection) {
@@ -164,6 +173,11 @@ var MyRouter = Backbone.Marionette.AppRouter.extend({
         app.content.show(new SubalbumView({collection: collection}));
       },
     });
+  },
+  subalbum: function(url) {
+    orangee.debug(url);
+    var collection = new Orangee.Collection([{url: url}]);
+    app.content.show(new VideoView({collection: collection}));
   },
 });
 

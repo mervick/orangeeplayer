@@ -27,13 +27,13 @@
 
   <script type="text/html" id="indexTmpl">
       <div class="item-image">
-        <a href="#subalbum/<%= encodeURIComponent(_url) %>"><img class="img-responsive" src="<%= _img %>" alt="<%= _title %>" /></a>
+        <a href="#album/<%= encodeURIComponent(_url) %>"><img class="img-responsive" src="<%= _img %>" alt="<%= _title %>" /></a>
       </div>
   </script>
 
   <script type="text/html" id="subindexTmpl">
       <div class="item-image subalbum">
-        <a href="#subalbum/???"><img class="img-responsive" src="<%= thumbnail._url %>" alt="<%= title %>" /></a> 
+        <a href="#subalbum/<%= encodeURIComponent(enclosure._url) %>"><img class="img-responsive" src="<%= thumbnail._url %>" alt="<%= title %>" /></a> 
       </div>
       <div class="item-title"><%= title %></div>
   </script>
@@ -59,6 +59,12 @@
       Go to <a target="_blank" href="http://orangee.tv/link">http://orangee.tv/link</a>, log into your account, and enter the following code:</h2>
       <h1 class='text-center'><strong><%= code %></strong></h1>
     </section>
+  </script>
+
+  <!-- An id is required for video tag to use youtube. object is used for youtube -->
+  <script type="text/html" id="videoTmpl">
+    <video id='myvideo'></video>
+    <object classid="clsid:SAMSUNG-INFOLINK-PLAYER" style="display:none"></object>
   </script>
 
   <script type="text/javascript" src="lib/jquery.min.js"></script>
