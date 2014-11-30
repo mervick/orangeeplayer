@@ -1,2 +1,3 @@
 .DS_Store
 roku/source/plugins/*
+app/plugin.js
