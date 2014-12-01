@@ -54,7 +54,10 @@ function NWM_MRSS_GetEpisodes(limit = 0)
 				newItem.title = util.HTMLEntityDecode(ValidStr(item.title.GetText()))
 				newItem.shortDescriptionLine1 = util.HTMLEntityDecode(ValidStr(item.title.GetText()))
 			end if
-				
+
+      ' link (for referer)
+      newItem.url = util.HTMLEntityDecode(ValidStr(xml.channel.link.GetText()))
+	
 			' description
 			tmp = item.GetNamedElements("media:description")
 			if tmp.Count() > 0

@@ -22,6 +22,7 @@ Function showVideoScreen(episode As Object)
   port = CreateObject("roMessagePort")
   screen = CreateObject("roVideoScreen")
   screen.SetMessagePort(port)
+  screen.AddHeader("Referer", episode.url)
   'screen.Show()
 
   print type(TranslateUrl)

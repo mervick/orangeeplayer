@@ -12,6 +12,7 @@ sub ShowEpisodeScreen(contentList, breadLeft, breadRight)
 	content = mrss.GetEpisodes()
 	selectedEpisode = 0
 	screen.SetContentList(content)
+  screen.AddHeader("Referer", content[selectedEpisode].url)
 	screen.Show()
 
 	while true
