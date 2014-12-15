@@ -7,16 +7,23 @@
   <link rel="stylesheet" type="text/css" href="lib/bootstrap.min.css" />
   <link rel="stylesheet" type="text/css" href="lib/orangee-ui.css" />
   <link rel="stylesheet" type="text/css" href="app.css" />
-  <link rel="stylesheet" type="text/css" href="gallery.css" />
+<!--
+<link rel="stylesheet" type="text/css" href="gallery.css" />
+-->
   <link rel="stylesheet" type="text/css" href="shadows.css" />
 </head>
 <body>
-  <div id="header"></div>
+  <section id="content">
+    <header id="header"></header>
 
-  <div class="oge-wrapper">
-    <div class="oge-scroller" id="main">
+    <div class="oge-wrapper container-fluid">
+      <div class="oge-scroller row" id="main">
+      </div>
     </div>
-  </div>
+  </section>
+
+  <section id="player" style="display:none">
+  </section>
 
   <script type="text/html" id="headerTmpl">
     <h1>

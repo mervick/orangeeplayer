@@ -3,8 +3,6 @@ body {
   font-family: "Lucida Grande", Lucida, Helvetica, Arial, sans-serif;
   background: #FFF;
   color: #333;
-  margin: 0px;
-  padding: 0px;
 }
 
 #header {
@@ -62,8 +60,8 @@ img {
 	margin:10px;
 	padding:2px;
 	text-align:center;
-	width:250px;
-  height:250px;
+	/*width:250px;
+  height:250px;*/
 	}
 	
 .item-title {

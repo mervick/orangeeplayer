@@ -93,11 +93,11 @@ var BindingView = Orangee.ItemView.extend({
 
 var AlbumItemView = Orangee.ScrollItemView.extend({
   template: '#indexTmpl',
-  className: "item drop-shadow round"
+  className: "drop-shadow round col-xs-6 col-sm-3 col-md-2"
 });
 
 var AlbumView = Orangee.GridView.extend({
-  numberOfColumns: 5,
+  numberOfColumns: 6,
   childView: AlbumItemView,
   scroll: {
     click: true,
@@ -108,11 +108,11 @@ var AlbumView = Orangee.GridView.extend({
 
 var SubalbumItemView = Orangee.ScrollItemView.extend({
   template: '#subindexTmpl',
-  className: "item drop-shadow round"
+  className: "drop-shadow round col-xs-6 col-sm-3 col-md-2"
 });
 
 var SubalbumView = Orangee.GridView.extend({
-  numberOfColumns: 5,
+  numberOfColumns: 6,
   childView: SubalbumItemView,
   scroll: {
     click: true,
