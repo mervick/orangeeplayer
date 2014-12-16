@@ -2401,11 +2401,11 @@ Orangee.ScrollItemView = Orangee.ItemView.extend({
   onSelect: function(model) {
     orangee.debug('Orangee.ScrollItemView#onSelect');
     console.log(this);
-    this.$el.addClass('active');
+    this.$(':first-child').addClass('active');
   },
   onDeselect: function(model) {
     orangee.debug('Orangee.ScrollItemView#onDeselect');
-    this.$el.removeClass('active');
+    this.$(':first-child').removeClass('active');
   },
 });
 

@@ -1,12 +1,27 @@
+.navbar-brand {
+  color: orange;
+}
+
 .oge-wrapper {
-  top: 97px;
+  top: 50px;/*header height*/
+  bottom: 0px;/*footer height*/
+}
+
+.oge-scroller {
+  background-color: #333333;
 }
 
 section#binding {
   margin: 5%;
 }
 
-li.active {
-  box-shadow: 1px 2px 15px orange;
-  border: 3px solid orange;
+.media.active {
+  /*box-shadow: 1px 2px 15px orange;*/
+  border: 5px solid orange;
+}
+
+.media {
+  border: 5px solid transparent;
+  margin-top: 15px;
+  margin-bottom: 15px;
 }
