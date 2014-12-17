@@ -97,12 +97,16 @@ var AlbumItemView = Orangee.ScrollItemView.extend({
 });
 
 var AlbumView = Orangee.GridView.extend({
-  numberOfColumns: 6,
   childView: AlbumItemView,
   scroll: {
     click: true,
     mouseWheel: true,
     //keyBindings: true,
+  },
+  onShow: function() {
+    this.numberOfColumns = Math.floor(this.$el.width()/this.$('li').width());
+    orangee.debug("numberOfColumns=" + this.numberOfColumns);
+    return Orangee.GridView.prototype.onShow.call(this); 
   },
 });
 
@@ -112,12 +116,15 @@ var SubalbumItemView = Orangee.ScrollItemView.extend({
 });
 
 var SubalbumView = Orangee.GridView.extend({
-  numberOfColumns: 6,
   childView: SubalbumItemView,
   scroll: {
     click: true,
     mouseWheel: true,
     //keyBindings: true,
+  },
+  onShow: function() {
+    this.numberOfColumns = Math.floor(this.$el.width()/this.$('li').width());
+    return Orangee.GridView.prototype.onShow.call(this); 
   },
 });
 
