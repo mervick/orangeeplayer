@@ -93,43 +93,26 @@ var BindingView = Orangee.ItemView.extend({
 
 var AlbumItemView = Orangee.ScrollItemView.extend({
   template: '#indexTmpl',
-  className: "drop-shadow round col-xs-6 col-sm-3 col-md-2"
+  className: "col-xs-6 col-sm-3 col-md-2"
 });
 
 var AlbumView = Orangee.GridView.extend({
   childView: AlbumItemView,
-  scroll: {
-    click: true,
-    mouseWheel: true,
-    //keyBindings: true,
-  },
   onShow: function() {
     this.numberOfColumns = Math.floor(this.$el.width()/this.$('li').width());
     orangee.debug("numberOfColumns=" + this.numberOfColumns);
-    return Orangee.GridView.prototype.onShow.call(this); 
+    orangee.debug(this.children);
+    return Orangee.GridView.prototype.onShow.apply(this);
   },
 });
 
 var SubalbumItemView = Orangee.ScrollItemView.extend({
   template: '#subindexTmpl',
-  className: "drop-shadow round col-xs-6 col-sm-3 col-md-2"
+  className: "col-xs-6 col-sm-3 col-md-2"
 });
 
-var SubalbumView = Orangee.GridView.extend({
+var SubalbumView = AlbumView.extend({
   childView: SubalbumItemView,
-  scroll: {
-    click: true,
-    mouseWheel: true,
-    //keyBindings: true,
-  },
-  onShow: function() {
-    this.numberOfColumns = Math.floor(this.$el.width()/this.$('li').width());
-    return Orangee.GridView.prototype.onShow.call(this); 
-  },
-});
-
-var PhotoView = Orangee.ItemView.extend({
-  template: '#itemTmpl',
 });
 
 var HeaderView = Orangee.ItemView.extend({

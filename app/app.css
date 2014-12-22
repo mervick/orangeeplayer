@@ -1,14 +1,14 @@
-.navbar-brand {
+.navbar-brand span {
   color: orange;
 }
 
 .oge-wrapper {
   top: 50px;/*header height*/
-  bottom: 0px;/*footer height*/
+  bottom: 0px; /*footer height*/
 }
 
 .oge-scroller {
-  background-color: #333333;
+  background-color: #333333;/* near black*/
 }
 
 section#binding {
@@ -21,7 +21,11 @@ section#binding {
 }
 
 .media {
-  border: 5px solid transparent;
+  border: 5px solid transparent;/*keep space*/
   margin-top: 15px;
   margin-bottom: 15px;
+}
+
+.media img {
+  background-color: white;
 }
