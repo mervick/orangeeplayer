@@ -9,39 +9,44 @@
   <link rel="stylesheet" type="text/css" href="app.css" />
 </head>
 <body>
-  <section id="content">
+  <section>
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container-fluid">
         <div class="navbar-header">
-          <div id="header" class="navbar-brand"></div>
+          <div class="navbar-brand" id="header"></div>
         </div>
       </div>
     </nav>
 
-    <div class="oge-wrapper container-fluid">
-      <div class="oge-scroller row" id="main">
-      </div>
+    <div class="oge-wrapper container-fluid" id="content">
     </div>
-  </section>
-
-  <section id="player" style="display:none">
   </section>
 
   <script type="text/html" id="headerTmpl">
     <span>Orangee Cloud Player</span>
   </script>
 
+  <script type="text/html" id="gridTmpl">
+    <div class="oge-scroller row">
+      <ul class="list-unstyled"></ul>
+    </div>
+  </script>
+
   <script type="text/html" id="indexTmpl">
+    <li class="col-xs-6 col-sm-3 col-md-2">
       <div class="media" id="<%= cid %>">
         <a href="#album/<%= encodeURIComponent(_url) %>"><img class="img-responsive" src="<%= _img %>" alt="<%= _title %>" /></a>
       </div>
+    </li>
   </script>
 
   <script type="text/html" id="subindexTmpl">
+    <li class="col-xs-6 col-sm-3 col-md-2">
       <div class="media subalbum" id="<%= cid %>">
         <a href="#subalbum/<%= encodeURIComponent(enclosure._url) %>"><img class="img-responsive" src="<%= thumbnail._url %>" alt="<%= title %>" /></a> 
       </div>
       <div class="item-title"><%= title %></div>
+    </li>
   </script>
 
   <script type="text/html" id="bindingTmpl">

@@ -2226,28 +2226,6 @@ if ( typeof module != 'undefined' && module.exports ) {
 
 'use strict';
 
-orangee.scroller = IScroll;
-orangee.sidemenu = Snap;
-orangee.spinner = Spinner;
-
-Marionette.Behaviors.behaviorsLookup = function() {
-  return window;
-}
-
-HotKeysBehavior = Marionette.Behavior.extend({
-  onRender: function() {
-    if (this.view.keyEvents) {
-      HotKeys.bind(this.view.keyEvents, this.view, this.view.cid);
-    }
-  },
-  onDestroy: function() {
-    if (this.view.keyEvents) {
-      orangee.debug("HotKeysBehavior#onDestroy");
-      HotKeys.unbind(this.view.keyEvents, this.view, this.view.cid);
-    }
-  },
-});
-
 Orangee.Model = Backbone.Model.extend({
   initialize: function() {
     // Applies the mixin:
@@ -2326,9 +2304,67 @@ Orangee.OPMLCollection = Orangee.XMLCollection.extend({
 
 Orangee.RSSCollection = Orangee.XMLCollection.extend();
 
+'use strict';
+
+orangee.scroller = IScroll;
+orangee.sidemenu = Snap;
+orangee.spinner = Spinner;
+
+Marionette.Behaviors.behaviorsLookup = function() {
+  return window;
+}
+
+OrangeeHotKeysBehavior = Marionette.Behavior.extend({
+  onRender: function() {
+    if (this.view.keyEvents) {
+      HotKeys.bind(this.view.keyEvents, this.view, this.view.cid);
+    }
+  },
+  onDestroy: function() {
+    if (this.view.keyEvents) {
+      orangee.debug("OrangeeHotKeysBehavior#onDestroy");
+      HotKeys.unbind(this.view.keyEvents, this.view, this.view.cid);
+    }
+  },
+});
+
+OrangeeScrollerBehavior = Marionette.Behavior.extend({
+  onShow: function() {
+    orangee.debug("OrangeeScrollerBehavior#onShow");
+    orangee.debug(this.view.getOption('scroll'));
+    //orangee.debug(this.el.parentNode.parentNode);
+    orangee.debug(this.el);
+    this.view.scroller = new orangee.scroller(this.el.parentNode, this.view.getOption('scroll'));
+    this.view.collection.selectModel(this.view.collection.at(this.view.collection.currentPosition));
+    //orangee.debug(this.view);
+  },
+  onDestroy: function() {
+    orangee.debug("OrangeeScrollerBehavior#onDestroy");
+    if (this.view.scroller) {
+      this.view.scroller.destroy();
+      this.view.scroller = null;
+    }
+  },
+});
+
+OrangeeNoExtraDivBehavior = Marionette.Behavior.extend({
+  //http://stackoverflow.com/questions/14656068/turning-off-div-wrap-for-backbone-marionette-itemview
+  onRender: function () {
+    orangee.debug("OrangeeNoExtraDivBehavior#onRender");
+    // Get rid of that pesky wrapping-div.
+    // Assumes 1 child element present in template.
+    this.$el = this.$el.children();
+    // Unwrap the element to prevent infinitely 
+    // nesting elements during re-render.
+    this.$el.unwrap();
+    this.view.setElement(this.$el);
+  },
+});
+
 Orangee.ItemView = Marionette.ItemView.extend({
   behaviors: {
-    HotKeysBehavior: {}
+    OrangeeHotKeysBehavior: {},
+    OrangeeNoExtraDivBehavior: {},
   },
   initialize: function(options) {
     orangee.debug("Orangee.ItemView#initialize");
@@ -2337,9 +2373,10 @@ Orangee.ItemView = Marionette.ItemView.extend({
   },
 });
 
-Orangee.CollectionView = Marionette.CollectionView.extend({
+Orangee.CompositeView = Marionette.CompositeView.extend({
   behaviors: {
-    HotKeysBehavior: {}
+    OrangeeHotKeysBehavior: {},
+    OrangeeNoExtraDivBehavior: {},
   },
   childViewOptions: function() {
     return {collectionView: this};
@@ -2388,7 +2425,6 @@ Orangee.VideoView = Orangee.ItemView.extend({
 });
 
 Orangee.ScrollItemView = Orangee.ItemView.extend({
-  tagName: "li",
   events: {
     'click': 'onClick',
     'mouseover': 'onMouseOver',
@@ -2410,41 +2446,30 @@ Orangee.ScrollItemView = Orangee.ItemView.extend({
     Backbone.history.navigate(firstlink.href.split('#')[1], {trigger: true});
   },
   onMouseOver: function() {
-    orangee.debug('Orangee.ScrollItemView#onMouseOver');
+    //orangee.debug('Orangee.ScrollItemView#onMouseOver');
     this.model.collection.selectModel(this.model);
   },
   onSelect: function(model) {
-    orangee.debug('Orangee.ScrollItemView#onSelect');
+    //orangee.debug('Orangee.ScrollItemView#onSelect');
     this.$(':first-child').addClass('active');
   },
   onDeselect: function(model) {
-    orangee.debug('Orangee.ScrollItemView#onDeselect');
+    //orangee.debug('Orangee.ScrollItemView#onDeselect');
     this.$(':first-child').removeClass('active');
   },
 });
 
-Orangee.ScrollView = Orangee.CollectionView.extend({
-  tagName: "ul",
-  className: "list-unstyled",
+Orangee.ScrollView = Orangee.CompositeView.extend({
+  behaviors: {
+    OrangeeHotKeysBehavior: {},
+    OrangeeNoExtraDivBehavior: {},
+    OrangeeScrollerBehavior: {},
+  },
+  childViewContainer: "ul",
   scroll: {
     click: true,
     mouseWheel: true,
     //keyBindings: true,
-  },
-  onShow: function() {
-    orangee.debug("Orangee.ScrollView#onShow");
-    orangee.debug(this.getOption('scroll'));
-    //orangee.debug(this.el.parentNode.parentNode);
-    this.scroller = new orangee.scroller(this.el.parentNode.parentNode, this.getOption('scroll'));
-    this.collection.selectModel(this.collection.at(this.collection.currentPosition));
-    orangee.debug(this.children);
-  },
-  onDestroy: function() {
-    orangee.debug("Orangee.ScrollView#onDestroy");
-    if (this.scroller) {
-      this.scroller.destroy();
-      this.scroller = null;
-    }
   },
   keyEvents: {
     'enter': 'onKeyEnter',

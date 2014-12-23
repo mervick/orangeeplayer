@@ -29,17 +29,11 @@ var DeviceToken = Orangee.XMLModel.extend({
       return {token: device_token};
     } else {
       return {};
-    } 
+    }
   }
 });
 
 var Subscription = Orangee.Model.extend({
-  /*toJSON: function() {
-    //http://stackoverflow.com/questions/15298449/cannot-get-the-cid-of-the-model-while-rendering-a-backbone-collection-over-a-tem
-    var json = Backbone.Model.prototype.toJSON.apply(this, arguments);
-    json.cid = this.cid;
-    return json;
-  },*/
 });
 
 var Subscriptions = Orangee.OPMLCollection.extend({
@@ -93,22 +87,20 @@ var BindingView = Orangee.ItemView.extend({
 
 var AlbumItemView = Orangee.ScrollItemView.extend({
   template: '#indexTmpl',
-  className: "col-xs-6 col-sm-3 col-md-2"
 });
 
 var AlbumView = Orangee.GridView.extend({
   childView: AlbumItemView,
+  template: '#gridTmpl',
   onShow: function() {
     this.numberOfColumns = Math.floor(this.$el.width()/this.$('li').width());
     orangee.debug("numberOfColumns=" + this.numberOfColumns);
-    orangee.debug(this.children);
-    return Orangee.GridView.prototype.onShow.apply(this);
+    //orangee.debug(this.children);
   },
 });
 
 var SubalbumItemView = Orangee.ScrollItemView.extend({
   template: '#subindexTmpl',
-  className: "col-xs-6 col-sm-3 col-md-2"
 });
 
 var SubalbumView = AlbumView.extend({
@@ -132,13 +124,15 @@ var VideoView =  Orangee.VideoView.extend({
     autoplay: 1,
   },
   onRender: function() {
-    $("#header").hide();
+    $(".navbar").hide();
     this.oldheight = $(".oge-wrapper").css('top');
     $(".oge-wrapper").css('top', 0);
+    //return Orangee.VideoView.prototype.onRender.apply(this, arguments);
   },
   onDestroy: function() {
     $(".oge-wrapper").css('top', this.oldheight);
-    $("#header").show();
+    $(".navbar").show();
+    //return Orangee.VideoView.prototype.onDestroy.apply(this, arguments);
   }
 });
 
@@ -182,7 +176,7 @@ var MyRouter = Backbone.Marionette.AppRouter.extend({
 
 app.addRegions({
   header: "#header",
-  content: "#main",
+  content: "#content",
 });
 
 app.init = function(options){
