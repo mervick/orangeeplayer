@@ -9,17 +9,15 @@
   <link rel="stylesheet" type="text/css" href="app.css" />
 </head>
 <body>
-  <section>
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <div class="navbar-brand" id="header"></div>
-        </div>
+  <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <div class="navbar-brand" id="header"></div>
       </div>
-    </nav>
-
-    <div class="oge-wrapper container-fluid" id="content">
     </div>
+  </nav>
+
+  <section id="content">
   </section>
 
   <script type="text/html" id="headerTmpl">
@@ -27,8 +25,10 @@
   </script>
 
   <script type="text/html" id="gridTmpl">
-    <div class="oge-scroller row">
-      <ul class="list-unstyled"></ul>
+    <div class="oge-wrapper container-fluid">
+      <div class="oge-scroller row">
+        <ul class="list-unstyled"></ul>
+      </div>
     </div>
   </script>
 
