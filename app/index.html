@@ -35,7 +35,7 @@
   <script type="text/html" id="indexTmpl">
     <li class="col-xs-6 col-sm-3 col-md-2">
       <div class="media" id="<%= cid %>">
-        <a href="#album/<%= encodeURIComponent(_url) %>"><img class="img-responsive" src="<%= _img %>" alt="<%= _title %>" /></a>
+        <a href="#album/<%= encodeURIComponent(_url) %>"><img class="img-responsive lazy" data-original="<%= _img %>" alt="<%= _title %>" /></a>
       </div>
     </li>
   </script>
@@ -43,9 +43,9 @@
   <script type="text/html" id="subindexTmpl">
     <li class="col-xs-6 col-sm-3 col-md-2">
       <div class="media subalbum" id="<%= cid %>">
-        <a href="#subalbum/<%= encodeURIComponent(enclosure._url) %>"><img class="img-responsive" src="<%= thumbnail._url %>" alt="<%= title %>" /></a> 
+        <a href="#subalbum/<%= encodeURIComponent(enclosure._url) %>"><img class="img-responsive lazy" data-original="<%= thumbnail._url %>" alt="<%= title %>" /></a> 
       </div>
-      <div class="item-title"><%= title %></div>
+      <!--<div class="item-title"><%= title %></div>-->
     </li>
   </script>
 
@@ -64,6 +64,7 @@
   </script>
 
   <script type="text/javascript" src="lib/jquery.min.js"></script>
+  <script type="text/javascript" src="lib/jquery.lazyload.min.js"></script>
   <script type="text/javascript" src="lib/underscore-min.js"></script>
   <script type="text/javascript" src="lib/backbone-min.js"></script>
   <script type="text/javascript" src="lib/backbone.marionette.min.js"></script>

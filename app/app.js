@@ -145,6 +145,7 @@ var MyRouter = Backbone.Marionette.AppRouter.extend({
   },
   index: function(){
      var device_token = orangee.storage.get("device_token");
+     app.content.show(new Orangee.SpinnerView());
      (new Subscriptions(device_token)).fetch({
       success: function(collection) {
         app.content.show(new AlbumView({collection: collection}));
@@ -160,6 +161,7 @@ var MyRouter = Backbone.Marionette.AppRouter.extend({
   },
   album: function(url) {
     orangee.debug(url);
+    app.content.show(new Orangee.SpinnerView());
     (new Videos(url)).fetch({
       success: function(collection) {
         orangee.log(collection);
