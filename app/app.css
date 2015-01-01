@@ -1,3 +1,7 @@
+body {
+  background-color: black;
+}
+
 .navbar-brand span {
   color: orange;
 }
@@ -5,9 +9,6 @@
 .oge-wrapper {
   top: 50px;/*header height*/
   bottom: 0px; /*footer height*/
-}
-
-.oge-scroller {
   background-color: #333333;/* near black*/
 }
 
@@ -15,7 +16,7 @@ section#binding {
   margin: 5%;
 }
 
-.media.active {
+li.active .media {
   /*box-shadow: 1px 2px 15px orange;*/
   border: 5px solid orange;
 }
@@ -28,4 +29,5 @@ section#binding {
 
 .media img {
   background-color: white;
+  height: 155px;/*images come with differnt sizes*/
 }

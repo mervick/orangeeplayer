@@ -2018,213 +2018,17 @@ if ( typeof module != 'undefined' && module.exports ) {
 })(window, document, Math);
 //fgnass.github.com/spin.js#v2.0.1
 !function(a,b){"object"==typeof exports?module.exports=b():"function"==typeof define&&define.amd?define(b):a.Spinner=b()}(this,function(){"use strict";function a(a,b){var c,d=document.createElement(a||"div");for(c in b)d[c]=b[c];return d}function b(a){for(var b=1,c=arguments.length;c>b;b++)a.appendChild(arguments[b]);return a}function c(a,b,c,d){var e=["opacity",b,~~(100*a),c,d].join("-"),f=.01+c/d*100,g=Math.max(1-(1-a)/b*(100-f),a),h=j.substring(0,j.indexOf("Animation")).toLowerCase(),i=h&&"-"+h+"-"||"";return l[e]||(m.insertRule("@"+i+"keyframes "+e+"{0%{opacity:"+g+"}"+f+"%{opacity:"+a+"}"+(f+.01)+"%{opacity:1}"+(f+b)%100+"%{opacity:"+a+"}100%{opacity:"+g+"}}",m.cssRules.length),l[e]=1),e}function d(a,b){var c,d,e=a.style;for(b=b.charAt(0).toUpperCase()+b.slice(1),d=0;d<k.length;d++)if(c=k[d]+b,void 0!==e[c])return c;return void 0!==e[b]?b:void 0}function e(a,b){for(var c in b)a.style[d(a,c)||c]=b[c];return a}function f(a){for(var b=1;b<arguments.length;b++){var c=arguments[b];for(var d in c)void 0===a[d]&&(a[d]=c[d])}return a}function g(a,b){return"string"==typeof a?a:a[b%a.length]}function h(a){this.opts=f(a||{},h.defaults,n)}function i(){function c(b,c){return a("<"+b+' xmlns="urn:schemas-microsoft.com:vml" class="spin-vml">',c)}m.addRule(".spin-vml","behavior:url(#default#VML)"),h.prototype.lines=function(a,d){function f(){return e(c("group",{coordsize:k+" "+k,coordorigin:-j+" "+-j}),{width:k,height:k})}function h(a,h,i){b(m,b(e(f(),{rotation:360/d.lines*a+"deg",left:~~h}),b(e(c("roundrect",{arcsize:d.corners}),{width:j,height:d.width,left:d.radius,top:-d.width>>1,filter:i}),c("fill",{color:g(d.color,a),opacity:d.opacity}),c("stroke",{opacity:0}))))}var i,j=d.length+d.width,k=2*j,l=2*-(d.width+d.length)+"px",m=e(f(),{position:"absolute",top:l,left:l});if(d.shadow)for(i=1;i<=d.lines;i++)h(i,-2,"progid:DXImageTransform.Microsoft.Blur(pixelradius=2,makeshadow=1,shadowopacity=.3)");for(i=1;i<=d.lines;i++)h(i);return b(a,m)},h.prototype.opacity=function(a,b,c,d){var e=a.firstChild;d=d.shadow&&d.lines||0,e&&b+d<e.childNodes.length&&(e=e.childNodes[b+d],e=e&&e.firstChild,e=e&&e.firstChild,e&&(e.opacity=c))}}var j,k=["webkit","Moz","ms","O"],l={},m=function(){var c=a("style",{type:"text/css"});return b(document.getElementsByTagName("head")[0],c),c.sheet||c.styleSheet}(),n={lines:12,length:7,width:5,radius:10,rotate:0,corners:1,color:"#000",direction:1,speed:1,trail:100,opacity:.25,fps:20,zIndex:2e9,className:"spinner",top:"50%",left:"50%",position:"absolute"};h.defaults={},f(h.prototype,{spin:function(b){this.stop();{var c=this,d=c.opts,f=c.el=e(a(0,{className:d.className}),{position:d.position,width:0,zIndex:d.zIndex});d.radius+d.length+d.width}if(e(f,{left:d.left,top:d.top}),b&&b.insertBefore(f,b.firstChild||null),f.setAttribute("role","progressbar"),c.lines(f,c.opts),!j){var g,h=0,i=(d.lines-1)*(1-d.direction)/2,k=d.fps,l=k/d.speed,m=(1-d.opacity)/(l*d.trail/100),n=l/d.lines;!function o(){h++;for(var a=0;a<d.lines;a++)g=Math.max(1-(h+(d.lines-a)*n)%l*m,d.opacity),c.opacity(f,a*d.direction+i,g,d);c.timeout=c.el&&setTimeout(o,~~(1e3/k))}()}return c},stop:function(){var a=this.el;return a&&(clearTimeout(this.timeout),a.parentNode&&a.parentNode.removeChild(a),this.el=void 0),this},lines:function(d,f){function h(b,c){return e(a(),{position:"absolute",width:f.length+f.width+"px",height:f.width+"px",background:b,boxShadow:c,transformOrigin:"left",transform:"rotate("+~~(360/f.lines*k+f.rotate)+"deg) translate("+f.radius+"px,0)",borderRadius:(f.corners*f.width>>1)+"px"})}for(var i,k=0,l=(f.lines-1)*(1-f.direction)/2;k<f.lines;k++)i=e(a(),{position:"absolute",top:1+~(f.width/2)+"px",transform:f.hwaccel?"translate3d(0,0,0)":"",opacity:f.opacity,animation:j&&c(f.opacity,f.trail,l+k*f.direction,f.lines)+" "+1/f.speed+"s linear infinite"}),f.shadow&&b(i,e(h("#000","0 0 4px #000"),{top:"2px"})),b(d,b(i,h(g(f.color,k),"0 0 1px rgba(0,0,0,.1)")));return d},opacity:function(a,b,c){b<a.childNodes.length&&(a.childNodes[b].style.opacity=c)}});var o=e(a("group"),{behavior:"url(#default#VML)"});return!d(o,"transform")&&o.adj?i():j=d(o,"animation"),h});
-/* ========================================================================
- * Bootstrap: carousel.js v3.1.1
- * http://getbootstrap.com/javascript/#carousel
- * ========================================================================
- * Copyright 2011-2014 Twitter, Inc.
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- * ======================================================================== */
-
-
-+function ($) {
-  'use strict';
-
-  // CAROUSEL CLASS DEFINITION
-  // =========================
-
-  var Carousel = function (element, options) {
-    this.$element    = $(element)
-    this.$indicators = this.$element.find('.carousel-indicators')
-    this.options     = options
-    this.paused      =
-    this.sliding     =
-    this.interval    =
-    this.$active     =
-    this.$items      = null
-
-    this.options.pause == 'hover' && this.$element
-      .on('mouseenter', $.proxy(this.pause, this))
-      .on('mouseleave', $.proxy(this.cycle, this))
-  }
-
-  Carousel.DEFAULTS = {
-    interval: 5000,
-    pause: 'hover',
-    wrap: true
-  }
-
-  Carousel.prototype.cycle =  function (e) {
-    e || (this.paused = false)
-
-    this.interval && clearInterval(this.interval)
-
-    this.options.interval
-      && !this.paused
-      && (this.interval = setInterval($.proxy(this.next, this), this.options.interval))
-
-    return this
-  }
-
-  Carousel.prototype.getActiveIndex = function () {
-    this.$active = this.$element.find('.item.active')
-    this.$items  = this.$active.parent().children()
-
-    return this.$items.index(this.$active)
-  }
-
-  Carousel.prototype.to = function (pos) {
-    var that        = this
-    var activeIndex = this.getActiveIndex()
-
-    if (pos > (this.$items.length - 1) || pos < 0) return
-
-    if (this.sliding)       return this.$element.one('slid.bs.carousel', function () { that.to(pos) })
-    if (activeIndex == pos) return this.pause().cycle()
-
-    return this.slide(pos > activeIndex ? 'next' : 'prev', $(this.$items[pos]))
-  }
-
-  Carousel.prototype.pause = function (e) {
-    e || (this.paused = true)
-
-    if (this.$element.find('.next, .prev').length && $.support.transition) {
-      this.$element.trigger($.support.transition.end)
-      this.cycle(true)
-    }
-
-    this.interval = clearInterval(this.interval)
-
-    return this
-  }
-
-  Carousel.prototype.next = function () {
-    if (this.sliding) return
-    return this.slide('next')
-  }
-
-  Carousel.prototype.prev = function () {
-    if (this.sliding) return
-    return this.slide('prev')
-  }
-
-  Carousel.prototype.slide = function (type, next) {
-    var $active   = this.$element.find('.item.active')
-    var $next     = next || $active[type]()
-    var isCycling = this.interval
-    var direction = type == 'next' ? 'left' : 'right'
-    var fallback  = type == 'next' ? 'first' : 'last'
-    var that      = this
-
-    if (!$next.length) {
-      if (!this.options.wrap) return
-      $next = this.$element.find('.item')[fallback]()
-    }
-
-    if ($next.hasClass('active')) return this.sliding = false
-
-    var e = $.Event('slide.bs.carousel', { relatedTarget: $next[0], direction: direction })
-    this.$element.trigger(e)
-    if (e.isDefaultPrevented()) return
-
-    this.sliding = true
-
-    isCycling && this.pause()
-
-    if (this.$indicators.length) {
-      this.$indicators.find('.active').removeClass('active')
-      this.$element.one('slid.bs.carousel', function () {
-        var $nextIndicator = $(that.$indicators.children()[that.getActiveIndex()])
-        $nextIndicator && $nextIndicator.addClass('active')
-      })
-    }
-
-    if ($.support.transition && this.$element.hasClass('slide')) {
-      $next.addClass(type)
-      $next[0].offsetWidth // force reflow
-      $active.addClass(direction)
-      $next.addClass(direction)
-      $active
-        .one($.support.transition.end, function () {
-          $next.removeClass([type, direction].join(' ')).addClass('active')
-          $active.removeClass(['active', direction].join(' '))
-          that.sliding = false
-          setTimeout(function () { that.$element.trigger('slid.bs.carousel') }, 0)
-        })
-        .emulateTransitionEnd($active.css('transition-duration').slice(0, -1) * 1000)
-    } else {
-      $active.removeClass('active')
-      $next.addClass('active')
-      this.sliding = false
-      this.$element.trigger('slid.bs.carousel')
-    }
-
-    isCycling && this.cycle()
-
-    return this
-  }
-
-
-  // CAROUSEL PLUGIN DEFINITION
-  // ==========================
-
-  var old = $.fn.carousel
-
-  $.fn.carousel = function (option) {
-    return this.each(function () {
-      var $this   = $(this)
-      var data    = $this.data('bs.carousel')
-      var options = $.extend({}, Carousel.DEFAULTS, $this.data(), typeof option == 'object' && option)
-      var action  = typeof option == 'string' ? option : options.slide
-
-      if (!data) $this.data('bs.carousel', (data = new Carousel(this, options)))
-      if (typeof option == 'number') data.to(option)
-      else if (action) data[action]()
-      else if (options.interval) data.pause().cycle()
-    })
-  }
-
-  $.fn.carousel.Constructor = Carousel
-
-
-  // CAROUSEL NO CONFLICT
-  // ====================
-
-  $.fn.carousel.noConflict = function () {
-    $.fn.carousel = old
-    return this
-  }
-
-
-  // CAROUSEL DATA-API
-  // =================
-
-  $(document).on('click.bs.carousel.data-api', '[data-slide], [data-slide-to]', function (e) {
-    var $this   = $(this), href
-    var $target = $($this.attr('data-target') || (href = $this.attr('href')) && href.replace(/.*(?=#[^\s]+$)/, '')) //strip for ie7
-    var options = $.extend({}, $target.data(), $this.data())
-    var slideIndex = $this.attr('data-slide-to')
-    if (slideIndex) options.interval = false
-
-    $target.carousel(options)
-
-    if (slideIndex = $this.attr('data-slide-to')) {
-      $target.data('bs.carousel').to(slideIndex)
-    }
-
-    e.preventDefault()
-  })
-
-  $(window).on('load', function () {
-    $('[data-ride="carousel"]').each(function () {
-      var $carousel = $(this)
-      $carousel.carousel($carousel.data())
-    })
-  })
-
-}(jQuery);
-
 'use strict';
+
+Orangee.Application = Marionette.Application.extend({
+  initialize: function(options) {
+    //console.log("Orangee.Application#initialize");
+    orangee.init();
+    if (options && options['youtube']) {
+      orangee._loadYoutubeApi();
+    }
+  },
+});
 
 Orangee.Model = Backbone.Model.extend({
   initialize: function() {
@@ -2368,6 +2172,12 @@ OrangeeNoExtraDivBehavior = Marionette.Behavior.extend({
     //orangee.debug("OrangeeNoExtraDivBehavior#onRender");
     // Get rid of that pesky wrapping-div.
     // Assumes 1 child element present in template.
+    var children = this.$el.children();
+    if (children.length == 0) {
+      //template is string (no html tag). Can not remove div in this case.
+      return;
+    }
+
     this.$el = this.$el.children();
     // Unwrap the element to prevent infinitely 
     // nesting elements during re-render.
@@ -2454,7 +2264,7 @@ Orangee.VideoView = Orangee.ItemView.extend({
     'play' : 'onKeyPlay',
   },
   onKeyPlay: function() {
-    orangee.debug('Orangee.VideoView#onKeyEnter');
+    orangee.debug('Orangee.VideoView#onKeyPlay');
     this.videoplayer.togglePlay();
   },
   onKeyRight: function() {
@@ -2483,10 +2293,13 @@ Orangee.ScrollItemView = Orangee.ItemView.extend({
   },
   onKeyEnter: function() {
     orangee.debug('Orangee.ScrollItemView#onKeyEnter');
-    var firstlink = this.$('a')[0];
-    orangee.debug(firstlink);
     this.onClick();
-    Backbone.history.navigate(firstlink.href.split('#')[1], {trigger: true});
+    var links = this.$('a');
+    if (links.length > 0) {
+      var firstlink = this.$('a')[0];
+      orangee.debug(firstlink);
+      Backbone.history.navigate(firstlink.href.split('#')[1], {trigger: true});
+    }
   },
   onMouseOver: function() {
     //orangee.debug('Orangee.ScrollItemView#onMouseOver');
@@ -2494,11 +2307,13 @@ Orangee.ScrollItemView = Orangee.ItemView.extend({
   },
   onSelect: function(model) {
     //orangee.debug('Orangee.ScrollItemView#onSelect');
-    this.$(':first-child').addClass('active');
+    //this.$(':first-child').addClass('active');
+    this.$el.addClass('active');
   },
   onDeselect: function(model) {
     //orangee.debug('Orangee.ScrollItemView#onDeselect');
-    this.$(':first-child').removeClass('active');
+    //this.$(':first-child').removeClass('active');
+    this.$el.removeClass('active');
   },
 });
 
@@ -2507,7 +2322,7 @@ Orangee.ScrollView = Orangee.CompositeView.extend({
     OrangeeHotKeysBehavior: {},
     OrangeeNoExtraDivBehavior: {},
     OrangeeScrollerBehavior: {},
-    OrangeeLazyloadBehavior: {},
+    //OrangeeLazyloadBehavior: {},
   },
   childViewContainer: "ul",
   scroll: {
@@ -2515,36 +2330,7 @@ Orangee.ScrollView = Orangee.CompositeView.extend({
     mouseWheel: true,
     //keyBindings: true,
   },
-  keyEvents: {
-    'enter': 'onKeyEnter',
-    'up': 'onKeyUp',
-    'down' : 'onKeyDown',
-  },
-  onKeyEnter: function() {
-    orangee.debug('Orangee.ScrollView#onKeyEnter');
-    this.collection.selected.trigger('oge:keyentered');
-    /*setTimeout(function () {
-      this.scroller.refresh();
-    }, 0);*/
-  },
-  onKeyUp: function() {
-    orangee.debug('Orangee.ScrollView#onKeyUp');
-    this.collection.selectPrev();
-    var selectedChildView = this.children.findByIndex(this.collection.currentPosition);
-    this.scroller.scrollToElement(selectedChildView.el);
-  },
-  onKeyDown: function() {
-    orangee.debug('Orangee.ScrollView#onKeyDown');
-    this.collection.selectNext();
-    var selectedChildView = this.children.findByIndex(this.collection.currentPosition);
-    this.scroller.scrollToElement(selectedChildView.el);
-  },
-  //childEvents: {
-  //},
-});
-
-Orangee.GridView = Orangee.ScrollView.extend({
-  numberOfColumns: 4,
+  numberOfColumns: 1,
   keyEvents: {
     'enter': 'onKeyEnter',
     'up': 'onKeyUp',
@@ -2555,31 +2341,40 @@ Orangee.GridView = Orangee.ScrollView.extend({
   onKeyEnter: function() {
     orangee.debug('Orangee.GridView#onKeyEnter');
     this.collection.selected.trigger('oge:keyentered');
-    /*setTimeout(function () {
-      this.scroller.refresh();
-    }, 0);*/
   },
   onKeyLeft: function() {
-    orangee.debug('Orangee.GridView#onKeyLeft');
-    this.collection.selectPrev();
+    if (this.numberOfColumns > 1) {
+      orangee.debug('Orangee.ScrollView#onKeyLeft');
+      this.collection.selectPrev();
+    }
   },
   onKeyRight: function() {
-    orangee.debug('Orangee.GridView#onKeyRight');
-    this.collection.selectNext();
+    if (this.numberOfColumns > 1) {
+      orangee.debug('Orangee.ScrollView#onKeyRight');
+      this.collection.selectNext();
+    }
   },
   onKeyUp: function() {
-    orangee.debug('Orangee.GridView#onKeyUp');
+    orangee.debug('Orangee.ScrollView#onKeyUp');
     orangee.debug(this.children);
     this.collection.selectPrev(this.numberOfColumns);
     var selectedChildView = this.children.findByIndex(this.collection.currentPosition);
     this.scroller.scrollToElement(selectedChildView.el);
   },
   onKeyDown: function() {
-    orangee.debug('Orangee.GridView#onKeyDown');
+    orangee.debug('Orangee.ScrollView#onKeyDown');
     orangee.debug(this.children);
     this.collection.selectNext(this.numberOfColumns);
     var selectedChildView = this.children.findByIndex(this.collection.currentPosition);
     this.scroller.scrollToElement(selectedChildView.el);
+  },
+});
+
+Orangee.HorizontalScrollView = Orangee.ScrollView.extend({
+  scroll: {
+    mouseWheel: true,
+    scrollX: true,
+    scrollY: false,
   },
 });
 

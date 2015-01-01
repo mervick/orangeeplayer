@@ -1,5 +1,5 @@
 'use strict';
-var app = new Marionette.Application();
+var app = new Orangee.Application({youtube: orangee.PLATFORM != 'samsung'});
 
 var LinkCode = Orangee.XMLModel.extend({
   url: "http://www.orangee.tv/getLinkingCode",
@@ -89,7 +89,7 @@ var AlbumItemView = Orangee.ScrollItemView.extend({
   template: '#indexTmpl',
 });
 
-var AlbumView = Orangee.GridView.extend({
+var AlbumView = Orangee.ScrollView.extend({
   childView: AlbumItemView,
   template: '#gridTmpl',
   onShow: function() {
@@ -114,7 +114,7 @@ var HeaderView = Orangee.ItemView.extend({
   },
   onKeyBack: function() {
     Backbone.history.history.back();
-  }
+  },
 });
 
 var VideoView =  Orangee.VideoView.extend({
@@ -125,15 +125,18 @@ var VideoView =  Orangee.VideoView.extend({
   },
   onRender: function() {
     $(".navbar").hide();
-    this.oldheight = $(".oge-wrapper").css('top');
-    $(".oge-wrapper").css('top', 0);
+    //this.oldheight = $(".oge-fullscreenvideo").css('top');
+    //$(".oge-fullscreenvideo").css('top', 0);
     //return Orangee.VideoView.prototype.onRender.apply(this, arguments);
   },
   onDestroy: function() {
-    $(".oge-wrapper").css('top', this.oldheight);
+    //$(".oge-fullscreenvideo").css('top', this.oldheight);
     $(".navbar").show();
     //return Orangee.VideoView.prototype.onDestroy.apply(this, arguments);
-  }
+  },
+  onEnd: function() {
+    Backbone.history.history.back();
+  },
 });
 
 var MyRouter = Backbone.Marionette.AppRouter.extend({
@@ -181,16 +184,11 @@ app.addRegions({
   content: "#content",
 });
 
-app.init = function(options){
+app.on("start", function(options){
   orangee.debug_enabled = true;
   new MyRouter();
   Backbone.history.start();
 
-  /*
-  $("#loading").spin({}).hide();
-  $('#loading').ajaxStart(function(){ $(this).fadeIn(); });
-  $('#loading').ajaxComplete(function(){ $(this).fadeOut(); });
-  */
   app.header.show(new HeaderView());
 
   var device_token = orangee.storage.get("device_token");
@@ -200,5 +198,5 @@ app.init = function(options){
   } else {
     Backbone.history.navigate("", {trigger: true});
   }
-};
+});
 

@@ -35,7 +35,7 @@
   <script type="text/html" id="indexTmpl">
     <li class="col-xs-6 col-sm-3 col-md-2">
       <div class="media" id="<%= cid %>">
-        <a href="#album/<%= encodeURIComponent(_url) %>"><img class="img-responsive lazy" data-original="<%= _img %>" alt="<%= _title %>" /></a>
+        <a href="#album/<%= encodeURIComponent(_url) %>"><img class="img-responsive" src="<%= _img %>" alt="<%= _title %>" /></a>
       </div>
     </li>
   </script>
@@ -43,7 +43,7 @@
   <script type="text/html" id="subindexTmpl">
     <li class="col-xs-6 col-sm-3 col-md-2">
       <div class="media subalbum" id="<%= cid %>">
-        <a href="#subalbum/<%= encodeURIComponent(enclosure._url) %>"><img class="img-responsive lazy" data-original="<%= thumbnail._url %>" alt="<%= title %>" /></a> 
+        <a href="#subalbum/<%= encodeURIComponent(enclosure._url) %>"><img class="img-responsive" src="<%= thumbnail._url %>" alt="<%= title %>" /></a> 
       </div>
       <!--<div class="item-title"><%= title %></div>-->
     </li>
@@ -60,7 +60,9 @@
 
   <!-- An id is required for video tag to use youtube. object is used for youtube -->
   <script type="text/html" id="videoTmpl">
-    <video id='myvideo'></video>
+    <div class="oge-fullscreenvideo">
+      <video id='myvideo'></video>
+    </div>
   </script>
 
   <script type="text/javascript" src="lib/jquery.min.js"></script>
@@ -70,18 +72,14 @@
   <script type="text/javascript" src="lib/backbone.marionette.min.js"></script>
   <script type="text/javascript" src="lib/backbone.paginator.min.js"></script>
   <script type="text/javascript" src="lib/backbone.select.min.js"></script>
-  <script type="text/javascript" src="https://www.youtube.com/iframe_api"></script><!-- Only if you want to use youtube -->
   <script type="text/javascript" src="lib/orangee.js"></script>
   <script type="text/javascript" src="lib/orangee-ui.js"></script>
   <script type="text/javascript" src="app.js"></script>
   <script type="text/javascript" src="plugin.js"></script>
   <script>
-    //wrap initialization code into this special function only if you want to use youtube
-    function onYouTubeIframeAPIReady() {
-      $(function () {
-        orangee.init(app.init);
-      });
-    }
+    $(document).ready(function() {
+      app.start();
+    });
   </script>
 </body>
 </html>

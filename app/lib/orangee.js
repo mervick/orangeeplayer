@@ -14,13 +14,27 @@ orangee.log = function(s) {
   } else {
     alert(s);
   }
-}
+};
 
 orangee.debug = function(s) {
   if (orangee.debug_enabled) {
     orangee.log(s);
   }
-}
+};
+
+//https://developers.google.com/youtube/iframe_api_reference
+orangee._loadYoutubeApi = function() {
+  window.onYouTubeIframeAPIReady = function() {
+    orangee.debug("onYouTubeIframeAPIReady");
+    orangee._youtubeReady = true;
+    $(document).trigger("oge-youtubeready");
+  };
+
+  var tag = document.createElement('script');
+  tag.src = "https://www.youtube.com/iframe_api";
+  var firstScriptTag = document.getElementsByTagName('script')[0];
+  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+};
 
 //it is better to wait until onYouTubePlayerAPIReady(playerId)
 orangee.ytplayer = function _OrangeeJSYTPlayer() {
@@ -236,6 +250,11 @@ orangee.html5player.prototype.seek = function(second) {
 };
 
 orangee.html5player.prototype.load = function(url, startSeconds, divid, options) {
+  orangee.debug(url);
+  if (orangee.PLATFORM === 'samsung' && url.match(/\.m3u8$/) && !url.match(/COMPONENT=HLS$/)) {
+    url = url + "?|COMPONENT=HLS";
+  }
+
   if (this.video == null) {
     this.video = document.createElement("video");
     this.video.controls = true;
@@ -369,16 +388,16 @@ orangee.videoplayer.prototype.load = function(playlist, divid, options, index, s
   startSeconds = (typeof startSeconds !== 'undefined') ? startSeconds : 0;
 
   var url = this.playlist[this.currentIndex]['url'];
-  this._buildPlayer(url);
-
-  if (this.translate_url) {
-    var self= this;
-    this.translate_url(url, function(err, new_url) {
-      self.currentplayer.load(new_url, startSeconds, self.divid, self.options);
-    });
-  } else {
-    this.currentplayer.load(url, startSeconds, this.divid, this.options);
-  }
+  this._buildPlayer(url, function() {
+    if (this.translate_url) {
+      var self= this;
+      this.translate_url(url, function(err, new_url) {
+        self.currentplayer.load(new_url, startSeconds, self.divid, self.options);
+      });
+    } else {
+      this.currentplayer.load(url, startSeconds, this.divid, this.options);
+    }
+  }.bind(this));
 };
 
 orangee.videoplayer.prototype.switchVideo = function(index) {
@@ -386,34 +405,45 @@ orangee.videoplayer.prototype.switchVideo = function(index) {
   var startSeconds = 0;
   
   var url = this.playlist[this.currentIndex]['url'];
-  this._buildPlayer(url);
-  
-  if (this.device) {
-    if (!this.connectplayer) {
-      this.connectplayer = new orangee.connectplayer(this.device);
+  this._buildPlayer(url, function() {
+    if (this.device) {
+      if (!this.connectplayer) {
+        this.connectplayer = new orangee.connectplayer(this.device);
+      }
+      this.connectplayer.load(url, startSeconds, this.divid, this.options);
+      //beamed video always play automatically
+    } else {
+      if (this.translate_url) {
+        url = this.translate_url(url);
+      }
+      this.currentplayer.load(url, startSeconds, this.divid, this.options);
     }
-    this.connectplayer.load(url, startSeconds, this.divid, this.options);
-    //beamed video always play automatically
-  } else {
-    if (this.translate_url) {
-      url = this.translate_url(url);
-    }
-    this.currentplayer.load(url, startSeconds, this.divid, this.options);
-  }
+  }.bind(this));
 };
 
-orangee.videoplayer.prototype._buildPlayer = function(url) {
+orangee.videoplayer.prototype._buildPlayer = function(url, callback) {
   if (orangee.PLATFORM === 'samsung' && this.support_samsung != 0) {
     if (null == this.currentplayer || this.currentplayer.constructor.name != orangee.samsungplayer.name) {
       this.currentplayer = new orangee.samsungplayer();
+      callback();
     }
   } else if (this.support_youtube == 1 && url.indexOf('youtube.com') > -1) {
     if (null == this.currentplayer || this.currentplayer.constructor.name != orangee.ytplayer.name) {
-      this.currentplayer = new orangee.ytplayer();
+      if (orangee._youtubeReady) {
+        this.currentplayer = new orangee.ytplayer();
+        callback();
+      } else {
+        $(document).on('oge-youtubeready', function() {
+          orangee.debug('oge-youtubeready');
+          this.currentplayer = new orangee.ytplayer();
+          callback();
+        }.bind(this));
+      }
     }
   } else {
     if (null == this.currentplayer || this.currentplayer.constructor.name != orangee.html5player.name){
       this.currentplayer = new orangee.html5player();
+      callback();
     }
   }
 };
@@ -794,19 +824,30 @@ function X2JS(v){var q="1.1.5";v=v||{};h();r();function h(){if(v.escapeMode===un
         delete eventsNamespace[namespace];
     };
 
-    var onKeyup = function(e) {
+    var onKeydown = function() {
         _.each(eventsNamespace, function(namespace) {
           _.each(namespace, function(callback) {
-            callback(e);
+            if (orangee.PLATFORM === 'samsung') {
+              if (orangee.KEYS[event.keyCode] === 'back') {
+                orangee._samsungWidgetAPI.blockNavigation(event);//does not work with keyup
+              } else if (orangee.KEYS[event.keyCode] === 'exit') {
+                orangee._samsungWidgetAPI.blockNavigation(event);
+                orangee._samsungWidgetAPI.sendReturnEvent();
+              }
+            }
+            callback(event);
           });
         });
     };
 
-    $(document).on('keyup', onKeyup);
+    $(document).on('keydown', onKeydown);
+    //<a href="javascript:void(0);" id="orangeeKeyboardAnchor" onkeydown="HotKeys.onKeydown();"></a>
+    //document.getElementById("orangeeKeyboardAnchor").focus();
 
     root.HotKeys = {
         'bind': bind,
-        'unbind': unbind
+        'unbind': unbind,
+        //'onKeydown': onKeydown,
     };
 }(window, $))
 
@@ -948,10 +989,5 @@ orangee.KEYS = {
 */
 
 orangee.init = function(callback) {
-  if (typeof callback === "function") {
-    callback();
-  }
 };
 
-orangee.close = function() {
-};
