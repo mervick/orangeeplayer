@@ -142,20 +142,29 @@ var VideoView =  Orangee.VideoView.extend({
 var MyRouter = Backbone.Marionette.AppRouter.extend({
   routes: {
     "": "index",
-    "binding": "binding",
+    //"binding": "_binding",
     "album/:url": "album",
     "subalbum/:url": "subalbum",
   },
   index: function(){
-     var device_token = orangee.storage.get("device_token");
-     app.content.show(new Orangee.SpinnerView());
-     (new Subscriptions(device_token)).fetch({
+    app.header.show(new HeaderView());
+
+    var device_token = orangee.storage.get("device_token");
+    if (!device_token) {
+      this._binding();
+    } else {
+      this._index(device_token);
+    }
+  },
+  _index: function(device_token) {
+    app.content.show(new Orangee.SpinnerView());
+    (new Subscriptions(device_token)).fetch({
       success: function(collection) {
         app.content.show(new AlbumView({collection: collection}));
       },
     });
   },
-  binding: function() {
+  _binding: function() {
     (new LinkCode()).fetch({
       success: function(model) {
         app.content.show(new BindingView({model: model}));
@@ -177,6 +186,11 @@ var MyRouter = Backbone.Marionette.AppRouter.extend({
     var collection = new Orangee.Collection([{url: url}]);
     app.content.show(new VideoView({collection: collection}));
   },
+  test: function() {
+    orangee.debug("test");
+    var collection = new Orangee.Collection([{url: "http://www.quirksmode.org/html5/videos/big_buck_bunny.mp4"}]);
+    app.content.show(new VideoView({collection: collection}));
+  },
 });
 
 app.addRegions({
@@ -188,15 +202,5 @@ app.on("start", function(options){
   orangee.debug_enabled = true;
   new MyRouter();
   Backbone.history.start();
-
-  app.header.show(new HeaderView());
-
-  var device_token = orangee.storage.get("device_token");
-  orangee.debug(device_token);
-  if (!device_token) {
-    Backbone.history.navigate("binding", {trigger: true});
-  } else {
-    Backbone.history.navigate("", {trigger: true});
-  }
 });
 

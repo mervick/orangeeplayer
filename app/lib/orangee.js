@@ -102,6 +102,7 @@ orangee.ytplayer.prototype.load = function(url, startSeconds, divid, options) {
 
     e.id = divid;
     var div = document.getElementById(divid);
+    e.setAttribute("class", div.getAttribute("class"));
     div.parentNode.replaceChild(e, div);
 
     this.player = new YT.Player(divid, {
@@ -268,6 +269,8 @@ orangee.html5player.prototype.load = function(url, startSeconds, divid, options)
     this.video.id = divid;
 
     var div = document.getElementById(divid);
+    this.video.setAttribute("class", div.getAttribute("class"));
+    this.video.setAttribute("poster", div.getAttribute("poster"));
     div.parentNode.replaceChild(this.video, div);
 
     if (options['onplaying']) {
