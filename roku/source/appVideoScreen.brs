@@ -23,7 +23,7 @@ Function showVideoScreen(episode As Object)
   screen = CreateObject("roVideoScreen")
   screen.SetMessagePort(port)
   screen.AddHeader("Referer", episode.url)
-  'screen.Show()
+  screen.Show()
 
   print type(TranslateUrl)
   if GetGlobalAA().OrangeeTVPlugin <> invalid

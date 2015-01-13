@@ -24,7 +24,7 @@
     <span>Orangee Cloud Player</span>
   </script>
 
-  <script type="text/html" id="gridTmpl">
+  <script type="text/html" id="opmlTmpl">
     <div class="oge-wrapper container-fluid">
       <div class="oge-scroller row">
         <ul class="list-unstyled"></ul>
@@ -32,18 +32,18 @@
     </div>
   </script>
 
-  <script type="text/html" id="indexTmpl">
+  <script type="text/html" id="opmlItemTmpl">
     <li class="col-xs-6 col-sm-3 col-md-2">
-      <div class="media" id="<%= cid %>">
+      <div class="media opmlitem" id="<%= cid %>">
         <a href="#album/<%= encodeURIComponent(_url) %>"><img class="img-responsive" src="<%= _img %>" alt="<%= _title %>" /></a>
       </div>
     </li>
   </script>
 
-  <script type="text/html" id="subindexTmpl">
+  <script type="text/html" id="rssItemTmpl">
     <li class="col-xs-6 col-sm-3 col-md-2">
-      <div class="media subalbum" id="<%= cid %>">
-        <a href="#subalbum/<%= encodeURIComponent(enclosure._url) %>"><img class="img-responsive" src="<%= thumbnail._url %>" alt="<%= title %>" /></a> 
+      <div class="media rssitem" id="<%= cid %>">
+        <a href="#video/<%= encodeURIComponent(enclosure._url) %>"><img class="img-responsive" src="<%= thumbnail._url %>" alt="<%= title %>" /></a> 
       </div>
       <!--<div class="item-title"><%= title %></div>-->
     </li>
@@ -59,7 +59,7 @@
   </script>
 
   <!-- An id is required for video tag to use youtube. object is used for youtube -->
-  <script type="text/html" id="videoTmpl">
+  <script type="text/html" id="playerTmpl">
     <div class="oge-fullscreenvideo">
       <video poster="http://d1435t697bgi2o.cloudfront.net/wp-content/uploads/2013/10/orange-juice.jpg" id='myvideo'></video>
     </div>
@@ -67,6 +67,7 @@
 
   <script type="text/javascript" src="lib/jquery.min.js"></script>
   <script type="text/javascript" src="lib/jquery.fullPage.min.js"></script>
+  <script type="text/javascript" src="lib/move.min.js"></script>
   <script type="text/javascript" src="lib/underscore-min.js"></script>
   <script type="text/javascript" src="lib/backbone-min.js"></script>
   <script type="text/javascript" src="lib/backbone.marionette.min.js"></script>
@@ -74,6 +75,8 @@
   <script type="text/javascript" src="lib/backbone.select.min.js"></script>
   <script type="text/javascript" src="lib/orangee.js"></script>
   <script type="text/javascript" src="lib/orangee-ui.js"></script>
+  <script type="text/javascript" src="models.js"></script>
+  <script type="text/javascript" src="views.js"></script>
   <script type="text/javascript" src="app.js"></script>
   <script type="text/javascript" src="plugin.js"></script>
   <script>

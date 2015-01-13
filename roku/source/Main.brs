@@ -24,23 +24,17 @@ Function Main(params as Dynamic) as void
 		'return
 	endif
 
-	categories = LoadConfig(device_token)
-	
-	if categories.Count() > 1
-		ShowPosterScreen(categories, "", "")
-	else
-		ShowEpisodeScreen(categories[0], categories[0].shortDescriptionLine1, "")
-	end if
+  ShowPosterScreen("http://api.orangee.tv/getSubscription?token=" + device_token, "", "")
 End Function
 
-function LoadConfig(device_token)
+function LoadConfig(url)
 	result = []
 
 	app = CreateObject("roAppManager")
 	theme = CreateObject("roAssociativeArray")
+  theme.OverhangSliceSD = "pkg:/images/Overhang_BackgroundSlice_SD43.png"
 	theme.OverhangSliceHD = "pkg:/images/Overhang_BackgroundSlice_HD.png"
-	theme.OverhangSliceSD = "pkg:/images/Overhang_BackgroundSlice_SD43.png"
-	theme.OverhanglogoHD = "pkg:/images/Logo_Overhang_Roku_SDK_SD43.png"
+	theme.OverhanglogoHD = "pkg:/images/Logo_Overhang_Roku_SDK_HD.png"
 	theme.OverhanglogoSD = "pkg:/images/Logo_Overhang_Roku_SDK_SD43.png"
 
 	theme.OverhangPrimaryLogoOffsetHD_X = "35"
@@ -50,8 +44,8 @@ function LoadConfig(device_token)
 	theme.OverhangPrimaryLogoOffsetSD_Y = "5"
 
 	'raw = ReadASCIIFile("pkg:/config.opml")
-  raw = NWM_GetStringFromURL("http://api.orangee.tv/getSubscription?token=" + device_token)
-  print "http://api.orangee.tv/getSubscription/token?=" + device_token
+  raw = NWM_GetStringFromURL(url)
+  print url
 	opml = CreateObject("roXMLElement")
 	if opml.Parse(raw)
 		theme.backgroundColor = ValidStr(opml.body@backgroundColor)

@@ -70,7 +70,6 @@ function NWM_MRSS_GetEpisodes(limit = 0)
 				newItem.synopsis = description
 			end if
 
-
 			' thumbnail
 			tmp = item.GetNamedElements("media:thumbnail")
 			if tmp.Count() > 0
@@ -82,9 +81,9 @@ function NWM_MRSS_GetEpisodes(limit = 0)
       else
         r = CreateObject("roRegex", "src=(" + Chr(39) + "|" + Chr(34) + ")(.+?)(" + Chr(39) + "|" + Chr(34) + ")", "i")
         a = r.Match(item.description.GetText())
-        newItem.sdPosterURL = a[2]
-        newItem.hdPosterURL = a[2]
         print a[2]
+        newItem.sdPosterURL = a[2]
+        newItem.hdPosterURL = a[2] 
 			end if
 				
 			' categories

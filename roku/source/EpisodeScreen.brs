@@ -1,18 +1,19 @@
-sub ShowEpisodeScreen(contentList, breadLeft, breadRight)
+sub ShowEpisodeScreen(rssurl, leftBread, rightBread)
   print "ShowEpisodeScreen"
 
 	screen = CreateObject("roPosterScreen")
 	screen.SetMessagePort(CreateObject("roMessagePort"))
-  screen.SetListStyle("flat-episodic")
   screen.SetListStyle("flat-category")
-  screen.SetBreadcrumbText(breadLeft, breadRight)
+  screen.SetBreadcrumbText(leftBread, rightBread)
 	screen.Show()
 	
-	mrss = NWM_MRSS(contentList.url)
+	mrss = NWM_MRSS(rssurl)
 	content = mrss.GetEpisodes()
 	selectedEpisode = 0
 	screen.SetContentList(content)
-  screen.AddHeader("Referer", content[selectedEpisode].url)
+  if content <> invalid AND content.Count() > 0
+    screen.AddHeader("Referer", content[0].url)
+  end if
 	screen.Show()
 
 	while true

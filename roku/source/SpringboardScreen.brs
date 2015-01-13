@@ -1,10 +1,13 @@
 function ShowSpringboardScreen(episodes, selectedEpisode, leftBread, rightBread)
 	print "ShowSpringboardScreen"
+
   screen = CreateObject("roSpringboardScreen")
 	screen.SetMessagePort(CreateObject("roMessagePort"))
-  'screen.SetBreadcrumbText(leftBread, rightBread)
+  screen.SetBreadcrumbText(leftBread, rightBread)
   screen.SetStaticRatingEnabled(false)
-  screen.AddHeader("Referer", episodes[selectedEpisode].url)
+  if episodes.Count() > 0
+    screen.AddHeader("Referer", episodes[0].url)
+  end if
 	screen.AddButton(1, "Play")
 	screen.Show()
 	

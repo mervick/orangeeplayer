@@ -1,11 +1,12 @@
-sub ShowPosterScreen(contentList, breadLeft, breadRight)
+sub ShowPosterScreen(opmlurl, breadLeft, breadRight)
   print "ShowPosterScreen"
 	screen = CreateObject("roPosterScreen")
 	screen.SetMessagePort(CreateObject("roMessagePort"))
   screen.SetListStyle("flat-category")
   screen.SetBreadcrumbText(breadLeft, breadRight)
 	screen.Show()
-	
+
+  contentList = LoadConfig(opmlurl)	
 	screen.SetContentList(contentList)
 	screen.Show()
 	
@@ -17,10 +18,10 @@ sub ShowPosterScreen(contentList, breadLeft, breadRight)
 				exit while
 			else if msg.isListItemSelected()
 				selectedItem = contentList[msg.Getindex()]
-				if selectedItem.categories.Count() > 0
-					ShowPosterScreen(selectedItem.categories, selectedItem.shortDescriptionLine1, "")
+				if Right(selectedItem.url, 5) = ".opml"
+					ShowPosterScreen(selectedItem.url, selectedItem.shortDescriptionLine1, "")
 				else
-					ShowEpisodeScreen(selectedItem, selectedItem.shortDescriptionLine1, "")
+					ShowEpisodeScreen(selectedItem.url, selectedItem.shortDescriptionLine1, "")
 				end if
 			end if
 		end if
