@@ -2322,7 +2322,7 @@ Orangee.ScrollView = Orangee.CompositeView.extend({
     OrangeeHotKeysBehavior: {},
     OrangeeNoExtraDivBehavior: {},
     OrangeeScrollerBehavior: {},
-    //OrangeeLazyloadBehavior: {},
+    OrangeeLazyloadBehavior: {},
   },
   childViewContainer: "ul",
   scroll: {

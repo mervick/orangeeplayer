@@ -35,7 +35,7 @@
   <script type="text/html" id="opmlItemTmpl">
     <li class="col-xs-6 col-sm-3 col-md-2">
       <div class="media opmlitem" id="<%= cid %>">
-        <a href="#album/<%= encodeURIComponent(_url) %>"><img class="img-responsive" src="<%= _img %>" alt="<%= _title %>" /></a>
+        <a href="#album/<%= encodeURIComponent(_url) %>"><img class="img-responsive lazy" src="images/placeholder.png" data-original="<%= _img %>" alt="<%= _title %>" /></a>
       </div>
     </li>
   </script>
@@ -43,7 +43,7 @@
   <script type="text/html" id="rssItemTmpl">
     <li class="col-xs-6 col-sm-3 col-md-2">
       <div class="media rssitem" id="<%= cid %>">
-        <a href="#video/<%= encodeURIComponent(enclosure._url) %>"><img class="img-responsive" src="<%= thumbnail._url %>" alt="<%= title %>" /></a> 
+        <a href="#video/<%= encodeURIComponent(enclosure._url) %>"><img class="img-responsive lazy" src="images/placeholder.png" data-original="<%= thumbnail._url %>" alt="<%= title %>" /></a> 
         <div class="item-title"><%= title %></div>
       </div>
     </li>
@@ -67,6 +67,7 @@
 
   <script type="text/javascript" src="lib/jquery.min.js"></script>
   <script type="text/javascript" src="lib/jquery.fullPage.min.js"></script>
+  <script type="text/javascript" src="lib/jquery.lazyload.min.js"></script>
   <script type="text/javascript" src="lib/move.min.js"></script>
   <script type="text/javascript" src="lib/underscore-min.js"></script>
   <script type="text/javascript" src="lib/backbone-min.js"></script>
