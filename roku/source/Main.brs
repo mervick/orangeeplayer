@@ -34,7 +34,7 @@ function LoadConfig(url)
 	theme = CreateObject("roAssociativeArray")
   theme.OverhangSliceSD = "pkg:/images/Overhang_BackgroundSlice_SD43.png"
 	theme.OverhangSliceHD = "pkg:/images/Overhang_BackgroundSlice_HD.png"
-	theme.OverhanglogoHD = "pkg:/images/Logo_Overhang_Roku_SDK_HD.png"
+	theme.OverhanglogoHD = "pkg:/images/Logo_Overhang_Roku_SDK_SD43.png"
 	theme.OverhanglogoSD = "pkg:/images/Logo_Overhang_Roku_SDK_SD43.png"
 
 	theme.OverhangPrimaryLogoOffsetHD_X = "35"
