@@ -34,7 +34,7 @@
 
   <script type="text/html" id="opmlItemTmpl">
     <li class="col-xs-6 col-sm-3 col-md-2">
-      <div class="media opmlitem" id="<%= cid %>">
+      <div class="media" id="<%= cid %>">
         <a href="#album/<%= encodeURIComponent(_url) %>"><img class="img-responsive lazy" src="images/placeholder.png" data-original="<%= _img %>" alt="<%= _title %>" /></a>
       </div>
     </li>
@@ -42,9 +42,18 @@
 
   <script type="text/html" id="rssItemTmpl">
     <li class="col-xs-6 col-sm-3 col-md-2">
-      <div class="media rssitem" id="<%= cid %>">
+      <div class="media" id="<%= cid %>">
         <a href="#video/<%= encodeURIComponent(enclosure._url) %>"><img class="img-responsive lazy" src="images/placeholder.png" data-original="<%= thumbnail._url %>" alt="<%= title %>" /></a> 
         <div class="item-title"><%= title %></div>
+      </div>
+    </li>
+  </script>
+
+  <script type="text/html" id="csvItemTmpl">
+    <li class="col-xs-6 col-sm-3 col-md-2">
+      <div class="media" id="<%= cid %>">
+        <a href="#video<%= encodeURIComponent(_url) %>"><img class="img-responsive lazy" src="images/placeholder.png" data-original="<%= _img %>" alt="<%= _title %>" /></a>
+        <div class="item-title"><%= _title %></div>
       </div>
     </li>
   </script>

@@ -36,6 +36,17 @@ orangee._loadYoutubeApi = function() {
   firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 };
 
+orangee._findYoutubeId = function(urlString) {
+  if (window.url('domain', urlString) === "youtube.com") {
+    return window.url('?v', urlString);
+  } else if (window.url('domain', urlString) === "youtu.be") {
+    window.url('file', urlString);
+  }
+
+  return null;
+};
+
+
 //it is better to wait until onYouTubePlayerAPIReady(playerId)
 orangee.ytplayer = function _OrangeeJSYTPlayer() {
   this.player = null;
@@ -833,10 +844,10 @@ function X2JS(v){var q="1.1.5";v=v||{};h();r();function h(){if(v.escapeMode===un
             if (orangee.PLATFORM === 'samsung') {
               if (orangee.KEYS[event.keyCode] === 'back') {
                 orangee._samsungWidgetAPI.blockNavigation(event);//does not work with keyup
-              } else if (orangee.KEYS[event.keyCode] === 'exit') {
+              } /*else if (orangee.KEYS[event.keyCode] === 'exit') {
                 orangee._samsungWidgetAPI.blockNavigation(event);
                 orangee._samsungWidgetAPI.sendReturnEvent();
-              }
+              }*/
             }
             callback(event);
           });
@@ -994,3 +1005,12 @@ orangee.KEYS = {
 orangee.init = function(callback) {
 };
 
+orangee.hasNetwork = function() {
+  if (navigator.connection) {
+    //https://github.com/apache/cordova-plugin-network-information/blob/master/doc/index.md
+    return navigator.connection.type != Connection.NONE
+  } else {
+    //do not know, just return true
+    return true;
+  }
+};

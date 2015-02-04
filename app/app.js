@@ -7,7 +7,7 @@ var app = new Orangee.Application({
   },
 });
 
-var MyController = Marionette.Controller.extend({
+var MyController = Orangee.Controller.extend({
   index: function() {
     app.header.show(new HeaderView());
 
@@ -22,7 +22,7 @@ var MyController = Marionette.Controller.extend({
     app.content.show(new Orangee.SpinnerView());
     (new Subscriptions(device_token)).fetch({
       success: function(collection) {
-        app.content.show(new OpmlView({collection: collection}));
+        app.content.show(new OPMLView({collection: collection}));
       },
     });
   },
@@ -38,6 +38,9 @@ var MyController = Marionette.Controller.extend({
     app.content.show(new Orangee.SpinnerView());
     if (/\.opml$/.test(url)) {
       this._opml(url);
+    } else if (/\.csv$/.test(url) ||
+               /\.txt$/.test(url) ) {
+      this._csv(url);
     } else {
       this._rss(url);
     }
@@ -46,7 +49,7 @@ var MyController = Marionette.Controller.extend({
     (new Albums(url)).fetch({
       success: function(collection) {
         orangee.log(collection);
-        app.content.show(new OpmlView({collection: collection}));
+        app.content.show(new OPMLView({collection: collection}));
       },
     });
   },
@@ -54,7 +57,15 @@ var MyController = Marionette.Controller.extend({
     (new Videos(url)).fetch({
       success: function(collection) {
         orangee.log(collection);
-        app.content.show(new RssView({collection: collection}));
+        app.content.show(new RSSView({collection: collection}));
+      },
+    });
+  },
+  _csv: function(url) {
+    (new CSVVideos(url)).fetch({
+      success: function(collection) {
+        orangee.log(collection);
+        app.content.show(new CSVView({collection: collection}));
       },
     });
   },
@@ -66,7 +77,7 @@ var MyController = Marionette.Controller.extend({
   },
 });
 
-var MyRouter = Backbone.Marionette.AppRouter.extend({
+var MyRouter = Orangee.Router.extend({
   appRoutes: {
     "": "index",
     "binding": "binding",

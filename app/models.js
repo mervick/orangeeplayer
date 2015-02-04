@@ -69,3 +69,14 @@ var Videos = Orangee.RSSCollection.extend({
   },
 });
 
+var CSVVideos = Orangee.CSVCollection.extend({
+  model: Video,
+  initialize: function(url) {
+    this.link = url;
+    Orangee.CSVCollection.prototype.initialize.apply(this);
+  },
+  url: function() {
+    return "http://proxy.orangee.tv/proxy?url=" + this.link;
+  },
+});
+

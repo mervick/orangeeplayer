@@ -22,12 +22,12 @@ var BindingView = Orangee.ItemView.extend({
   },
 });
 
-var OpmlItemView = Orangee.ScrollItemView.extend({
+var OPMLItemView = Orangee.ScrollItemView.extend({
   template: '#opmlItemTmpl',
 });
 
-var OpmlView = Orangee.ScrollView.extend({
-  childView: OpmlItemView,
+var OPMLView = Orangee.ScrollView.extend({
+  childView: OPMLItemView,
   template: '#opmlTmpl',
   onShow: function() {
     this.numberOfColumns = Math.floor(this.$el.width()/this.$('li').width());
@@ -36,12 +36,20 @@ var OpmlView = Orangee.ScrollView.extend({
   },
 });
 
-var RssItemView = Orangee.ScrollItemView.extend({
+var RSSItemView = Orangee.ScrollItemView.extend({
   template: '#rssItemTmpl',
 });
 
-var RssView = OpmlView.extend({
-  childView: RssItemView,
+var RSSView = OPMLView.extend({
+  childView: RSSItemView,
+});
+
+var CSVItemView = Orangee.ScrollItemView.extend({
+  template: '#csvItemTmpl',
+});
+
+var CSVView = OPMLView.extend({
+  childView: CSVItemView,
 });
 
 var HeaderView = Orangee.ItemView.extend({
