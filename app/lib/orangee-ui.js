@@ -2121,15 +2121,15 @@ Orangee.CSVCollection = Orangee.XMLCollection.extend({
       if (lines[i].indexOf('http') == 0) {
 	      var currentline=lines[i].split(",");
         var obj = {};
-        obj['_url'] = currentline[0].trim();
-        obj['_img'] = currentline[1].trim();
+        obj['_url'] = currentline[0] ? currentline[0].trim() : null;
+        obj['_img'] = currentline[1] ? currentline[1].trim() : null;
         if (!obj['_img']) {
           var ytid = orangee._findYoutubeId(obj['_url']);
           if (ytid) {
             obj['_img'] = "http://i.ytimg.com//vi/" + ytid + "/mqdefault.jpg";
           }
         }
-        obj['_title'] = currentline[2].trim();
+        obj['_title'] = currentline[2] ? currentline[2].trim() : null;
         result.push(obj);
       }
     }
@@ -2168,7 +2168,7 @@ OrangeeScrollerBehavior = Marionette.Behavior.extend({
     orangee.debug("OrangeeScrollerBehavior#onShow");
     orangee.debug(this.view.getOption('scroll'));
     //orangee.debug(this.el.parentNode.parentNode);
-    orangee.debug(this.el);
+    //orangee.debug(this.el);
     this.view.scroller = new orangee.scroller(this.el, this.view.getOption('scroll'));
     //http://stackoverflow.com/questions/11924711/how-to-make-iscroll-and-lazy-load-jquery-plugins-work-together
     //http://www.cnblogs.com/MartinLi841538513/articles/3663638.html
