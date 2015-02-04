@@ -25,7 +25,6 @@ Function showVideoScreen(episode As Object)
   screen.AddHeader("Referer", episode.url)
   screen.Show()
 
-  print type(TranslateUrl)
   if GetGlobalAA().OrangeeTVPlugin <> invalid
     episode.streams[0].url = GetGlobalAA().OrangeeTVPlugin(episode.streams[0].url)
   end if
