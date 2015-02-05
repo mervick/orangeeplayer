@@ -1,6 +1,6 @@
 'use strict';
 var app = new Orangee.Application({
-  youtube: orangee.PLATFORM != 'samsung',
+  youtube: false,//orangee.PLATFORM != 'samsung',
   regions: {
     header: "#header",
     content: "#content",
