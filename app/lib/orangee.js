@@ -36,6 +36,19 @@ orangee._loadYoutubeApi = function() {
   firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 };
 
+orangee._loadDailymotionApi = function() {
+  window.dmAsyncInit = function() {
+    //DM.init({apiKey: 'your app id', status: true, cookie: true});
+    orangee.debug("onYouTubeIframeAPIReady");
+    orangee._dailymotionReady = true;
+    $(document).trigger("oge-dailymotionready");
+  };
+  var e = document.createElement('script'); e.async = true;
+  e.src = 'http://api.dmcdn.net/all.js';
+  var s = document.getElementsByTagName('script')[0];
+  s.parentNode.insertBefore(e, s);
+};
+
 orangee._findYoutubeId = function(urlString) {
   if (window.url('domain', urlString) === "youtube.com") {
     return window.url('?v', urlString);
@@ -46,8 +59,10 @@ orangee._findYoutubeId = function(urlString) {
   return null;
 };
 
+orangee._findDailymotionId = function(urlString) {
+  return window.url('file', urlString);
+};
 
-//it is better to wait until onYouTubePlayerAPIReady(playerId)
 orangee.ytplayer = function _OrangeeJSYTPlayer() {
   this.player = null;
   this.support_translate = false;
@@ -74,7 +89,7 @@ orangee.ytplayer.prototype.seek = function(second) {
 };
 
 orangee.ytplayer.prototype.load = function(url, startSeconds, divid, options) {
-  var vid = url.split('watch?v=')[1];
+  var vid = orangee._findYoutubeId(url);
   startSeconds = Math.round(startSeconds);// youtube api only takes positive integer
 
   if (this.player) {
@@ -146,6 +161,63 @@ orangee.ytplayer.prototype.load = function(url, startSeconds, divid, options) {
       }
     });
   }
+};
+
+
+orangee.dmplayer = function _OrangeeJSDMplayer() {
+  this.player = null;
+  this.support_translate = false;
+};
+
+orangee.dmplayer.prototype.play = function() {
+  this.player.play();
+};
+
+orangee.dmplayer.prototype.pause = function() {
+  this.player.pause();
+};
+
+orangee.dmplayer.prototype.stop = function() {
+  this.player.pause();
+};
+
+orangee.dmplayer.prototype.currentTime = function() {
+   return this.player.currentTime;
+};
+
+orangee.dmplayer.prototype.seek = function(second) {
+   return this.player.seek(second);
+};
+
+orangee.dmplayer.prototype.load = function(url, startSeconds, divid, options) {
+  var vid = orangee._findDailymotionId(url);
+  startSeconds = Math.round(startSeconds);
+
+  if (this.player) {
+    orangee.debug("orangee.dmplayer#load");
+    this.player.load(vid);
+  } else {
+    orangee.debug("orangee.dmplayer#load new iframe");
+
+    var div = document.getElementById(divid);
+
+    this.player = new DM.player(div, {video: vid, params: {autoplay: (options['autoplay'] || 0)}});
+
+    if (options['onplaying']) {
+      this.player.addEventListener("playing", options['onplaying']);
+    }
+    if (options['onpause']) {
+      this.player.addEventListener("pause", options['onpause']);
+    }
+    if (options['onend']) {
+      this.player.addEventListener("ended", options['onend']);
+    }
+  }
+
+  var self = this;
+  this.player.addEventListener("canplay",function() { 
+    self.player.currentTime = startSeconds;
+  });
 };
 
 
@@ -300,8 +372,8 @@ orangee.html5player.prototype.load = function(url, startSeconds, divid, options)
   this.video.load();
   var self = this;
   this.video.addEventListener("canplay",function() { 
-    self.video.currentTime = startSeconds;}
-  );
+    self.video.currentTime = startSeconds;
+  });
 };
 
 
@@ -315,6 +387,7 @@ orangee.videoplayer = function(options) {
   this.device = null;
   options = options || {};
   this.support_youtube = (typeof(options['youtube']) != 'undefined') ? options['youtube'] : true;
+  this.support_dailymotion = (typeof(options['dailymotion']) != 'undefined') ? options['dailymotion'] : true;
   this.support_samsung = (typeof(options['samsung']) != 'undefined') ? options['samsung'] : false;
   this.translate_url = options['translate_url'];
   this.playing = false;
@@ -429,7 +502,7 @@ orangee.videoplayer.prototype.switchVideo = function(index) {
       this.connectplayer.load(url, startSeconds, this.divid, this.options);
       //beamed video always play automatically
     } else {
-      if (this.current_player.support_translate && this.translate_url) {
+      if (this.currentplayer.support_translate && this.translate_url) {
         var self= this;
         this.translate_url(url, function(err, new_url) {
           self.currentplayer.load(new_url, startSeconds, self.divid, self.options);
@@ -447,7 +520,7 @@ orangee.videoplayer.prototype._buildPlayer = function(url, callback) {
       this.currentplayer = new orangee.samsungplayer();
       callback();
     }
-  } else if (this.support_youtube && url.indexOf('youtube.com') > -1) {
+  } else if (this.support_youtube && (url.indexOf('youtube.com') > -1 || url.indexOf('youtu.be') > -1)) {
     if (null == this.currentplayer || this.currentplayer.constructor.name != orangee.ytplayer.name) {
       if (orangee._youtubeReady) {
         this.currentplayer = new orangee.ytplayer();
@@ -456,6 +529,19 @@ orangee.videoplayer.prototype._buildPlayer = function(url, callback) {
         $(document).on('oge-youtubeready', function() {
           orangee.debug('oge-youtubeready');
           this.currentplayer = new orangee.ytplayer();
+          callback();
+        }.bind(this));
+      }
+    }
+  } else if (this.support_dailymotion && url.indexOf('dailymotion.com') > -1) {
+    if (null == this.currentplayer || this.currentplayer.constructor.name != orangee.dmplayer.name) {
+      if (orangee._dailymotionReady) {
+        this.currentplayer = new orangee.dmplayer();
+        callback();
+      } else {
+        $(document).on('oge-dailymotionready', function() {
+          orangee.debug('oge-dailymotionready');
+          this.currentplayer = new orangee.dmplayer();
           callback();
         }.bind(this));
       }
