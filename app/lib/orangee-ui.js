@@ -2146,7 +2146,7 @@ Orangee.CSVCollection = Orangee.XMLCollection.extend({
         if (!obj['_img']) {
           var ytid = orangee._findYoutubeId(obj['_url']);
           if (ytid) {
-            obj['_img'] = "http://i.ytimg.com//vi/" + ytid + "/mqdefault.jpg";
+            obj['_img'] = "http://i.ytimg.com/vi/" + ytid + "/mqdefault.jpg";
           }
         }
 
@@ -2293,6 +2293,7 @@ Orangee.VideoView = Orangee.ItemView.extend({
     //orangee.debug(this.getOption('player'));
     this.videoplayer = new orangee.videoplayer({
       youtube: this.getOption('youtube'),
+      dailymotion: this.getOption('dailymotion'),
       translate_url: (typeof(OrangeeJSPlugin) != 'undefined') ? OrangeeJSPlugin : null,
     });
     var onplaying = this.getOption('onPlaying');

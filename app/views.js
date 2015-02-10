@@ -63,7 +63,8 @@ var HeaderView = Orangee.ItemView.extend({
 });
 
 var PlayerView =  Orangee.VideoView.extend({
-  youtube: false,//orangee.PLATFORM != 'samsung',
+  youtube: false,
+  dailymotion: false,
   template: '#playerTmpl',
   divid: 'myvideo',
   playerVars: {
