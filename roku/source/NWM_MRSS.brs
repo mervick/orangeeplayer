@@ -165,7 +165,7 @@ function NWM_MRSS_GetEpisodes(limit = 0)
 					url:	ValidStr(item.enclosure@url)
 				}
 				newItem.streams.Push(newStream)
-        if ValidStr(item.enclosure@type) = "video/mp4"
+        if ValidStr(item.enclosure@type) = "video/mp4" OR ValidStr(item.enclosure@type) = "video/mpeg"
           newItem.streamFormat = "mp4"
         end if
 

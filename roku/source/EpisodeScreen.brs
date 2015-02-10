@@ -1,4 +1,4 @@
-sub ShowEpisodeScreen(rssurl, leftBread, rightBread)
+sub ShowEpisodeScreen(rss_or_csv_url, leftBread, rightBread)
   print "ShowEpisodeScreen"
 
 	screen = CreateObject("roPosterScreen")
@@ -6,9 +6,13 @@ sub ShowEpisodeScreen(rssurl, leftBread, rightBread)
   screen.SetListStyle("flat-category")
   screen.SetBreadcrumbText(leftBread, rightBread)
 	screen.Show()
-	
-	mrss = NWM_MRSS(rssurl)
-	content = mrss.GetEpisodes()
+
+  if Right(rss_or_csv_url, 4) = ".csv" or Right(rss_or_csv_url, 4) = ".txt"
+    content = ParseCSV(rss_or_csv_url)
+  else
+	  mrss = NWM_MRSS(rss_or_csv_url)
+	  content = mrss.GetEpisodes()
+  end if
 	selectedEpisode = 0
 	screen.SetContentList(content)
   if content <> invalid AND content.Count() > 0
