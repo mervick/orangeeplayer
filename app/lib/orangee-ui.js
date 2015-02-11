@@ -2380,6 +2380,7 @@ Orangee.ScrollView = Orangee.CompositeView.extend({
   scroll: {
     //click: true,
     mouseWheel: true,
+    scrollbars: true,
     //keyBindings: true,
   },
   numberOfColumns: 1,

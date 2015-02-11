@@ -1,7 +1,8 @@
 {
   "name": "orangeetv",
   "package": "com.orangeejs.orangeetv",
-  "version": "0.0.0",
+  "version": "1.0.1",
+  "category": "videos",
   "description": "",
   "samsung_vm": "2013_Smart_TV_Emulator_4_5",
   "android_vm": "Samsung Galaxy S4 - 4.3 - API 18 - 1080x1920",
