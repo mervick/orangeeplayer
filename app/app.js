@@ -1,7 +1,9 @@
 'use strict';
 var app = new Orangee.Application({
-  youtube: false,//orangee.PLATFORM != 'samsung',
-  dailymotion: false,
+  options: {
+    youtube: false,//orangee.PLATFORM != 'samsung',
+    dailymotion: false,
+  },
   regions: {
     header: "#header",
     content: "#content",

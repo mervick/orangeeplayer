@@ -72,12 +72,14 @@ var HeaderView = Orangee.ItemView.extend({
 
 var PlayerView =  Orangee.VideoView.extend({
   typeName: "PlayerView",
-  youtube: false,
-  dailymotion: false,
   template: '#playerTmpl',
-  divid: 'myvideo',
-  playerVars: {
-    autoplay: 1,
+  options: {
+    youtube: false,
+    dailymotion: false,
+    divid: 'myvideo',
+    playerVars: {
+      autoplay: 1,
+    },
   },
   onRender: function() {
     $(".navbar").hide();

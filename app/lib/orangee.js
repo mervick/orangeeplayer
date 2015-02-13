@@ -1,4 +1,4 @@
-//'use strict';
+'use strict';
 
 var orangee = {};
 var Orangee = {};
@@ -3191,13 +3191,13 @@ IN THE SOFTWARE.*/
 
 Orangee.Application = Marionette.Application.extend({
   typeName: "Orangee.Application",
-  initialize: function(options) {
+  initialize: function() {
     //orangee.debug("Orangee.Application#initialize");
     orangee.init();
-    if (options && options['youtube']) {
+    if (this.getOption('youtube')) {
       orangee._loadYoutubeApi();
     }
-    if (options && options['dailymotion']) {
+    if (this.getOption('dailymotion')) {
       orangee._loadDailymotionApi();
     }
   },
@@ -3601,11 +3601,13 @@ Orangee.ScrollView = Orangee.CompositeView.extend({
     OrangeeLazyloadBehavior: {},
   },
   childViewContainer: "ul",
-  scroll: {
-    //click: true,
-    mouseWheel: true,
-    scrollbars: true,
-    //keyBindings: true,
+  options: {
+    scroll: {
+      //click: true,
+      mouseWheel: true,
+      scrollbars: true,
+      //keyBindings: true,
+    },
   },
   numberOfColumns: 1,
   keyEvents: {
@@ -3649,10 +3651,12 @@ Orangee.ScrollView = Orangee.CompositeView.extend({
 
 Orangee.HorizontalScrollView = Orangee.ScrollView.extend({
   typeName: "Orangee.HorizontalScrollView",
-  scroll: {
-    mouseWheel: true,
-    scrollX: true,
-    scrollY: false,
+  options: {
+    scroll: {
+      mouseWheel: true,
+      scrollX: true,
+      scrollY: false,
+    },
   },
 });
 
