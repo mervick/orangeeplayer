@@ -43,7 +43,7 @@
   <script type="text/html" id="rssItemTmpl">
     <li class="col-xs-6 col-sm-3 col-md-2">
       <div class="media" id="<%= cid %>">
-        <a href="#video/<%= encodeURIComponent(enclosure._url) %>"><img class="img-responsive lazy" src="images/placeholder.png" data-original="<%= thumbnail._url %>" alt="<%= title %>" /></a> 
+        <a href="#video/<%= encodeURIComponent(enclosure._url) %>"><img class="img-responsive lazy" src="images/placeholder.png" data-original="<%= thumbnail_url %>" alt="<%= title %>" /></a> 
         <div class="item-title"><%= title %></div>
       </div>
     </li>
@@ -83,6 +83,7 @@
   <script type="text/javascript" src="lib/backbone.marionette.min.js"></script>
   <script type="text/javascript" src="lib/backbone.paginator.min.js"></script>
   <script type="text/javascript" src="lib/backbone.select.min.js"></script>
+  <script type="text/javascript" src="lib/backbone.mutators.min.js"></script>
   <script type="text/javascript" src="lib/orangee.js"></script>
   <script type="text/javascript" src="lib/orangee-ui.js"></script>
   <script type="text/javascript" src="models.js"></script>
