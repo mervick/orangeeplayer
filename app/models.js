@@ -1,6 +1,7 @@
 'use strict';
 
 var LinkCode = Orangee.XMLModel.extend({
+  typeName: 'LinkCode',
   url: "http://www.orangee.tv/getLinkingCode",
   parse: function(xml) {
     var json = orangee.xml2json(xml);
@@ -9,6 +10,7 @@ var LinkCode = Orangee.XMLModel.extend({
 });
 
 var DeviceToken = Orangee.XMLModel.extend({
+  typeName: 'DeviceToken',
   initialize: function(link_code) {
     this.link_code = link_code;
   },
@@ -29,11 +31,8 @@ var DeviceToken = Orangee.XMLModel.extend({
   }
 });
 
-var Subscription = Orangee.Model.extend({
-});
-
 var Subscriptions = Orangee.OPMLCollection.extend({
-  model: Subscription,
+  typeName: "Subscriptions",
   initialize: function(device_token) {
     this.device_token = device_token;
     Orangee.OPMLCollection.prototype.initialize.apply(this);
@@ -43,10 +42,8 @@ var Subscriptions = Orangee.OPMLCollection.extend({
   },
 });
 
-var Album = Orangee.Model.extend({});
-
 var Albums = Orangee.OPMLCollection.extend({
-  model: Album,
+  typeName: "Albums",
   initialize: function(url) {
     this.link = url;
     Orangee.OPMLCollection.prototype.initialize.apply(this);
@@ -56,10 +53,8 @@ var Albums = Orangee.OPMLCollection.extend({
   },
 });
 
-var Video = Orangee.Model.extend({ });
-
 var Videos = Orangee.RSSCollection.extend({
-  model: Video,
+  typeName: "Videos",
   initialize: function(url) {
     this.link = url;
     Orangee.OPMLCollection.prototype.initialize.apply(this);
@@ -70,7 +65,7 @@ var Videos = Orangee.RSSCollection.extend({
 });
 
 var CSVVideos = Orangee.CSVCollection.extend({
-  model: Video,
+  typeName: "CSVVideos",
   initialize: function(url) {
     this.link = url;
     Orangee.CSVCollection.prototype.initialize.apply(this);

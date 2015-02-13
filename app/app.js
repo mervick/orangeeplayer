@@ -9,6 +9,7 @@ var app = new Orangee.Application({
 });
 
 var MyController = Orangee.Controller.extend({
+  typeName: "MyController",
   index: function() {
     app.header.show(new HeaderView());
 
@@ -79,6 +80,7 @@ var MyController = Orangee.Controller.extend({
 });
 
 var MyRouter = Orangee.Router.extend({
+  typeName: "MyRouter",
   appRoutes: {
     "": "index",
     "binding": "binding",

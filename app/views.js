@@ -1,4 +1,5 @@
 var BindingView = Orangee.ItemView.extend({
+  typeName: "BindingView",
   template: "#bindingTmpl",
   onRender: function() {
     var token = new DeviceToken(this.model.get('code'));
@@ -23,10 +24,12 @@ var BindingView = Orangee.ItemView.extend({
 });
 
 var OPMLItemView = Orangee.ScrollItemView.extend({
+  typeName: "OPMLItemView",
   template: '#opmlItemTmpl',
 });
 
 var OPMLView = Orangee.ScrollView.extend({
+  typeName: "OPMLView",
   childView: OPMLItemView,
   template: '#opmlTmpl',
   onShow: function() {
@@ -37,22 +40,27 @@ var OPMLView = Orangee.ScrollView.extend({
 });
 
 var RSSItemView = Orangee.ScrollItemView.extend({
+  typeName: "RSSItemView",
   template: '#rssItemTmpl',
 });
 
 var RSSView = OPMLView.extend({
+  typeName: "RSSView",
   childView: RSSItemView,
 });
 
 var CSVItemView = Orangee.ScrollItemView.extend({
+  typeName: "CSVItemView",
   template: '#csvItemTmpl',
 });
 
 var CSVView = OPMLView.extend({
+  typeName: "CSVView",
   childView: CSVItemView,
 });
 
 var HeaderView = Orangee.ItemView.extend({
+  typeName: "HeaderView",
   template: '#headerTmpl',
   keyEvents: {
     'back': 'onKeyBack',
@@ -63,6 +71,7 @@ var HeaderView = Orangee.ItemView.extend({
 });
 
 var PlayerView =  Orangee.VideoView.extend({
+  typeName: "PlayerView",
   youtube: false,
   dailymotion: false,
   template: '#playerTmpl',

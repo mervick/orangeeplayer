@@ -405,6 +405,7 @@ orangee.videoplayer.prototype.play = function() {
     this.currentplayer.play();
   }
   this.playing = true;
+  orangee.disableScreenSaver();
 };
 
 orangee.videoplayer.prototype.togglePlay = function() {
@@ -422,6 +423,7 @@ orangee.videoplayer.prototype.pause = function() {
     this.currentplayer.pause();
   }
   this.playing = false;
+  orangee.enableScreenSaver();
 };
 
 orangee.videoplayer.prototype.stop = function() {
@@ -431,6 +433,7 @@ orangee.videoplayer.prototype.stop = function() {
     this.currentplayer.stop();
   }
   this.playing = false;
+  orangee.enableScreenSaver();
 };
 
 orangee.videoplayer.prototype.currentTime = function() {
@@ -1105,4 +1108,10 @@ orangee.hasNetwork = function() {
     //do not know, just return true
     return true;
   }
+};
+
+orangee.disableScreenSaver = function() {
+};
+
+orangee.enableScreenSaver = function() {
 };
