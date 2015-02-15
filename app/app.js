@@ -1,14 +1,4 @@
 'use strict';
-var app = new Orangee.Application({
-  options: {
-    youtube: false,//orangee.PLATFORM != 'samsung',
-    dailymotion: false,
-  },
-  regions: {
-    header: "#header",
-    content: "#content",
-  },
-});
 
 var MyController = Orangee.Controller.extend({
   typeName: "MyController",
@@ -91,12 +81,16 @@ var MyRouter = Orangee.Router.extend({
   },
 });
 
-app.on("before:start", function(options) {
-  orangee.debug_enabled = true;
-});
-
-app.on("start", function(options){
-  new MyRouter({controller: new MyController()});
-  Backbone.history.start();
+var app = new Orangee.Application({
+  options: {
+    enable_debug: true,
+    youtube_api: false,//orangee.PLATFORM != 'samsung',
+    dailymotion_api: false,
+  },
+  regions: {
+    header: "#header",
+    content: "#content",
+  },
+  router: new MyRouter({controller: new MyController()}),
 });
 
