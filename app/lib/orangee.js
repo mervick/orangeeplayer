@@ -3731,6 +3731,9 @@ orangee.KEYS = {
 orangee.init = function(callback) {
 };
 
+orangee.exit = function() {
+};
+
 orangee.hasNetwork = function() {
   if (navigator.connection) {
     //https://github.com/apache/cordova-plugin-network-information/blob/master/doc/index.md

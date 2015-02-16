@@ -66,7 +66,11 @@ var HeaderView = Orangee.ItemView.extend({
     'back': 'onKeyBack',
   },
   onKeyBack: function() {
-    Backbone.history.history.back();
+    if (Backbone.history.fragment != "") {
+      Backbone.history.history.back();
+    } else {
+      orangee.exit();
+    }
   },
 });
 
