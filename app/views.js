@@ -94,7 +94,7 @@ var PlayerView =  Orangee.VideoView.extend({
   onDestroy: function() {
     //$(".oge-fullscreenvideo").css('top', this.oldheight);
     $(".navbar").show();
-    //return Orangee.VideoView.prototype.onDestroy.apply(this, arguments);
+    return Orangee.VideoView.prototype.onDestroy.apply(this, arguments);
   },
   onEnd: function() {
     Backbone.history.history.back();

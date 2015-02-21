@@ -163,6 +163,8 @@ orangee.ytplayer.prototype.load = function(url, startSeconds, divid, options) {
   }
 };
 
+orangee.ytplayer.prototype.disconnect = function() {
+};
 
 orangee.dmplayer = function _OrangeeJSDMplayer() {
   this.player = null;
@@ -220,6 +222,8 @@ orangee.dmplayer.prototype.load = function(url, startSeconds, divid, options) {
   });
 };
 
+orangee.dmplayer.prototype.disconnect = function() {
+};
 
 orangee.connectplayer = function(device) {
   this.device = device;
@@ -311,6 +315,8 @@ orangee.connectplayer.prototype.load = function(url, startSeconds, divid, option
 
 orangee.html5player = function _OrangeeJSHTML5Player() {
   this.video = null;
+  this.player = null;
+  this.inactivityTimeout = null;
   this.support_translate = true;
 };
 
@@ -338,6 +344,15 @@ orangee.html5player.prototype.seek = function(second) {
   }
 
   this.video.currentTime = seekToTime;
+
+  this.player.userActive(true);
+  var self = this;
+  if (this.inactivityTimeout) {
+    clearTimeout(this.inactivityTimeout);
+  }
+  this.inactivityTimeout = setTimeout(function(){
+    self.player.userActive(false);
+  }, 2000);
 };
 
 orangee.html5player.prototype.load = function(url, startSeconds, divid, options) {
@@ -373,7 +388,7 @@ orangee.html5player.prototype.load = function(url, startSeconds, divid, options)
       this.video.addEventListener("ended", options['onend']);
     }
 
-    videojs(divid,
+    this.player = videojs(divid,
       {
         "poster":  div.getAttribute("poster"),
       }, function(){
@@ -382,15 +397,18 @@ orangee.html5player.prototype.load = function(url, startSeconds, divid, options)
   }
   this.video.src = url;
   this.video.load();
-  /* if (startSeconds > 0) {
+  if (startSeconds > 0) {
     var self = this;
     this.video.addEventListener("canplay",function() { 
       self.video.currentTime = startSeconds;
     });
-  } */
+  }
 };
 
-
+orangee.html5player.prototype.disconnect = function() {
+  orangee.debug("orangee.html5player.prototype.disconnect");
+  this.player.dispose();
+};
 
 orangee.videoplayer = function(options) {
   this.playlist = [];
@@ -594,6 +612,10 @@ orangee.videoplayer.prototype.disconnect = function() {
     this.device.disconnect();
     this.device = null;
   }
+  if (this.currentplayer) {
+    this.currentplayer.disconnect();
+    this.currentplayer = null;
+  }
 };
 
 /**
@@ -697,7 +719,7 @@ vjs.options = {
 
   // Default of web browser is 300x150. Should rely on source width/height.
   'width': "100%",
-  'height': "auto",
+  'height': "100%",
   // defaultVolume: 0.85,
   'defaultVolume': 0.00, // The freakin seaguls are driving me crazy!
 
@@ -15008,8 +15030,8 @@ IN THE SOFTWARE.*/
 Orangee.Application = Marionette.Application.extend({
   typeName: "Orangee.Application",
   initialize: function() {
-    orangee.enable_debug = this.getOption('enable_debug');
-    //orangee.debug("Orangee.Application#initialize");
+    orangee.debug_enabled = this.getOption('debug_enabled');
+    orangee.debug("Orangee.Application#initialize");
     orangee.init();
     if (this.getOption('youtube_api')) {
       orangee._loadYoutubeApi();
@@ -15317,6 +15339,7 @@ Orangee.SpinnerView = Marionette.ItemView.extend({
     this.spinner = new orangee.spinner(this.getOption('options')).spin(this.el);
   },
   onDestroy: function() {
+    orangee.debug("Orangee.SpinnerView#onDestroy");
     this.spinner.stop();
   },
 });
@@ -15344,6 +15367,10 @@ Orangee.VideoView = Orangee.ItemView.extend({
                           }, this.getOption('playerVars')),
                           this.collection.currentPosition,
                           startSeconds);
+  },
+  onDestroy: function() {
+    orangee.debug("Orangee.VideoView#onDestroy");
+    this.videoplayer.disconnect();
   },
   keyEvents: {
     'right': 'onKeyRight',

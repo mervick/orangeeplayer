@@ -83,7 +83,7 @@ var MyRouter = Orangee.Router.extend({
 
 var app = new Orangee.Application({
   options: {
-    enable_debug: true,
+    debug_enabled: true,
     youtube_api: false,//orangee.PLATFORM != 'samsung',
     dailymotion_api: false,
   },
