@@ -104,6 +104,9 @@ var PlayerView =  Orangee.VideoView.extend({
   onEnd: function() {
     Backbone.history.history.back();
   },
+  onError: function() {
+    Backbone.history.navigate("error", {trigger: true});
+  },
 });
 
 
