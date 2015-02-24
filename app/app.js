@@ -18,12 +18,18 @@ var MyController = Orangee.Controller.extend({
       success: function(collection) {
         app.content.show(new OPMLView({collection: collection}));
       },
+      error: function() {
+        Backbone.history.navigate("error", {trigger: true});
+      },
     });
   },
   binding: function() {
     (new LinkCode()).fetch({
       success: function(model) {
         app.content.show(new BindingView({model: model}));
+      },
+      error: function() {
+        Backbone.history.navigate("error", {trigger: true});
       },
     });
   },
@@ -45,6 +51,9 @@ var MyController = Orangee.Controller.extend({
         orangee.log(collection);
         app.content.show(new OPMLView({collection: collection}));
       },
+      error: function() {
+        Backbone.history.navigate("error", {trigger: true});
+      },
     });
   },
   _rss: function(url) {
@@ -52,6 +61,9 @@ var MyController = Orangee.Controller.extend({
       success: function(collection) {
         orangee.log(collection);
         app.content.show(new RSSView({collection: collection}));
+      },
+      error: function() {
+        Backbone.history.navigate("error", {trigger: true});
       },
     });
   },
@@ -61,6 +73,9 @@ var MyController = Orangee.Controller.extend({
         orangee.log(collection);
         app.content.show(new CSVView({collection: collection}));
       },
+      error: function() {
+        Backbone.history.navigate("error", {trigger: true});
+      },
     });
   },
   video: function(url) {
@@ -69,6 +84,9 @@ var MyController = Orangee.Controller.extend({
     var collection = new Orangee.Collection([{url: url}]);
     app.content.show(new PlayerView({collection: collection}));
   },
+  error: function(msg) {
+     app.content.show(new ErrorView());
+  },
 });
 
 var MyRouter = Orangee.Router.extend({
@@ -76,6 +94,7 @@ var MyRouter = Orangee.Router.extend({
   appRoutes: {
     "": "index",
     "binding": "binding",
+    "error": "error",
     "album/:url": "album",
     "video/:url": "video",
   },

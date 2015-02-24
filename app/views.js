@@ -74,6 +74,11 @@ var HeaderView = Orangee.ItemView.extend({
   },
 });
 
+var ErrorView =  Orangee.ItemView.extend({
+  typeName: "ErrorView",
+  template: '#errorTmpl',
+});
+
 var PlayerView =  Orangee.VideoView.extend({
   typeName: "PlayerView",
   template: '#playerTmpl',
