@@ -372,46 +372,82 @@ orangee.html5player.prototype.load = function(url, startSeconds, divid, options)
       this.video.autoplay = true;
     }
     this.video.id = divid;
+    
 
     var div = document.getElementById(divid);
     this.video.setAttribute("class", div.getAttribute("class"));
     //this.video.setAttribute("poster", div.getAttribute("poster"));
     div.parentNode.replaceChild(this.video, div);
+    this.video.src = url;
 
-    if (options['onplaying']) {
-      this.video.addEventListener("playing", options['onplaying']);
-    }
-    if (options['onpause']) {
-      this.video.addEventListener("pause", options['onpause']);
-    }
-    if (options['onend']) {
-      this.video.addEventListener("ended", options['onend']);
-    }
-    if (options['onerror']) {
-      orangee.debug("added error handler");
-      this.video.addEventListener("error", options['onerror'], true);
-    }
-
-    this.player = videojs(divid,
-      {
-        "poster":  div.getAttribute("poster"),
-      }, function(){
-      // Player (this) is initialized and ready.
+    var vjsopt = {
+      poster:  div.getAttribute("poster"),
+      width: "100%",
+      height: "100%",
+    };
+    var self = this;
+    videojs(divid, vjsopt, function(){
+      self.player = this;
+      orangee.debug("orangee.html5player#ready");
+      self._load(self, url, startSeconds, options);
     });
+    //this._load(url, startSeconds, options);
+  } else {
+    this._load(url, startSeconds, options);
   }
-  this.video.src = url;
+};
+
+orangee.html5player.prototype._load = function(url, startSeconds, options) {
+  /*if (options['onplaying']) {
+    this.video.addEventListener("playing", options['onplaying']);
+  }
+  if (options['onpause']) {
+    this.video.addEventListener("pause", options['onpause']);
+  }
+  if (options['onend']) {
+    this.video.addEventListener("ended", options['onend']);
+  }
+  if (options['onerror']) {
+    this.video.addEventListener("error", options['onerror'], true);
+  }
+  orangee.debug("orangee.html5player.prototype._load " + url);
   this.video.load();
   if (startSeconds > 0) {
     var self = this;
     this.video.addEventListener("canplay",function() { 
+      orangee.debug("orangee.html5player#canplay");
       self.video.currentTime = startSeconds;
+    });
+  }*/
+  console.log(this);
+
+  if (options['onplaying']) {
+    this.player.on("playing", options['onplaying']);
+  }
+  if (options['onpause']) {
+    this.player.on("pause", options['onpause']);
+  }
+  if (options['onend']) {
+    this.player.on("ended", options['onend']);
+  }
+  if (options['onerror']) {
+    this.player.on("error", options['onerror'], true);
+  }
+  this.player.load();
+  if (startSeconds > 0) {
+    var self = this;
+    this.player.one("canplay",function() {
+      orangee.debug("orangee.html5player#canplay");
+      self.player.currentTime(startSeconds);
     });
   }
 };
 
 orangee.html5player.prototype.disconnect = function() {
   orangee.debug("orangee.html5player.prototype.disconnect");
-  this.player.dispose();
+  if (this.player) {
+    this.player.dispose();
+  }
 };
 
 orangee.videoplayer = function(options) {
@@ -588,8 +624,8 @@ orangee.videoplayer.prototype._buildPlayer = function(url, callback) {
   } else {
     if (null == this.currentplayer || this.currentplayer.constructor.name != orangee.html5player.name){
       this.currentplayer = new orangee.html5player();
-      callback();
     }
+    callback();
   }
 };
 
@@ -722,8 +758,8 @@ vjs.options = {
   'flash': {},
 
   // Default of web browser is 300x150. Should rely on source width/height.
-  'width': "100%",
-  'height': "100%",
+  'width': 300,
+  'height': 150,
   // defaultVolume: 0.85,
   'defaultVolume': 0.00, // The freakin seaguls are driving me crazy!
 
@@ -15485,14 +15521,14 @@ Orangee.ScrollView = Orangee.CompositeView.extend({
   },
   onKeyUp: function() {
     orangee.debug('Orangee.ScrollView#onKeyUp');
-    orangee.debug(this.children);
+    //orangee.debug(this.children);
     this.collection.selectPrev(this.numberOfColumns);
     var selectedChildView = this.children.findByIndex(this.collection.currentPosition);
     this.scroller.scrollToElement(selectedChildView.el);
   },
   onKeyDown: function() {
     orangee.debug('Orangee.ScrollView#onKeyDown');
-    orangee.debug(this.children);
+    //orangee.debug(this.children);
     this.collection.selectNext(this.numberOfColumns);
     var selectedChildView = this.children.findByIndex(this.collection.currentPosition);
     this.scroller.scrollToElement(selectedChildView.el);
