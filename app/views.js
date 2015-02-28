@@ -86,9 +86,7 @@ var PlayerView =  Orangee.VideoView.extend({
     youtube: false,
     dailymotion: false,
     divid: 'myvideo',
-    playerVars: {
-      autoplay: 1,
-    },
+    autoplay: true,
   },
   onRender: function() {
     $(".navbar").hide();

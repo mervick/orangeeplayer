@@ -5,6 +5,7 @@ var MyController = Orangee.Controller.extend({
   index: function() {
     app.header.show(new HeaderView());
 
+    //this.video("http://www.quirksmode.org/html5/videos/big_buck_bunny.mp4");
     var device_token = orangee.storage.get("device_token");
     if (!device_token || device_token === "") {
       Backbone.history.navigate("binding", {trigger: true});
@@ -80,7 +81,6 @@ var MyController = Orangee.Controller.extend({
   },
   video: function(url) {
     orangee.debug(url);
-    //"http://www.quirksmode.org/html5/videos/big_buck_bunny.mp4"
     var collection = new Orangee.Collection([{url: url}]);
     app.content.show(new PlayerView({collection: collection}));
   },
