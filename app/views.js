@@ -105,6 +105,9 @@ var PlayerView =  Orangee.VideoView.extend({
   onError: function() {
     Backbone.history.navigate("error", {trigger: true});
   },
+  onEnter: function() {
+    this.videoplayer.togglePlay();
+  },
 });
 
 
