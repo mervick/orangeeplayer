@@ -1,7 +1,7 @@
 {
   "name": "orangeetv",
   "package": "com.orangeejs.orangeetv",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "category": "video",
   "description": "",
   "samsung_vm": "2013_Smart_TV_Emulator_4_5",
