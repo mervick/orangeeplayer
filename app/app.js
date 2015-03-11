@@ -10,6 +10,9 @@ var MyController = Orangee.Controller.extend({
     if (!device_token || device_token === "") {
       Backbone.history.navigate("binding", {trigger: true});
     } else {
+      Airbrake.onload = function(client) {
+        Airbrake.addParams({device_token: device_token, version: orangee.APPVERSION, platform: orangee.PLATFORM});
+      }
       this._index(device_token);
     }
   },
@@ -84,6 +87,11 @@ var MyController = Orangee.Controller.extend({
     var collection = new Orangee.Collection([{url: url}]);
     app.content.show(new PlayerView({collection: collection}));
   },
+  html: function(cid) {
+    var desc = app.content.currentView.collection.selected.get('description');
+    var model = new Orangee.Model({html: desc});
+    app.content.show(new HtmlView({model: model}));
+  },
   error: function(msg) {
      app.content.show(new ErrorView());
   },
@@ -97,6 +105,7 @@ var MyRouter = Orangee.Router.extend({
     "error": "error",
     "album/:url": "album",
     "video/:url": "video",
+    "html/:cid": "html",
   },
 });
 

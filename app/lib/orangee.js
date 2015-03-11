@@ -381,6 +381,15 @@ orangee.html5player.prototype.load = function(url, startSeconds, divid, options)
       poster: div.getAttribute("poster") || options['poster'],
       width:  options['width']  || "100%",
       height: options['height'] || "100%",
+      children: {
+        controlBar: {
+          children: {
+            muteToggle: false,
+            fullscreenToggle: false,
+            volumeControl: false,
+          },
+        },
+      },
     };
     if (this.native_controls) {
       this._load(url, startSeconds, options);
@@ -15197,8 +15206,12 @@ Orangee.RSSItemModel = Orangee.Model.extend({
   typeName: "Orangee.RSSItemModel",
   mutators: {
     thumbnail_url: function() {
-      if (this.get("thumbnail")) {
-        return this.get("thumbnail")._url;
+      var image = this.get("thumbnail");
+      if (image) {
+        if (_.isArray(image)) {
+          image = image[0];
+        }
+        return image._url;
       } else if (this.collection) {
         return this.collection.thumbnail_url;
       } else {
@@ -15220,7 +15233,8 @@ Orangee.RSSCollection = Orangee.XMLCollection.extend({
       }
       this.thumbnail_url = image.url || image._href;
     }
-    return _.filter(json.rss.channel.item, function(x) {return x.enclosure;});
+    //return _.filter(json.rss.channel.item, function(x) {return x.enclosure;});
+    return json.rss.channel.item;
   },
 });
 
@@ -15307,7 +15321,9 @@ var OrangeeScrollerBehavior = Marionette.Behavior.extend({
     this.view.scroller.on("scrollEnd", function() {
       this.$el.trigger('scroll');
     }.bind(this));
-    this.view.collection.selectModel(this.view.collection.at(this.view.collection.currentPosition));
+    if (this.view.collection) {
+      this.view.collection.selectModel(this.view.collection.at(this.view.collection.currentPosition));
+    }
     //orangee.debug(this.view);
   },
   onDestroy: function() {
@@ -15438,7 +15454,7 @@ Orangee.VideoView = Orangee.ItemView.extend({
     'right': 'onKeyRight',
     'fastforward': 'onKeyRight',
     'left' : 'onKeyLeft',
-    'rewind': 'onKeyRight',
+    'rewind': 'onKeyLeft',
     'play' : 'onKeyPlay',
     'pause' : 'onKeyPause',
     'stop' : 'onKeyPause',

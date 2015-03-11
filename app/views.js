@@ -74,12 +74,27 @@ var HeaderView = Orangee.ItemView.extend({
   },
 });
 
-var ErrorView =  Orangee.ItemView.extend({
+var ErrorView = Orangee.ItemView.extend({
   typeName: "ErrorView",
   template: '#errorTmpl',
 });
 
-var PlayerView =  Orangee.VideoView.extend({
+var HtmlView = Orangee.ScrollView.extend({
+  typeName: "HtmlView",
+  template: '#htmlTmpl',
+  keyEvents: {
+    'up': 'onKeyUp',
+    'down': 'onKeyDown',
+  },
+  onKeyUp: function() {
+    this.scroller.scrollBy(0, 100);
+  },
+  onKeyDown: function() {
+    this.scroller.scrollBy(0, -100);
+  },
+});
+
+var PlayerView = Orangee.VideoView.extend({
   typeName: "PlayerView",
   template: '#playerTmpl',
   options: {
