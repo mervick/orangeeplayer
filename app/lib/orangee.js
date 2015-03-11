@@ -15572,6 +15572,18 @@ Orangee.ScrollView = Orangee.CompositeView.extend({
     var selectedChildView = this.children.findByIndex(this.collection.currentPosition);
     this.scroller.scrollToElement(selectedChildView.el);
   },
+  scrollBy: function(x, y) {
+    //https://github.com/cubiq/iscroll/issues/670
+    var newx = this.scroller.x + x;//TODO check x boundary
+    var newy = this.scroller.y + y;
+    if (newy > 0) {
+      newy = 0;
+    } else if (newy < this.scroller.maxScrollY) {
+      newy = this.scroller.maxScrollY;
+    }
+    orangee.debug('Orangee.ScrollView#scrollBy:' + newx + "/" + newy);
+    this.scroller.scrollTo(x, y);
+  },
 });
 
 Orangee.HorizontalScrollView = Orangee.ScrollView.extend({

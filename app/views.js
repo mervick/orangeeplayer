@@ -87,10 +87,10 @@ var HtmlView = Orangee.ScrollView.extend({
     'down': 'onKeyDown',
   },
   onKeyUp: function() {
-    this.scroller.scrollBy(0, 100);
+    this.scrollBy(0, 100);
   },
   onKeyDown: function() {
-    this.scroller.scrollBy(0, -100);
+    this.scrollBy(0, -100);
   },
 });
 
