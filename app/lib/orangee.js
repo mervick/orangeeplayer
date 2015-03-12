@@ -12512,6 +12512,10 @@ orangee.storage = {
         else {
             var expires = "";
         }
+        /*if (orangee.PLATFORM === 'samsung') {
+            orangee.writeFile(name, value);
+        }
+        else*/
         if( this.localStoreSupport() ) {
             localStorage.setItem(name, value);
         }
@@ -12520,6 +12524,10 @@ orangee.storage = {
         }
     },
     get: function(name) {
+        /*if (orangee.PLATFORM === 'samsung') {
+            return orangee.readFile(name);
+        }
+        else*/
         if( this.localStoreSupport() ) {
             var ret = localStorage.getItem(name);
             //console.log(typeof ret);
@@ -12554,6 +12562,10 @@ orangee.storage = {
         }
     },
     del: function(name) {
+        /*if (orangee.PLATFORM === 'samsung') {
+            orangee.deleteFile(name);
+        }
+        else */
         if( this.localStoreSupport() ) {
             localStorage.removeItem(name);
         }

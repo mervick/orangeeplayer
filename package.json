@@ -4,6 +4,7 @@
   "version": "1.0.2",
   "category": "video",
   "description": "",
+  "email": "support@orangee.tv",
   "samsung_vm": "2013_Smart_TV_Emulator_4_5",
   "android_vm": "Samsung Galaxy S4 - 4.3 - API 18 - 1080x1920",
   "roku": {
