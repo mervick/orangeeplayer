@@ -49,7 +49,11 @@ var Albums = Orangee.OPMLCollection.extend({
     Orangee.OPMLCollection.prototype.initialize.apply(this);
   },
   url: function() {
-    return "http://proxy.orangee.tv/proxy?url=" + this.link;
+    if (orangee.PLATFORM === 'samsung') {
+      return this.link;
+    } else {
+      return "http://proxy.orangee.tv/proxy?url=" + encodeURIComponent(this.link);
+    }
   },
 });
 
@@ -60,7 +64,11 @@ var Videos = Orangee.RSSCollection.extend({
     Orangee.OPMLCollection.prototype.initialize.apply(this);
   },
   url: function() {
-    return "http://proxy.orangee.tv/proxy?url=" + this.link;
+    if (orangee.PLATFORM === 'samsung') {
+      return this.link;
+    } else {
+      return "http://proxy.orangee.tv/proxy?url=" + encodeURIComponent(this.link);
+    }
   },
 });
 
@@ -71,7 +79,11 @@ var CSVVideos = Orangee.CSVCollection.extend({
     Orangee.CSVCollection.prototype.initialize.apply(this);
   },
   url: function() {
-    return "http://proxy.orangee.tv/proxy?url=" + this.link;
+    if (orangee.PLATFORM === 'samsung') {
+      return this.link;
+    } else {
+      return "http://proxy.orangee.tv/proxy?url=" + encodeURIComponent(this.link);
+    }
   },
 });
 
