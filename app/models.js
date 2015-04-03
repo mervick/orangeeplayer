@@ -1,15 +1,15 @@
 'use strict';
 
-var LinkCode = Orangee.XMLModel.extend({
+var LinkCode = SmartTV.XMLModel.extend({
   typeName: 'LinkCode',
   url: "http://www.orangee.tv/getLinkingCode",
   parse: function(xml) {
-    var json = orangee.xml2json(xml);
+    var json = smarttv.xml2json(xml);
     return {code: json.apiResponse.linkingCode.toString()};
   }
 });
 
-var DeviceToken = Orangee.XMLModel.extend({
+var DeviceToken = SmartTV.XMLModel.extend({
   typeName: 'DeviceToken',
   initialize: function(link_code) {
     this.link_code = link_code;
@@ -18,12 +18,12 @@ var DeviceToken = Orangee.XMLModel.extend({
     return "http://www.orangee.tv/validateLinkingCode?code=" + this.link_code;
   },
   parse: function(xml) {
-    orangee.debug(xml);
-    var json = orangee.xml2json(xml);
+    smarttv.debug(xml);
+    var json = smarttv.xml2json(xml);
     var status = json.apiResponse.status.toString();
     if (status === 'success') {
       var device_token = json.apiResponse.deviceToken.toString();
-      orangee.storage.set('device_token', device_token);
+      smarttv.storage.set('device_token', device_token);
       return {token: device_token};
     } else {
       return {};
@@ -31,25 +31,25 @@ var DeviceToken = Orangee.XMLModel.extend({
   }
 });
 
-var Subscriptions = Orangee.OPMLCollection.extend({
+var Subscriptions = SmartTV.OPMLCollection.extend({
   typeName: "Subscriptions",
   initialize: function(device_token) {
     this.device_token = device_token;
-    Orangee.OPMLCollection.prototype.initialize.apply(this);
+    SmartTV.OPMLCollection.prototype.initialize.apply(this);
   },
   url: function() {
     return "http://api.orangee.tv/getSubscription?token=" + this.device_token;
   },
 });
 
-var Albums = Orangee.OPMLCollection.extend({
+var Albums = SmartTV.OPMLCollection.extend({
   typeName: "Albums",
   initialize: function(url) {
     this.link = url;
-    Orangee.OPMLCollection.prototype.initialize.apply(this);
+    SmartTV.OPMLCollection.prototype.initialize.apply(this);
   },
   url: function() {
-    if (orangee.PLATFORM === 'samsung') {
+    if (smarttv.PLATFORM === 'samsung') {
       return this.link;
     } else {
       return "http://proxy.orangee.tv/proxy?url=" + encodeURIComponent(this.link);
@@ -57,14 +57,14 @@ var Albums = Orangee.OPMLCollection.extend({
   },
 });
 
-var Videos = Orangee.RSSCollection.extend({
+var Videos = SmartTV.RSSCollection.extend({
   typeName: "Videos",
   initialize: function(url) {
     this.link = url;
-    Orangee.OPMLCollection.prototype.initialize.apply(this);
+    SmartTV.OPMLCollection.prototype.initialize.apply(this);
   },
   url: function() {
-    if (orangee.PLATFORM === 'samsung') {
+    if (smarttv.PLATFORM === 'samsung') {
       return this.link;
     } else {
       return "http://proxy.orangee.tv/proxy?url=" + encodeURIComponent(this.link);
@@ -72,14 +72,14 @@ var Videos = Orangee.RSSCollection.extend({
   },
 });
 
-var CSVVideos = Orangee.CSVCollection.extend({
+var CSVVideos = SmartTV.CSVCollection.extend({
   typeName: "CSVVideos",
   initialize: function(url) {
     this.link = url;
-    Orangee.CSVCollection.prototype.initialize.apply(this);
+    SmartTV.CSVCollection.prototype.initialize.apply(this);
   },
   url: function() {
-    if (orangee.PLATFORM === 'samsung') {
+    if (smarttv.PLATFORM === 'samsung') {
       return this.link;
     } else {
       return "http://proxy.orangee.tv/proxy?url=" + encodeURIComponent(this.link);

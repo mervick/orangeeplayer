@@ -1,23 +1,23 @@
 'use strict';
 
-var MyController = Orangee.Controller.extend({
+var MyController = SmartTV.Controller.extend({
   typeName: "MyController",
   index: function() {
     app.header.show(new HeaderView());
 
     //this.video("http://www.quirksmode.org/html5/videos/big_buck_bunny.mp4");
-    var device_token = orangee.storage.get("device_token");
+    var device_token = smarttv.storage.get("device_token");
     if (!device_token || device_token === "") {
       Backbone.history.navigate("binding", {trigger: true});
     } else {
       Airbrake.onload = function(client) {
-        Airbrake.addParams({device_token: device_token, version: orangee.APPVERSION, platform: orangee.PLATFORM});
+        Airbrake.addParams({device_token: device_token, version: orangee.APPVERSION, platform: smarttv.PLATFORM});
       }
       this._index(device_token);
     }
   },
   _index: function(device_token) {
-    app.content.show(new Orangee.SpinnerView());
+    app.content.show(new SmartTV.SpinnerView());
     (new Subscriptions(device_token)).fetch({
       success: function(collection) {
         app.content.show(new OPMLView({collection: collection}));
@@ -38,8 +38,8 @@ var MyController = Orangee.Controller.extend({
     });
   },
   album: function(url) {
-    orangee.debug(url);
-    app.content.show(new Orangee.SpinnerView());
+    smarttv.debug(url);
+    app.content.show(new SmartTV.SpinnerView());
     if (/\.opml$/.test(url)) {
       this._opml(url);
     } else if (/\.csv$/.test(url) ||
@@ -52,7 +52,7 @@ var MyController = Orangee.Controller.extend({
   _opml: function(url) {
     (new Albums(url)).fetch({
       success: function(collection) {
-        orangee.log(collection);
+        smarttv.log(collection);
         app.content.show(new OPMLView({collection: collection}));
       },
       error: function() {
@@ -63,7 +63,7 @@ var MyController = Orangee.Controller.extend({
   _rss: function(url) {
     (new Videos(url)).fetch({
       success: function(collection) {
-        orangee.log(collection);
+        smarttv.log(collection);
         app.content.show(new RSSView({collection: collection}));
       },
       error: function() {
@@ -74,7 +74,7 @@ var MyController = Orangee.Controller.extend({
   _csv: function(url) {
     (new CSVVideos(url)).fetch({
       success: function(collection) {
-        orangee.log(collection);
+        smarttv.log(collection);
         app.content.show(new CSVView({collection: collection}));
       },
       error: function() {
@@ -83,13 +83,13 @@ var MyController = Orangee.Controller.extend({
     });
   },
   video: function(url) {
-    orangee.debug(url);
-    var collection = new Orangee.Collection([{url: url}]);
+    smarttv.debug(url);
+    var collection = new SmartTV.Collection([{url: url}]);
     app.content.show(new PlayerView({collection: collection}));
   },
   html: function(cid) {
     var desc = app.content.currentView.collection.selected.get('description');
-    var model = new Orangee.Model({html: desc});
+    var model = new SmartTV.Model({html: desc});
     app.content.show(new HtmlView({model: model}));
   },
   error: function(msg) {
@@ -97,7 +97,7 @@ var MyController = Orangee.Controller.extend({
   },
 });
 
-var MyRouter = Orangee.Router.extend({
+var MyRouter = SmartTV.Router.extend({
   typeName: "MyRouter",
   appRoutes: {
     "": "index",
@@ -109,10 +109,10 @@ var MyRouter = Orangee.Router.extend({
   },
 });
 
-var app = new Orangee.Application({
+var app = new SmartTV.Application({
   options: {
     debug_enabled: true,
-    youtube_api: false,//orangee.PLATFORM != 'samsung',
+    youtube_api: false,//smarttv.PLATFORM != 'samsung',
     dailymotion_api: false,
   },
   regions: {

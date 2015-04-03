@@ -1,32 +1,32 @@
 'use strict';
 
-var orangee = {};
-var Orangee = {};
+var smarttv = {};
+var SmartTV = {};
 
-orangee.xml2json = function(xml) {
+smarttv.xml2json = function(xml) {
   var x2js = new X2JS();
   return x2js.xml_str2json(xml);
 };
 
-orangee.log = function(s) {
-  if (orangee.PLATFORM != 'samsung') {
+smarttv.log = function(s) {
+  if (smarttv.PLATFORM != 'samsung') {
     console.log(s);
   } else {
     alert(s);
   }
 };
 
-orangee.debug = function(s) {
-  if (orangee.debug_enabled) {
-    orangee.log(s);
+smarttv.debug = function(s) {
+  if (smarttv.debug_enabled) {
+    smarttv.log(s);
   }
 };
 
 //https://developers.google.com/youtube/iframe_api_reference
-orangee._loadYoutubeApi = function() {
+smarttv._loadYoutubeApi = function() {
   window.onYouTubeIframeAPIReady = function() {
-    orangee.debug("onYouTubeIframeAPIReady");
-    orangee._youtubeReady = true;
+    smarttv.debug("onYouTubeIframeAPIReady");
+    smarttv._youtubeReady = true;
     $(document).trigger("oge-youtubeready");
   };
 
@@ -36,11 +36,11 @@ orangee._loadYoutubeApi = function() {
   firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 };
 
-orangee._loadDailymotionApi = function() {
+smarttv._loadDailymotionApi = function() {
   window.dmAsyncInit = function() {
     //DM.init({apiKey: 'your app id', status: true, cookie: true});
-    orangee.debug("onYouTubeIframeAPIReady");
-    orangee._dailymotionReady = true;
+    smarttv.debug("onYouTubeIframeAPIReady");
+    smarttv._dailymotionReady = true;
     $(document).trigger("oge-dailymotionready");
   };
   var e = document.createElement('script'); e.async = true;
@@ -49,7 +49,7 @@ orangee._loadDailymotionApi = function() {
   s.parentNode.insertBefore(e, s);
 };
 
-orangee._findYoutubeId = function(urlString) {
+smarttv._findYoutubeId = function(urlString) {
   if (window.url('domain', urlString) === "youtube.com") {
     return window.url('?v', urlString);
   } else if (window.url('domain', urlString) === "youtu.be") {
@@ -59,44 +59,44 @@ orangee._findYoutubeId = function(urlString) {
   return null;
 };
 
-orangee._findDailymotionId = function(urlString) {
+smarttv._findDailymotionId = function(urlString) {
   return window.url('file', urlString);
 };
 
-orangee.ytplayer = function _OrangeeJSYTPlayer() {
+smarttv.ytplayer = function _SmartTVJSYTPlayer() {
   this.player = null;
   this.support_translate = false;
 };
 
-orangee.ytplayer.prototype.play = function() {
+smarttv.ytplayer.prototype.play = function() {
   this.player.playVideo();
 };
 
-orangee.ytplayer.prototype.pause = function() {
+smarttv.ytplayer.prototype.pause = function() {
   this.player.pauseVideo();
 };
 
-orangee.ytplayer.prototype.stop = function() {
+smarttv.ytplayer.prototype.stop = function() {
   this.player.stopVideo();
 };
 
-orangee.ytplayer.prototype.currentTime = function() {
+smarttv.ytplayer.prototype.currentTime = function() {
    return this.player.getCurrentTime();
 };
 
-orangee.ytplayer.prototype.seek = function(second) {
+smarttv.ytplayer.prototype.seek = function(second) {
    return this.player.seekTo(second, true);
 };
 
-orangee.ytplayer.prototype.load = function(url, startSeconds, divid, options) {
-  var vid = orangee._findYoutubeId(url);
+smarttv.ytplayer.prototype.load = function(url, startSeconds, divid, options) {
+  var vid = smarttv._findYoutubeId(url);
   startSeconds = Math.round(startSeconds);// youtube api only takes positive integer
 
   if (this.player) {
-    orangee.debug("orangee.ytplayer#load cueVideoById");
+    smarttv.debug("smarttv.ytplayer#load cueVideoById");
     this.player.cueVideoById(vid, startSeconds);
   } else {
-    orangee.debug("orangee.ytplayer#load new iframe");
+    smarttv.debug("smarttv.ytplayer#load new iframe");
     var e = document.createElement("iframe");
     //e.width =  options['width'] || '100%'; //viewportwidth will not not consider the size of scroll bar
     //e.height = options['height'] || '100%';
@@ -140,7 +140,7 @@ orangee.ytplayer.prototype.load = function(url, startSeconds, divid, options) {
         },*/
        // does not work on file://
         'onStateChange': function(event) {
-          orangee.debug("onStateChange");
+          smarttv.debug("onStateChange");
           if (event.data == YT.PlayerState.PLAYING && options['onplaying']) {
             options['onplaying']();
           } else if (event.data == YT.PlayerState.PAUSED && options['onpause']) {
@@ -163,43 +163,43 @@ orangee.ytplayer.prototype.load = function(url, startSeconds, divid, options) {
   }
 };
 
-orangee.ytplayer.prototype.disconnect = function() {
+smarttv.ytplayer.prototype.disconnect = function() {
 };
 
-orangee.dmplayer = function _OrangeeJSDMplayer() {
+smarttv.dmplayer = function _SmartTVJSDMplayer() {
   this.player = null;
   this.support_translate = false;
 };
 
-orangee.dmplayer.prototype.play = function() {
+smarttv.dmplayer.prototype.play = function() {
   this.player.play();
 };
 
-orangee.dmplayer.prototype.pause = function() {
+smarttv.dmplayer.prototype.pause = function() {
   this.player.pause();
 };
 
-orangee.dmplayer.prototype.stop = function() {
+smarttv.dmplayer.prototype.stop = function() {
   this.player.pause();
 };
 
-orangee.dmplayer.prototype.currentTime = function() {
+smarttv.dmplayer.prototype.currentTime = function() {
    return this.player.currentTime;
 };
 
-orangee.dmplayer.prototype.seek = function(second) {
+smarttv.dmplayer.prototype.seek = function(second) {
    return this.player.seek(second);
 };
 
-orangee.dmplayer.prototype.load = function(url, startSeconds, divid, options) {
-  var vid = orangee._findDailymotionId(url);
+smarttv.dmplayer.prototype.load = function(url, startSeconds, divid, options) {
+  var vid = smarttv._findDailymotionId(url);
   startSeconds = Math.round(startSeconds);
 
   if (this.player) {
-    orangee.debug("orangee.dmplayer#load");
+    smarttv.debug("smarttv.dmplayer#load");
     this.player.load(vid);
   } else {
-    orangee.debug("orangee.dmplayer#load new iframe");
+    smarttv.debug("smarttv.dmplayer#load new iframe");
 
     var div = document.getElementById(divid);
 
@@ -222,15 +222,15 @@ orangee.dmplayer.prototype.load = function(url, startSeconds, divid, options) {
   });
 };
 
-orangee.dmplayer.prototype.disconnect = function() {
+smarttv.dmplayer.prototype.disconnect = function() {
 };
 
-orangee.connectplayer = function(device) {
+smarttv.connectplayer = function(device) {
   this.device = device;
   this.launchSession = null;
 };
 
-orangee.connectplayer.init = function() {
+smarttv.connectplayer.init = function() {
   ConnectSDK.discoveryManager.setCapabilityFilters([
     new ConnectSDK.CapabilityFilter(["MediaPlayer.Display.Video", "MediaControl.Pause"]),
     new ConnectSDK.CapabilityFilter(["Launcher.YouTube.Params"])
@@ -239,19 +239,19 @@ orangee.connectplayer.init = function() {
   ConnectSDK.discoveryManager.startDiscovery();
 };
 
-orangee.connectplayer.showDevicePicker = function() {
+smarttv.connectplayer.showDevicePicker = function() {
   return ConnectSDK.discoveryManager.pickDevice();
 };
 
-orangee.connectplayer.prototype.isReady = function() {
+smarttv.connectplayer.prototype.isReady = function() {
   return this.device.isReady();
 };
 
-orangee.connectplayer.prototype.play = function(device) {
+smarttv.connectplayer.prototype.play = function(device) {
   this.device.getMediaControl().play();
 };
 
-orangee.connectplayer.prototype.stop = function(device) {
+smarttv.connectplayer.prototype.stop = function(device) {
   //this.device.getMediaControl().stop();
   // on lg, have to close youtube app to launch a new one
   if (this.launchSession) {
@@ -261,20 +261,20 @@ orangee.connectplayer.prototype.stop = function(device) {
   //this.device.getKeyControl().home();
 };
 
-orangee.connectplayer.prototype.pause = function(device) {
+smarttv.connectplayer.prototype.pause = function(device) {
   this.device.getMediaControl().pause();
   //this.device.KeyControl().ok();
 };
 
-orangee.connectplayer.prototype.currentTime = function() {
+smarttv.connectplayer.prototype.currentTime = function() {
   return this.device.getMediaControl().getPosition();
 };
 
-orangee.connectplayer.prototype.seek = function(second) {
+smarttv.connectplayer.prototype.seek = function(second) {
   this.device.getMediaControl().seek(second * 1000);
 };
 
-orangee.connectplayer.prototype.load = function(url, startSeconds, divid, options) {
+smarttv.connectplayer.prototype.load = function(url, startSeconds, divid, options) {
   var self = this;
   if (this.device && this.device.isReady()) {
     var ytid = url.indexOf('youtube.com') > -1 ? url.split('watch?v=')[1] : null;
@@ -313,32 +313,32 @@ orangee.connectplayer.prototype.load = function(url, startSeconds, divid, option
 };
 
 
-orangee.html5player = function _OrangeeJSHTML5Player() {
+smarttv.html5player = function _SmartTVJSHTML5Player() {
   this.video = null;
   this.player = null;
   this.inactivityTimeout = null;
   this.support_translate = true;
-  this.native_controls = (orangee.PLATFORM == 'lg');//lg's os will crash with videojs if video is paused
+  this.native_controls = (smarttv.PLATFORM == 'lg');//lg's os will crash with videojs if video is paused
 };
 
-orangee.html5player.prototype.play = function() {
+smarttv.html5player.prototype.play = function() {
   this.video.play();
 };
 
-orangee.html5player.prototype.pause = function() {
+smarttv.html5player.prototype.pause = function() {
   this.video.pause();
 };
 
-orangee.html5player.prototype.stop = function() {
+smarttv.html5player.prototype.stop = function() {
   this.video.pause();
   this.video.src="";
 };
 
-orangee.html5player.prototype.currentTime = function() {
+smarttv.html5player.prototype.currentTime = function() {
   return this.video.currentTime;
 };
 
-orangee.html5player.prototype.seek = function(second) {
+smarttv.html5player.prototype.seek = function(second) {
   var seekToTime = this.video.currentTime + second;
   if (seekToTime < 0 || seekToTime > this.video.duration) {
     return;
@@ -356,11 +356,11 @@ orangee.html5player.prototype.seek = function(second) {
   }, 2000);
 };
 
-orangee.html5player.prototype.load = function(url, startSeconds, divid, options) {
-  orangee.debug(url);
-  orangee.debug(options);
+smarttv.html5player.prototype.load = function(url, startSeconds, divid, options) {
+  smarttv.debug(url);
+  smarttv.debug(options);
 
-  if (orangee.PLATFORM === 'samsung' && url.match(/\.m3u8$/) && !url.match(/COMPONENT=HLS$/)) {
+  if (smarttv.PLATFORM === 'samsung' && url.match(/\.m3u8$/) && !url.match(/COMPONENT=HLS$/)) {
     url = url + "?|COMPONENT=HLS";
   }
 
@@ -402,7 +402,7 @@ orangee.html5player.prototype.load = function(url, startSeconds, divid, options)
       var self = this;
       videojs(divid, vjsopt, function(){
         self.player = this;
-        orangee.debug("orangee.html5player#ready");
+        smarttv.debug("smarttv.html5player#ready");
         self._load(url, startSeconds, options);
       });
     }
@@ -411,7 +411,7 @@ orangee.html5player.prototype.load = function(url, startSeconds, divid, options)
   }
 };
 
-orangee.html5player.prototype._load = function(url, startSeconds, options) {
+smarttv.html5player.prototype._load = function(url, startSeconds, options) {
   if (this.native_controls) {
     //this.video.width = options['width'] || '100%';
     if (options['onplaying']) {
@@ -431,12 +431,12 @@ orangee.html5player.prototype._load = function(url, startSeconds, options) {
     }
 
     this.video.controls = true;
-    orangee.debug("orangee.html5player.prototype._load " + url);
+    smarttv.debug("smarttv.html5player.prototype._load " + url);
     this.video.load();
     if (startSeconds > 0) {
       var self = this;
       this.video.addEventListener("canplay",function() { 
-        orangee.debug("orangee.html5player#canplay");
+        smarttv.debug("smarttv.html5player#canplay");
         self.video.currentTime = startSeconds;
       });
     }
@@ -461,21 +461,21 @@ orangee.html5player.prototype._load = function(url, startSeconds, options) {
     if (startSeconds > 0) {
       var self = this;
       this.player.one("canplay",function() {
-        orangee.debug("orangee.html5player#canplay");
+        smarttv.debug("smarttv.html5player#canplay");
         self.player.currentTime(startSeconds);
       });
     }
   }
 };
 
-orangee.html5player.prototype.disconnect = function() {
-  orangee.debug("orangee.html5player.prototype.disconnect");
+smarttv.html5player.prototype.disconnect = function() {
+  smarttv.debug("smarttv.html5player.prototype.disconnect");
   if (this.player) {
     this.player.dispose();
   }
 };
 
-orangee.videoplayer = function(options) {
+smarttv.videoplayer = function(options) {
   this.playlist = [];
   this.currentIndex = 0;
   this.currentplayer = null;
@@ -490,22 +490,22 @@ orangee.videoplayer = function(options) {
   this.playing = false;
 };
 
-orangee.videoplayer.prototype.play = function() {
+smarttv.videoplayer.prototype.play = function() {
   if (this.connectplayer) {
     var url = this.playlist[this.currentIndex]['url'];
     this.connectplayer.load(url, 0, this.divid, this.options);
   } else if (this.device) {
-    this.connectplayer = new orangee.connectplayer(this.device);
+    this.connectplayer = new smarttv.connectplayer(this.device);
     var url = this.playlist[this.currentIndex]['url'];
     this.connectplayer.load(url, 0, this.divid, this.options);
   } else {
     this.currentplayer.play();
   }
   this.playing = true;
-  orangee.disableScreenSaver();
+  smarttv.disableScreenSaver();
 };
 
-orangee.videoplayer.prototype.togglePlay = function() {
+smarttv.videoplayer.prototype.togglePlay = function() {
   if (this.playing) {
     this.pause();
   } else {
@@ -513,27 +513,27 @@ orangee.videoplayer.prototype.togglePlay = function() {
   }
 };
 
-orangee.videoplayer.prototype.pause = function() {
+smarttv.videoplayer.prototype.pause = function() {
   if (this.connectplayer) {
     this.connectplayer.pause();
   } else {
     this.currentplayer.pause();
   }
   this.playing = false;
-  orangee.enableScreenSaver();
+  smarttv.enableScreenSaver();
 };
 
-orangee.videoplayer.prototype.stop = function() {
+smarttv.videoplayer.prototype.stop = function() {
   if (this.connectplayer) {
     this.connectplayer.stop();
   } else {
     this.currentplayer.stop();
   }
   this.playing = false;
-  orangee.enableScreenSaver();
+  smarttv.enableScreenSaver();
 };
 
-orangee.videoplayer.prototype.currentTime = function() {
+smarttv.videoplayer.prototype.currentTime = function() {
   if (this.connectplayer) {
     return this.connectplayer.currentTime();
   } else {
@@ -541,7 +541,7 @@ orangee.videoplayer.prototype.currentTime = function() {
   }
 };
 
-orangee.videoplayer.prototype.seek = function(second) {
+smarttv.videoplayer.prototype.seek = function(second) {
   if (this.connectplayer) {
     return this.connectplayer.seek(second);
   } else {
@@ -549,11 +549,11 @@ orangee.videoplayer.prototype.seek = function(second) {
   }
 };
 
-orangee.videoplayer.prototype.currentVideo = function() {
+smarttv.videoplayer.prototype.currentVideo = function() {
   return this.playlist[this.currentIndex];
 };
 
-orangee.videoplayer.prototype.next = function() {
+smarttv.videoplayer.prototype.next = function() {
   currentIndex++;
   if (currentIndex >= this.playlist.length) {
     currentIndex = this.playlist.length - 1;
@@ -561,7 +561,7 @@ orangee.videoplayer.prototype.next = function() {
   this.switchVideo(currentIndex);
 };
 
-orangee.videoplayer.prototype.prev = function() {
+smarttv.videoplayer.prototype.prev = function() {
   currentIndex--;
   if (currentIndex < 0) {
     currentIndex = 0;
@@ -569,7 +569,7 @@ orangee.videoplayer.prototype.prev = function() {
   this.switchVideo(currentIndex);
 };
 
-orangee.videoplayer.prototype.load = function(playlist, divid, options, index, startSeconds) {
+smarttv.videoplayer.prototype.load = function(playlist, divid, options, index, startSeconds) {
   this.playlist = playlist;
   this.divid = divid;
   this.options = options || {};
@@ -577,7 +577,7 @@ orangee.videoplayer.prototype.load = function(playlist, divid, options, index, s
   startSeconds = (typeof startSeconds !== 'undefined') ? startSeconds : 0;
 
   if (this.options['autoplay']) {
-    orangee.disableScreenSaver();
+    smarttv.disableScreenSaver();
   }
 
   var url = this.playlist[this.currentIndex]['url'];
@@ -593,19 +593,19 @@ orangee.videoplayer.prototype.load = function(playlist, divid, options, index, s
   }.bind(this));
 };
 
-orangee.videoplayer.prototype.switchVideo = function(index) {
+smarttv.videoplayer.prototype.switchVideo = function(index) {
   this.currentIndex = index;
   var startSeconds = 0;
 
   if (this.options['autoplay']) {
-    orangee.disableScreenSaver();
+    smarttv.disableScreenSaver();
   }
 
   var url = this.playlist[this.currentIndex]['url'];
   this._buildPlayer(url, function() {
     if (this.device) {
       if (!this.connectplayer) {
-        this.connectplayer = new orangee.connectplayer(this.device);
+        this.connectplayer = new smarttv.connectplayer(this.device);
       }
       this.connectplayer.load(url, startSeconds, this.divid, this.options);
       //beamed video always play automatically
@@ -622,53 +622,53 @@ orangee.videoplayer.prototype.switchVideo = function(index) {
   }.bind(this));
 };
 
-orangee.videoplayer.prototype._buildPlayer = function(url, callback) {
-  if (orangee.PLATFORM === 'samsung' && this.support_samsung) {
-    if (null == this.currentplayer || this.currentplayer.constructor.name != orangee.samsungplayer.name) {
-      this.currentplayer = new orangee.samsungplayer();
+smarttv.videoplayer.prototype._buildPlayer = function(url, callback) {
+  if (smarttv.PLATFORM === 'samsung' && this.support_samsung) {
+    if (null == this.currentplayer || this.currentplayer.constructor.name != smarttv.samsungplayer.name) {
+      this.currentplayer = new smarttv.samsungplayer();
       callback();
     }
   } else if (this.support_youtube && (url.indexOf('youtube.com') > -1 || url.indexOf('youtu.be') > -1)) {
-    if (null == this.currentplayer || this.currentplayer.constructor.name != orangee.ytplayer.name) {
-      if (orangee._youtubeReady) {
-        this.currentplayer = new orangee.ytplayer();
+    if (null == this.currentplayer || this.currentplayer.constructor.name != smarttv.ytplayer.name) {
+      if (smarttv._youtubeReady) {
+        this.currentplayer = new smarttv.ytplayer();
         callback();
       } else {
         $(document).on('oge-youtubeready', function() {
-          orangee.debug('oge-youtubeready');
-          this.currentplayer = new orangee.ytplayer();
+          smarttv.debug('oge-youtubeready');
+          this.currentplayer = new smarttv.ytplayer();
           callback();
         }.bind(this));
       }
     }
   } else if (this.support_dailymotion && url.indexOf('dailymotion.com') > -1) {
-    if (null == this.currentplayer || this.currentplayer.constructor.name != orangee.dmplayer.name) {
-      if (orangee._dailymotionReady) {
-        this.currentplayer = new orangee.dmplayer();
+    if (null == this.currentplayer || this.currentplayer.constructor.name != smarttv.dmplayer.name) {
+      if (smarttv._dailymotionReady) {
+        this.currentplayer = new smarttv.dmplayer();
         callback();
       } else {
         $(document).on('oge-dailymotionready', function() {
-          orangee.debug('oge-dailymotionready');
-          this.currentplayer = new orangee.dmplayer();
+          smarttv.debug('oge-dailymotionready');
+          this.currentplayer = new smarttv.dmplayer();
           callback();
         }.bind(this));
       }
     }
   } else {
-    if (null == this.currentplayer || this.currentplayer.constructor.name != orangee.html5player.name){
-      this.currentplayer = new orangee.html5player();
+    if (null == this.currentplayer || this.currentplayer.constructor.name != smarttv.html5player.name){
+      this.currentplayer = new smarttv.html5player();
     }
     callback();
   }
 };
 
-orangee.videoplayer.prototype.init_connectsdk = function() {
-  orangee.connectplayer.init();
+smarttv.videoplayer.prototype.init_connectsdk = function() {
+  smarttv.connectplayer.init();
 };
 
-orangee.videoplayer.prototype.showDevicePicker = function(callback) {
+smarttv.videoplayer.prototype.showDevicePicker = function(callback) {
   var self = this;
-  orangee.connectplayer.showDevicePicker().success(function(device) {
+  smarttv.connectplayer.showDevicePicker().success(function(device) {
     self.device = device;
     device.connect();
     if (typeof callback === "function") {
@@ -677,7 +677,7 @@ orangee.videoplayer.prototype.showDevicePicker = function(callback) {
   });
 };
 
-orangee.videoplayer.prototype.disconnect = function() {
+smarttv.videoplayer.prototype.disconnect = function() {
   if (this.connectplayer) {
     this.connectplayer = null;
   }
@@ -689,7 +689,7 @@ orangee.videoplayer.prototype.disconnect = function() {
     this.currentplayer.disconnect();
     this.currentplayer = null;
   }
-  orangee.enableScreenSaver();
+  smarttv.enableScreenSaver();
 };
 
 /**
@@ -12495,7 +12495,7 @@ vjs.plugin = function(name, init){
 }(this, (this.vttjs || {})));
 
 //http://stackoverflow.com/questions/4692245/html5-local-storage-fallback-solutions
-orangee.storage = {
+smarttv.storage = {
     localStoreSupport: function() {
         try {
             return 'localStorage' in window && window['localStorage'] !== null;
@@ -12512,8 +12512,8 @@ orangee.storage = {
         else {
             var expires = "";
         }
-        /*if (orangee.PLATFORM === 'samsung') {
-            orangee.writeFile(name, value);
+        /*if (smarttv.PLATFORM === 'samsung') {
+            smarttv.writeFile(name, value);
         }
         else*/
         if( this.localStoreSupport() ) {
@@ -12524,8 +12524,8 @@ orangee.storage = {
         }
     },
     get: function(name) {
-        /*if (orangee.PLATFORM === 'samsung') {
-            return orangee.readFile(name);
+        /*if (smarttv.PLATFORM === 'samsung') {
+            return smarttv.readFile(name);
         }
         else*/
         if( this.localStoreSupport() ) {
@@ -12562,8 +12562,8 @@ orangee.storage = {
         }
     },
     del: function(name) {
-        /*if (orangee.PLATFORM === 'samsung') {
-            orangee.deleteFile(name);
+        /*if (smarttv.PLATFORM === 'samsung') {
+            smarttv.deleteFile(name);
         }
         else */
         if( this.localStoreSupport() ) {
@@ -12612,8 +12612,8 @@ var openFB = (function () {
         // Used in the exit event handler to identify if the login has already been processed elsewhere (in the oauthCallback function)
         loginProcessed;
 
-    orangee.debug(oauthRedirectURL);
-    orangee.debug(logoutRedirectURL);
+    smarttv.debug(oauthRedirectURL);
+    smarttv.debug(logoutRedirectURL);
 
     document.addEventListener("deviceready", function () {
         runningInCordova = true;
@@ -12872,7 +12872,7 @@ function X2JS(v){var q="1.1.5";v=v||{};h();r();function h(){if(v.escapeMode===un
 
     var keyMatches = function(e, key) {
         return String.fromCharCode(e.which).toLowerCase() == key
-            || orangee.KEYS[e.which] == key;
+            || smarttv.KEYS[e.which] == key;
     };
 
     var modifierMatches = function(e, modifiers) {
@@ -12930,12 +12930,12 @@ function X2JS(v){var q="1.1.5";v=v||{};h();r();function h(){if(v.escapeMode===un
     var onKeydown = function() {
         _.each(eventsNamespace, function(namespace) {
           _.each(namespace, function(callback) {
-            if (orangee.PLATFORM === 'samsung') {
-              if (orangee.KEYS[event.keyCode] === 'back') {
-                orangee._samsungWidgetAPI.blockNavigation(event);//does not work with keyup
-              } /*else if (orangee.KEYS[event.keyCode] === 'exit') {
-                orangee._samsungWidgetAPI.blockNavigation(event);
-                orangee._samsungWidgetAPI.sendReturnEvent();
+            if (smarttv.PLATFORM === 'samsung') {
+              if (smarttv.KEYS[event.keyCode] === 'back') {
+                smarttv._samsungWidgetAPI.blockNavigation(event);//does not work with keyup
+              } /*else if (smarttv.KEYS[event.keyCode] === 'exit') {
+                smarttv._samsungWidgetAPI.blockNavigation(event);
+                smarttv._samsungWidgetAPI.sendReturnEvent();
               }*/
             }
             callback(event);
@@ -12944,8 +12944,8 @@ function X2JS(v){var q="1.1.5";v=v||{};h();r();function h(){if(v.escapeMode===un
     };
 
     $(document).on('keydown', onKeydown);
-    //<a href="javascript:void(0);" id="orangeeKeyboardAnchor" onkeydown="HotKeys.onKeydown();"></a>
-    //document.getElementById("orangeeKeyboardAnchor").focus();
+    //<a href="javascript:void(0);" id="smarttvKeyboardAnchor" onkeydown="HotKeys.onKeydown();"></a>
+    //document.getElementById("smarttvKeyboardAnchor").focus();
 
     root.HotKeys = {
         'bind': bind,
@@ -15113,17 +15113,17 @@ IN THE SOFTWARE.*/
 !function(a,b,c){"use strict";"object"==typeof exports?module.exports=b(require("underscore"),require("backbone")):"function"==typeof define&&define.amd?define(["underscore","backbone"],function(d,e){return d=d===c?a._:d,e=e===c?a.Backbone:e,a.returnExportsGlobal=b(d,e,a)}):a.returnExportsGlobal=b(a._,a.Backbone)}(this,function(a,b,c,d){"use strict";b=b===d?c.Backbone:b,a=a===d?c._:a;var e=function(){},f=b.Model.prototype.get,g=b.Model.prototype.set,h=b.Model.prototype.toJSON;return e.prototype.mutators={},e.prototype.get=function(b){var c=this.mutators!==d;return c===!0&&a.isFunction(this.mutators[b])===!0?this.mutators[b].call(this):c===!0&&a.isObject(this.mutators[b])===!0&&a.isFunction(this.mutators[b].get)===!0?this.mutators[b].get.call(this):f.call(this,b)},e.prototype.set=function(b,c,e){var f=this.mutators!==d,h=null,i=null;return h=g.call(this,b,c,e),a.isObject(b)||null===b?(i=b,e=c):(i={},i[b]=c),f===!0&&a.isObject(this.mutators[b])===!0&&(a.isFunction(this.mutators[b].set)===!0?h=this.mutators[b].set.call(this,b,i[b],e,a.bind(g,this)):a.isFunction(this.mutators[b])&&(h=this.mutators[b].call(this,b,i[b],e,a.bind(g,this)))),f===!0&&a.isObject(i)&&a.each(i,a.bind(function(b,c){if(a.isObject(this.mutators[c])===!0){var f=this.mutators[c];a.isFunction(f.set)&&(f=f.set),a.isFunction(f)&&((e===d||a.isObject(e)===!0&&e.silent!==!0&&e.mutators!==d&&e.mutators.silent!==!0)&&this.trigger("mutators:set:"+c),f.call(this,c,b,e,a.bind(g,this)))}},this)),h},e.prototype.toJSON=function(b){var c,d,e=h.call(this);return a.each(this.mutators,a.bind(function(f,g){a.isObject(this.mutators[g])===!0&&a.isFunction(this.mutators[g].get)?(c=a.has(b||{},"emulateHTTP"),d=this.mutators[g].transient,c&&d||(e[g]=a.bind(this.mutators[g].get,this)())):a.isFunction(this.mutators[g])&&(e[g]=a.bind(this.mutators[g],this)())},this)),e},e.prototype.escape=function(b){var c=this.get(b);return a.escape(null==c?"":""+c)},a.extend(b.Model.prototype,e.prototype),b.Mutators=e,e});
 'use strict';
 
-Orangee.Application = Marionette.Application.extend({
-  typeName: "Orangee.Application",
+SmartTV.Application = Marionette.Application.extend({
+  typeName: "SmartTV.Application",
   initialize: function() {
-    orangee.debug_enabled = this.getOption('debug_enabled');
-    orangee.debug("Orangee.Application#initialize");
-    orangee.init();
+    smarttv.debug_enabled = this.getOption('debug_enabled');
+    smarttv.debug("SmartTV.Application#initialize");
+    smarttv.init();
     if (this.getOption('youtube_api')) {
-      orangee._loadYoutubeApi();
+      smarttv._loadYoutubeApi();
     }
     if (this.getOption('dailymotion_api')) {
-      orangee._loadDailymotionApi();
+      smarttv._loadDailymotionApi();
     }
   },
   start: function(options) {
@@ -15132,16 +15132,16 @@ Orangee.Application = Marionette.Application.extend({
   },
 });
 
-Orangee.Controller = Marionette.Controller.extend({
-  typeName: "Orangee.Controller",
+SmartTV.Controller = Marionette.Controller.extend({
+  typeName: "SmartTV.Controller",
 });
 
-Orangee.Router = Backbone.Marionette.AppRouter.extend({
-  typeName: "Orangee.Router",
+SmartTV.Router = Backbone.Marionette.AppRouter.extend({
+  typeName: "SmartTV.Router",
 });
 
-Orangee.Model = Backbone.Model.extend({
-  typeName: "Orangee.Model",
+SmartTV.Model = Backbone.Model.extend({
+  typeName: "SmartTV.Model",
   initialize: function() {
     // Applies the mixin:
     Backbone.Select.Me.applyTo(this);
@@ -15154,22 +15154,22 @@ Orangee.Model = Backbone.Model.extend({
   },
 });
 
-Orangee.XMLModel = Orangee.Model.extend({
-  typeName: "Orangee.XMLModel",
+SmartTV.XMLModel = SmartTV.Model.extend({
+  typeName: "SmartTV.XMLModel",
   fetch: function(options) {
     options = options || {};
     options.dataType = "html";
     return Backbone.Model.prototype.fetch.apply(this, arguments);
   },
   parse: function(xml) {
-    return orangee.xml2json(xml);
+    return smarttv.xml2json(xml);
   },
 });
 
 //http://jaketrent.com/post/backbone-inheritance/
-Orangee.Collection = Backbone.PageableCollection.extend({
-  typeName: "Orangee.Collection",
-  model: Orangee.Model,
+SmartTV.Collection = Backbone.PageableCollection.extend({
+  typeName: "SmartTV.Collection",
+  model: SmartTV.Model,
   initialize: function(models, options) {
     // Applies the mixin:
     Backbone.Select.One.applyTo(this, models, options);
@@ -15199,8 +15199,8 @@ Orangee.Collection = Backbone.PageableCollection.extend({
   },
 });
 
-Orangee.XMLCollection = Orangee.Collection.extend({
-  typeName: "Orangee.XMLCollection",
+SmartTV.XMLCollection = SmartTV.Collection.extend({
+  typeName: "SmartTV.XMLCollection",
   fetch: function(options) {
     options = options || {};
     //options.dataType = "html";
@@ -15209,18 +15209,18 @@ Orangee.XMLCollection = Orangee.Collection.extend({
   },
 });
 
-Orangee.OPMLCollection = Orangee.XMLCollection.extend({
-  typeName: "Orangee.OPMLCollection",
+SmartTV.OPMLCollection = SmartTV.XMLCollection.extend({
+  typeName: "SmartTV.OPMLCollection",
   parse:function(xml) {
-    //orangee.debug(xml);
+    //smarttv.debug(xml);
     //var response = {data: json.opml.body.outline.map(function(x) {return {name: x._title, standardPic: x._img, url: x._url}})}
-    var json = orangee.xml2json(xml);
+    var json = smarttv.xml2json(xml);
     return json.opml.body.outline;
   },
 });
 
-Orangee.RSSItemModel = Orangee.Model.extend({
-  typeName: "Orangee.RSSItemModel",
+SmartTV.RSSItemModel = SmartTV.Model.extend({
+  typeName: "SmartTV.RSSItemModel",
   mutators: {
     thumbnail_url: function() {
       var image = this.get("thumbnail");
@@ -15238,11 +15238,11 @@ Orangee.RSSItemModel = Orangee.Model.extend({
   },
 });
 
-Orangee.RSSCollection = Orangee.XMLCollection.extend({
-  typeName: "Orangee.RSSCollection",
-  model: Orangee.RSSItemModel,
+SmartTV.RSSCollection = SmartTV.XMLCollection.extend({
+  typeName: "SmartTV.RSSCollection",
+  model: SmartTV.RSSItemModel,
   parse: function(xml) {
-    var json = orangee.xml2json(xml);
+    var json = smarttv.xml2json(xml);
     if (json.rss.channel.image) {
       var image = json.rss.channel.image;
       if (_.isArray(image)) {
@@ -15255,8 +15255,8 @@ Orangee.RSSCollection = Orangee.XMLCollection.extend({
   },
 });
 
-Orangee.CSVCollection = Orangee.XMLCollection.extend({
-  typeName: "Orangee.CSVCollection",
+SmartTV.CSVCollection = SmartTV.XMLCollection.extend({
+  typeName: "SmartTV.CSVCollection",
   parse:function(csv) {
     var lines=csv.split("\n");
     var result = [];
@@ -15284,7 +15284,7 @@ Orangee.CSVCollection = Orangee.XMLCollection.extend({
         }
 
         if (!obj['_img']) {
-          var ytid = orangee._findYoutubeId(obj['_url']);
+          var ytid = smarttv._findYoutubeId(obj['_url']);
           if (ytid) {
             obj['_img'] = "http://i.ytimg.com/vi/" + ytid + "/mqdefault.jpg";
           }
@@ -15301,16 +15301,16 @@ Orangee.CSVCollection = Orangee.XMLCollection.extend({
 
 'use strict';
 
-orangee.scroller = IScroll;
-//orangee.sidemenu = Snap;
-orangee.spinner = Spinner;
+smarttv.scroller = IScroll;
+//smarttv.sidemenu = Snap;
+smarttv.spinner = Spinner;
 
 Marionette.Behaviors.behaviorsLookup = function() {
   return window;
 }
 
-var OrangeeHotKeysBehavior = Marionette.Behavior.extend({
-  typeName: "OrangeeHotKeysBehavior",
+var SmartTVHotKeysBehavior = Marionette.Behavior.extend({
+  typeName: "SmartTVHotKeysBehavior",
   onRender: function() {
     if (this.view.keyEvents) {
       HotKeys.bind(this.view.keyEvents, this.view, this.view.cid);
@@ -15318,20 +15318,20 @@ var OrangeeHotKeysBehavior = Marionette.Behavior.extend({
   },
   onDestroy: function() {
     if (this.view.keyEvents) {
-      orangee.debug("OrangeeHotKeysBehavior#onDestroy");
+      smarttv.debug("SmartTVHotKeysBehavior#onDestroy");
       HotKeys.unbind(this.view.keyEvents, this.view, this.view.cid);
     }
   },
 });
 
-var OrangeeScrollerBehavior = Marionette.Behavior.extend({
-  typeName: "OrangeeScrollerBehavior",
+var SmartTVScrollerBehavior = Marionette.Behavior.extend({
+  typeName: "SmartTVScrollerBehavior",
   onShow: function() {
-    orangee.debug("OrangeeScrollerBehavior#onShow");
-    orangee.debug(this.view.getOption('options'));
-    //orangee.debug(this.el.parentNode.parentNode);
-    //orangee.debug(this.el);
-    this.view.scroller = new orangee.scroller(this.el, this.view.getOption('options'));
+    smarttv.debug("SmartTVScrollerBehavior#onShow");
+    smarttv.debug(this.view.getOption('options'));
+    //smarttv.debug(this.el.parentNode.parentNode);
+    //smarttv.debug(this.el);
+    this.view.scroller = new smarttv.scroller(this.el, this.view.getOption('options'));
     //http://stackoverflow.com/questions/11924711/how-to-make-iscroll-and-lazy-load-jquery-plugins-work-together
     //http://www.cnblogs.com/MartinLi841538513/articles/3663638.html
     //http://blog.rodneyrehm.de/archives/32-Updating-to-iScroll-5.html
@@ -15341,10 +15341,10 @@ var OrangeeScrollerBehavior = Marionette.Behavior.extend({
     if (this.view.collection) {
       this.view.collection.selectModel(this.view.collection.at(this.view.collection.currentPosition));
     }
-    //orangee.debug(this.view);
+    //smarttv.debug(this.view);
   },
   onDestroy: function() {
-    orangee.debug("OrangeeScrollerBehavior#onDestroy");
+    smarttv.debug("SmartTVScrollerBehavior#onDestroy");
     if (this.view.scroller) {
       this.view.scroller.destroy();
       this.view.scroller = null;
@@ -15352,8 +15352,8 @@ var OrangeeScrollerBehavior = Marionette.Behavior.extend({
   },
 });
 
-var OrangeeLazyloadBehavior = Marionette.Behavior.extend({
-  typeName: "OrangeeLazyloadBehavior",
+var SmartTVLazyloadBehavior = Marionette.Behavior.extend({
+  typeName: "SmartTVLazyloadBehavior",
   onShow: function() {
     this.view.$("img.lazy").lazyload({
       effect : "fadeIn",
@@ -15362,11 +15362,11 @@ var OrangeeLazyloadBehavior = Marionette.Behavior.extend({
   },
 });
 
-var OrangeeNoExtraDivBehavior = Marionette.Behavior.extend({
-  typeName: "OrangeeNoExtraDivBehavior",
+var SmartTVNoExtraDivBehavior = Marionette.Behavior.extend({
+  typeName: "SmartTVNoExtraDivBehavior",
   //http://stackoverflow.com/questions/14656068/turning-off-div-wrap-for-backbone-marionette-itemview
   onRender: function () {
-    //orangee.debug("OrangeeNoExtraDivBehavior#onRender");
+    //smarttv.debug("SmartTVNoExtraDivBehavior#onRender");
     // Get rid of that pesky wrapping-div.
     // Assumes 1 child element present in template.
     var children = this.$el.children();
@@ -15383,32 +15383,32 @@ var OrangeeNoExtraDivBehavior = Marionette.Behavior.extend({
   },
 });
 
-Orangee.ItemView = Marionette.ItemView.extend({
-  typeName: "Orangee.ItemView",
+SmartTV.ItemView = Marionette.ItemView.extend({
+  typeName: "SmartTV.ItemView",
   behaviors: {
-    OrangeeHotKeysBehavior: {},
-    OrangeeNoExtraDivBehavior: {},
+    SmartTVHotKeysBehavior: {},
+    SmartTVNoExtraDivBehavior: {},
   },
   initialize: function(options) {
-    //orangee.debug("Orangee.ItemView#initialize");
+    //smarttv.debug("SmartTV.ItemView#initialize");
     options = options || {};
     this.collectionView = options.collectionView;
   },
 });
 
-Orangee.CompositeView = Marionette.CompositeView.extend({
-  typeName: "Orangee.CompositeView",
+SmartTV.CompositeView = Marionette.CompositeView.extend({
+  typeName: "SmartTV.CompositeView",
   behaviors: {
-    OrangeeHotKeysBehavior: {},
-    OrangeeNoExtraDivBehavior: {},
+    SmartTVHotKeysBehavior: {},
+    SmartTVNoExtraDivBehavior: {},
   },
   childViewOptions: function() {
     return {collectionView: this};
   },
 });
 
-Orangee.SpinnerView = Marionette.ItemView.extend({
-  typeName: "Orangee.SpinnerView",
+SmartTV.SpinnerView = Marionette.ItemView.extend({
+  typeName: "SmartTV.SpinnerView",
   template: false,
   options: {
     lines: 13, // The number of lines to draw
@@ -15429,23 +15429,23 @@ Orangee.SpinnerView = Marionette.ItemView.extend({
     left: '50%' // Left position relative to parent
   },
   onShow: function() {
-    this.spinner = new orangee.spinner(this.getOption('options')).spin(this.el);
+    this.spinner = new smarttv.spinner(this.getOption('options')).spin(this.el);
   },
   onDestroy: function() {
-    orangee.debug("Orangee.SpinnerView#onDestroy");
+    smarttv.debug("SmartTV.SpinnerView#onDestroy");
     this.spinner.stop();
   },
 });
 
-Orangee.VideoView = Orangee.ItemView.extend({
-  typeName: "Orangee.VideoView",
+SmartTV.VideoView = SmartTV.ItemView.extend({
+  typeName: "SmartTV.VideoView",
   onShow: function() {
-    orangee.debug("Orangee.VideoView#onShow");
-    //orangee.debug(this.getOption('options'));
-    this.videoplayer = new orangee.videoplayer({
+    smarttv.debug("SmartTV.VideoView#onShow");
+    //smarttv.debug(this.getOption('options'));
+    this.videoplayer = new smarttv.videoplayer({
       youtube: this.getOption('youtube'),
       dailymotion: this.getOption('dailymotion'),
-      translate_url: (typeof(OrangeeJSPlugin) != 'undefined') ? OrangeeJSPlugin : null,
+      translate_url: (typeof(SmartTVJSPlugin) != 'undefined') ? SmartTVJSPlugin : null,
     });
     var onplaying = this.getOption('onPlaying');
     var onpause = this.getOption('onPause');
@@ -15464,7 +15464,7 @@ Orangee.VideoView = Orangee.ItemView.extend({
                           startSeconds);
   },
   onDestroy: function() {
-    orangee.debug("Orangee.VideoView#onDestroy");
+    smarttv.debug("SmartTV.VideoView#onDestroy");
     this.videoplayer.disconnect();
   },
   keyEvents: {
@@ -15478,27 +15478,27 @@ Orangee.VideoView = Orangee.ItemView.extend({
     'enter': 'onEnter',
   },
   onKeyPlay: function() {
-    orangee.debug('Orangee.VideoView#onKeyPlay');
+    smarttv.debug('SmartTV.VideoView#onKeyPlay');
     this.videoplayer.togglePlay();
   },
   onKeyPause: function() {
-    orangee.debug('Orangee.VideoView#onKeyPause');
+    smarttv.debug('SmartTV.VideoView#onKeyPause');
     this.videoplayer.pause();
   },
   onKeyRight: function() {
-    orangee.debug('Orangee.VideoView#onKeyRight');
+    smarttv.debug('SmartTV.VideoView#onKeyRight');
     this.videoplayer.seek(60);
   },
   onKeyLeft: function() {
-    orangee.debug('Orangee.VideoView#onKeyLeft');
+    smarttv.debug('SmartTV.VideoView#onKeyLeft');
     this.videoplayer.seek(-60);
   },
   onEnter: function() {
   },
 });
 
-Orangee.ScrollItemView = Orangee.ItemView.extend({
-  typeName: "Orangee.ScrollItemView",
+SmartTV.ScrollItemView = SmartTV.ItemView.extend({
+  typeName: "SmartTV.ScrollItemView",
   events: {
     'click': 'onClick',
     'mouseover': 'onMouseOver',
@@ -15510,41 +15510,41 @@ Orangee.ScrollItemView = Orangee.ItemView.extend({
     'oge:keyentered': 'onKeyEnter',
   },
   onClick: function() {
-    orangee.debug('Orangee.ScrollItemView#onClick');
+    smarttv.debug('SmartTV.ScrollItemView#onClick');
   },
   onKeyEnter: function() {
-    orangee.debug('Orangee.ScrollItemView#onKeyEnter');
+    smarttv.debug('SmartTV.ScrollItemView#onKeyEnter');
     this.onClick();
     var links = this.$('a');
     if (links.length > 0) {
       var firstlink = this.$('a')[0];
-      orangee.debug(firstlink);
+      smarttv.debug(firstlink);
       Backbone.history.navigate(firstlink.href.split('#')[1], {trigger: true});
     }
   },
   onMouseOver: function() {
-    //orangee.debug('Orangee.ScrollItemView#onMouseOver');
+    //smarttv.debug('SmartTV.ScrollItemView#onMouseOver');
     this.model.collection.selectModel(this.model);
   },
   onSelect: function(model) {
-    //orangee.debug('Orangee.ScrollItemView#onSelect');
+    //smarttv.debug('SmartTV.ScrollItemView#onSelect');
     //this.$(':first-child').addClass('active');
     this.$el.addClass('active');
   },
   onDeselect: function(model) {
-    //orangee.debug('Orangee.ScrollItemView#onDeselect');
+    //smarttv.debug('SmartTV.ScrollItemView#onDeselect');
     //this.$(':first-child').removeClass('active');
     this.$el.removeClass('active');
   },
 });
 
-Orangee.ScrollView = Orangee.CompositeView.extend({
-  typeName: "Orangee.ScrollView",
+SmartTV.ScrollView = SmartTV.CompositeView.extend({
+  typeName: "SmartTV.ScrollView",
   behaviors: {
-    OrangeeHotKeysBehavior: {},
-    OrangeeNoExtraDivBehavior: {},
-    OrangeeScrollerBehavior: {},
-    OrangeeLazyloadBehavior: {},
+    SmartTVHotKeysBehavior: {},
+    SmartTVNoExtraDivBehavior: {},
+    SmartTVScrollerBehavior: {},
+    SmartTVLazyloadBehavior: {},
   },
   childViewContainer: "ul",
   options: {
@@ -15560,31 +15560,31 @@ Orangee.ScrollView = Orangee.CompositeView.extend({
     'right': 'onKeyRight',
   },
   onKeyEnter: function() {
-    orangee.debug('Orangee.GridView#onKeyEnter');
+    smarttv.debug('SmartTV.GridView#onKeyEnter');
     this.collection.selected.trigger('oge:keyentered');
   },
   onKeyLeft: function() {
     if (this.numberOfColumns > 1) {
-      orangee.debug('Orangee.ScrollView#onKeyLeft');
+      smarttv.debug('SmartTV.ScrollView#onKeyLeft');
       this.collection.selectPrev();
     }
   },
   onKeyRight: function() {
     if (this.numberOfColumns > 1) {
-      orangee.debug('Orangee.ScrollView#onKeyRight');
+      smarttv.debug('SmartTV.ScrollView#onKeyRight');
       this.collection.selectNext();
     }
   },
   onKeyUp: function() {
-    orangee.debug('Orangee.ScrollView#onKeyUp');
-    //orangee.debug(this.children);
+    smarttv.debug('SmartTV.ScrollView#onKeyUp');
+    //smarttv.debug(this.children);
     this.collection.selectPrev(this.numberOfColumns);
     var selectedChildView = this.children.findByIndex(this.collection.currentPosition);
     this.scroller.scrollToElement(selectedChildView.el);
   },
   onKeyDown: function() {
-    orangee.debug('Orangee.ScrollView#onKeyDown');
-    //orangee.debug(this.children);
+    smarttv.debug('SmartTV.ScrollView#onKeyDown');
+    //smarttv.debug(this.children);
     this.collection.selectNext(this.numberOfColumns);
     var selectedChildView = this.children.findByIndex(this.collection.currentPosition);
     this.scroller.scrollToElement(selectedChildView.el);
@@ -15598,13 +15598,13 @@ Orangee.ScrollView = Orangee.CompositeView.extend({
     } else if (newy < this.scroller.maxScrollY) {
       newy = this.scroller.maxScrollY;
     }
-    orangee.debug('Orangee.ScrollView#scrollBy:' + newx + "/" + newy);
+    smarttv.debug('SmartTV.ScrollView#scrollBy:' + newx + "/" + newy);
     this.scroller.scrollTo(x, y);
   },
 });
 
-Orangee.HorizontalScrollView = Orangee.ScrollView.extend({
-  typeName: "Orangee.HorizontalScrollView",
+SmartTV.HorizontalScrollView = SmartTV.ScrollView.extend({
+  typeName: "SmartTV.HorizontalScrollView",
   options: {
     mouseWheel: true,
     scrollX: true,
@@ -15613,10 +15613,10 @@ Orangee.HorizontalScrollView = Orangee.ScrollView.extend({
 });
 
 
-orangee.PLATFORM = "html5";
+smarttv.PLATFORM = "html5";
 
 //http://www.cambiaresearch.com/articles/15/javascript-char-codes-key-codes
-orangee.KEYS = {
+smarttv.KEYS = {
   13: 'enter',
   37: 'left',
   39: 'right',
@@ -15681,13 +15681,13 @@ orangee.KEYS = {
     KEY_PANEL_POWER:1
 */
 
-orangee.init = function(callback) {
+smarttv.init = function(callback) {
 };
 
-orangee.exit = function() {
+smarttv.exit = function() {
 };
 
-orangee.hasNetwork = function() {
+smarttv.hasNetwork = function() {
   if (navigator.connection) {
     //https://github.com/apache/cordova-plugin-network-information/blob/master/doc/index.md
     return navigator.connection.type != Connection.NONE
@@ -15697,8 +15697,8 @@ orangee.hasNetwork = function() {
   }
 };
 
-orangee.disableScreenSaver = function() {
+smarttv.disableScreenSaver = function() {
 };
 
-orangee.enableScreenSaver = function() {
+smarttv.enableScreenSaver = function() {
 };

@@ -1,15 +1,15 @@
-var BindingView = Orangee.ItemView.extend({
+var BindingView = SmartTV.ItemView.extend({
   typeName: "BindingView",
   template: "#bindingTmpl",
   onRender: function() {
     var token = new DeviceToken(this.model.get('code'));
     (function worker() {
-      orangee.log("try to get device token ...");
+      smarttv.log("try to get device token ...");
       token.fetch({
         success: function() {
           var t = token.get('token');
           if (t) {
-            orangee.storage.set("device_token", t);
+            smarttv.storage.set("device_token", t);
             Backbone.history.navigate("", {trigger: true});
           } else {
             setTimeout(worker, 2*5000);
@@ -23,23 +23,23 @@ var BindingView = Orangee.ItemView.extend({
   },
 });
 
-var OPMLItemView = Orangee.ScrollItemView.extend({
+var OPMLItemView = SmartTV.ScrollItemView.extend({
   typeName: "OPMLItemView",
   template: '#opmlItemTmpl',
 });
 
-var OPMLView = Orangee.ScrollView.extend({
+var OPMLView = SmartTV.ScrollView.extend({
   typeName: "OPMLView",
   childView: OPMLItemView,
   template: '#opmlTmpl',
   onShow: function() {
     this.numberOfColumns = Math.floor(this.$el.width()/this.$('li').width());
-    orangee.debug("numberOfColumns=" + this.numberOfColumns);
-    //orangee.debug(this.children);
+    smarttv.debug("numberOfColumns=" + this.numberOfColumns);
+    //smarttv.debug(this.children);
   },
 });
 
-var RSSItemView = Orangee.ScrollItemView.extend({
+var RSSItemView = SmartTV.ScrollItemView.extend({
   typeName: "RSSItemView",
   template: '#rssItemTmpl',
 });
@@ -49,7 +49,7 @@ var RSSView = OPMLView.extend({
   childView: RSSItemView,
 });
 
-var CSVItemView = Orangee.ScrollItemView.extend({
+var CSVItemView = SmartTV.ScrollItemView.extend({
   typeName: "CSVItemView",
   template: '#csvItemTmpl',
 });
@@ -59,7 +59,7 @@ var CSVView = OPMLView.extend({
   childView: CSVItemView,
 });
 
-var HeaderView = Orangee.ItemView.extend({
+var HeaderView = SmartTV.ItemView.extend({
   typeName: "HeaderView",
   template: '#headerTmpl',
   keyEvents: {
@@ -69,17 +69,17 @@ var HeaderView = Orangee.ItemView.extend({
     if (Backbone.history.fragment != "") {
       Backbone.history.history.back();
     } else {
-      orangee.exit();
+      smarttv.exit();
     }
   },
 });
 
-var ErrorView = Orangee.ItemView.extend({
+var ErrorView = SmartTV.ItemView.extend({
   typeName: "ErrorView",
   template: '#errorTmpl',
 });
 
-var HtmlView = Orangee.ScrollView.extend({
+var HtmlView = SmartTV.ScrollView.extend({
   typeName: "HtmlView",
   template: '#htmlTmpl',
   keyEvents: {
@@ -94,7 +94,7 @@ var HtmlView = Orangee.ScrollView.extend({
   },
 });
 
-var PlayerView = Orangee.VideoView.extend({
+var PlayerView = SmartTV.VideoView.extend({
   typeName: "PlayerView",
   template: '#playerTmpl',
   options: {
@@ -107,12 +107,12 @@ var PlayerView = Orangee.VideoView.extend({
     $(".navbar").hide();
     //this.oldheight = $(".oge-fullscreenvideo").css('top');
     //$(".oge-fullscreenvideo").css('top', 0);
-    //return Orangee.VideoView.prototype.onRender.apply(this, arguments);
+    //return SmartTV.VideoView.prototype.onRender.apply(this, arguments);
   },
   onDestroy: function() {
     //$(".oge-fullscreenvideo").css('top', this.oldheight);
     $(".navbar").show();
-    return Orangee.VideoView.prototype.onDestroy.apply(this, arguments);
+    return SmartTV.VideoView.prototype.onDestroy.apply(this, arguments);
   },
   onEnd: function() {
     Backbone.history.history.back();
