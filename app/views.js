@@ -117,9 +117,9 @@ var PlayerView = SmartTV.VideoView.extend({
   onEnd: function() {
     Backbone.history.history.back();
   },
-  onError: function() {
+  /*onError: function() {
     Backbone.history.navigate("error", {trigger: true});
-  },
+  },*/
   onEnter: function() {
     this.videoplayer.togglePlay();
   },
