@@ -11,7 +11,7 @@ var MyController = SmartTV.Controller.extend({
       Backbone.history.navigate("binding", {trigger: true});
     } else {
       Airbrake.onload = function(client) {
-        Airbrake.addParams({device_token: device_token, version: orangee.APPVERSION, platform: smarttv.PLATFORM});
+        Airbrake.addParams({device_token: device_token, version: smarttv.APPVERSION, platform: smarttv.PLATFORM});
       }
       this._index(device_token);
     }
