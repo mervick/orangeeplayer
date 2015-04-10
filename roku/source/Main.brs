@@ -81,8 +81,15 @@ function BuildCategory(category)
 		sdPosterURL:						ValidStr(category@img)
 		hdPosterURL:						ValidStr(category@img)
 		url:										ValidStr(category@url)
+		type:										ValidStr(category@type)
 		categories:							[]
+    streams:                []
 	}
+
+  newStream = {
+    url:  ValidStr(category@url)
+  }
+  result.streams.Push(newStream)
 	
 	if category.outline.Count() > 0
 		for each subCategory in category.outline

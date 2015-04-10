@@ -17,12 +17,20 @@ sub ShowPosterScreen(opmlurl, breadLeft, breadRight)
 			if msg.isScreenClosed()
 				exit while
 			else if msg.isListItemSelected()
+        selectedEpisode = msg.Getindex()
 				selectedItem = contentList[msg.Getindex()]
 				if Right(selectedItem.url, 5) = ".opml"
 					ShowPosterScreen(selectedItem.url, selectedItem.shortDescriptionLine1, "")
+        else if Left(selectedItem.type, 5) = "video"
+          selectedEpisode = ShowSpringboardScreen(contentList, selectedEpisode, selectedItem.shortDescriptionLine1, "")
+          screen.SetFocusedListItem(selectedEpisode)
 				else
 					ShowEpisodeScreen(selectedItem.url, selectedItem.shortDescriptionLine1, "")
 				end if
+      else if msg.isRemoteKeyPressed()
+        if msg.GetIndex() = 13 AND Left(selectedItem.type, 5) = "video"
+          ShowVideoScreen(contentList[selectedEpisode])
+        end if
 			end if
 		end if
 	end while
