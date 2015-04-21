@@ -318,7 +318,7 @@ smarttv.html5player = function _SmartTVJSHTML5Player() {
   this.player = null;
   this.inactivityTimeout = null;
   this.support_translate = true;
-  this.native_controls = (smarttv.PLATFORM == 'lg');//lg's os will crash with videojs if video is paused
+  this.native_controls = false;(smarttv.PLATFORM == 'lg');//lg's os will crash with videojs if video is paused
 };
 
 smarttv.html5player.prototype.play = function() {
@@ -346,14 +346,16 @@ smarttv.html5player.prototype.seek = function(second) {
 
   this.video.currentTime = seekToTime;
 
-  this.player.userActive(true);
-  var self = this;
-  if (this.inactivityTimeout) {
-    clearTimeout(this.inactivityTimeout);
+  if (!this.native_controls) {
+    this.player.userActive(true);
+    var self = this;
+    if (this.inactivityTimeout) {
+      clearTimeout(this.inactivityTimeout);
+    }
+    this.inactivityTimeout = setTimeout(function(){
+      self.player.userActive(false);
+    }, 2000);
   }
-  this.inactivityTimeout = setTimeout(function(){
-    self.player.userActive(false);
-  }, 2000);
 };
 
 smarttv.html5player.prototype.load = function(url, startSeconds, divid, options) {
@@ -386,23 +388,23 @@ smarttv.html5player.prototype.load = function(url, startSeconds, divid, options)
       this.video.setAttribute("webkit-playsinline", "");
     }
 
-    var vjsopt = {
-      poster: div.getAttribute("poster") || options['poster'],
-      width:  options['width']  || "100%",
-      height: options['height'] || "100%",
-      children: {
-        controlBar: {
-          children: {
-            muteToggle: false,
-            fullscreenToggle: false,
-            volumeControl: false,
-          },
-        },
-      },
-    };
     if (this.native_controls) {
       this._load(url, startSeconds, options);
     } else {
+      var vjsopt = {
+        poster: div.getAttribute("poster") || options['poster'],
+        width:  options['width']  || "100%",
+        height: options['height'] || "100%",
+        children: {
+          controlBar: {
+            children: {
+              muteToggle: false,
+              fullscreenToggle: false,
+              volumeControl: false,
+            },
+          },
+        },
+      };
       var self = this;
       videojs(divid, vjsopt, function(){
         self.player = this;
@@ -474,7 +476,7 @@ smarttv.html5player.prototype._load = function(url, startSeconds, options) {
 
 smarttv.html5player.prototype.disconnect = function() {
   smarttv.debug("smarttv.html5player.prototype.disconnect");
-  if (this.player) {
+  if (this.player && !this.native_controls) {
     this.player.dispose();
   }
 };
